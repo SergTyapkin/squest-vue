@@ -1,0 +1,50 @@
+<!DOCTYPE html>
+<html lang="ru">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, user-scalable=no">
+
+    <title>SQuest</title>
+</head>
+<style>
+body {
+    margin: 0;
+    width: 100vw;
+    min-height: 100vh;
+    position: relative;
+    color: #f5e0d1;
+    background: linear-gradient(-20deg, #b8860b 0%, #000000 70%);
+    animation: bg-move 3s ease normal forwards;
+    overflow-x: hidden;
+}
+._invisible-text {
+    opacity: 0;
+}
+@keyframes bg-move {
+    from {
+        background-position: 100%;
+        background-size: 1000%;
+    }
+    to {
+        background-position: 0;
+        background-size: 300%;
+    }
+}
+</style>
+<body class="scrollable">
+    <div id="app">
+        <span class="_invisible-text">
+            SQuest - сервис для создания и прохождения онлайн-квестов <br>
+            Делайте свои или проходите уже созданные и проверенные другими людьми квесты <br>
+            Здесь ты сможешь найти онлайн-квест по душе, созданный нашими профессионалами. <br>
+            Всё бесплатно пока что) <br>
+            1. регистрируешься <br>
+            2. выбираешь квест и ветку <br>
+            3. чем больше проходишь - тем выше ты в рейтинге <br>
+            <i><small>Если ты это читаешь на сайте, значит произошла какая-то ошибка на сервере. Попробуй обновить страницу через некоторое время. Этот текст только для поисковика)</small></i>
+        </span>
+
+        <img src="./res/gradient_loading.gif" alt="loading...">
+    </div>
+</body>
+</html>
