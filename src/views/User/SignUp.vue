@@ -17,7 +17,7 @@
           ]"
           submit-text="Погнали"
           @submit="signUp"
-    >Уже есть аккаунт? <router-link to='/signin'>Войти</router-link>
+    >Уже есть аккаунт? <router-link to='/signin' class="link">Войти</router-link>
     </Form>
   </div>
 </template>

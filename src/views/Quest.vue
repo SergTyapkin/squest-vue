@@ -101,7 +101,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
       <img v-if="previewUrl" class="preview-image" :src="previewUrl" alt="preview">
       <div v-else class="preview-image default text-big-xx">SQ</div>
 
-      <div class="container" :class="{inactive: branchesOpened}">
+      <div class="container">
         <div class="main-info">
           <div class="text-big-x title">
             {{title}}
@@ -229,13 +229,18 @@ export default {
       this.loading = true;
       const res = await this.$api.chooseBranch(this.id, branch.id);
       this.loading = false;
-      if (!res.ok_) {
-        this.$popups.error("Ошибка", "Не удалось выбрать ветку");
+      if (res.ok_) {
+        this.$store.dispatch('GET_USER');
+        this.$router.push('/play');
+        return;
+      }
+      if (res.status_ === 401) {
+        this.$popups.alert("Не авторизован", "Чтобы поиграть, сперва надо потрудиться - войти в аккаунт");
+        this.$router.push('/signin');
         return;
       }
 
-      this.$store.dispatch('GET_USER');
-      this.$router.push('/play');
+      this.$popups.error("Ошибка", "Не удалось выбрать ветку");
     }
   }
 };

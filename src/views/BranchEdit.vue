@@ -32,7 +32,7 @@
                      v-model="tasks"
                      :can-delete="false"
                      placeholder="Название задания"
-                     :action-to="(taskId) => `quest/branch/task/edit?id=${taskId}`"
+                     :action-to="(taskId) => `/quest/branch/task/edit?id=${taskId}`"
                      @input="onChange"
         ></AddableList>
 
@@ -138,6 +138,7 @@ export default {
     async saveBranch() {
       await this.saveBranchInfo();
       await this.saveTasks();
+      window.onbeforeunload = null;
     },
 
     async saveBranchInfo() {
@@ -195,7 +196,6 @@ export default {
       });
 
       this.prevTasks = deepClone(this.tasks);
-      window.onbeforeunload = null;
     },
 
     async deleteBranch() {
@@ -210,7 +210,7 @@ export default {
         this.$popups.error('Ошибка', 'Не удалось удалить ветку');
         return;
       }
-      this.$popups.success('Сохранено', 'Информация сохранена');
+      this.$popups.success('Удалено', 'Ветка удалено');
       window.onbeforeunload = null;
       this.$router.push('/quests/my');
     },

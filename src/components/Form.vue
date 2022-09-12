@@ -6,6 +6,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
 textarea
 input
+.input-like
   all unset
   width 100%
   color textColor1
@@ -14,7 +15,6 @@ input
   padding 10px
   font-size 1rem
   border 1px solid colorShadow
-  border-bottom 1px solid border-color
   transition all 0.2s ease
   border-radius 3px
   background input-bg
@@ -98,6 +98,7 @@ input
     color #ff8e72
   textarea
   input
+  .input-like
     border-color #ff8e72
 //animation error 3s forwards
 .success
@@ -106,11 +107,13 @@ input
     color #c4ff72
   textarea,
   input
+  .input-like
     border-color #c4ff72
 //animation success 3s forwards
 
 .form.disabled
   input
+  .input-like
     user-select none
     filter saturate(0)
 

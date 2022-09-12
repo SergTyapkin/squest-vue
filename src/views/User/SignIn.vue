@@ -18,7 +18,7 @@ logo-size = 140px
           ]"
           submit-text="Погнали"
           @submit="signIn"
-    >Нужен аккаунт? <router-link to='/signup'>Создать</router-link>
+    >Нужен аккаунт? <router-link to='/signup' class="link">Создать</router-link>
     </Form>
   </div>
 </template>

@@ -4,6 +4,8 @@ bg-color = linear-gradient(-20deg, empColor1 0%, bgColor1 70%)
 link-decoration-color = #d2825c
 link-decoration-color-hover = #fdc57c
 visited-link-color = #b17bc3
+hr-color = linear-gradient(90deg, transparent, empColor1, transparent)
+
 
 html
     overflow-x hidden
@@ -21,16 +23,22 @@ body
     animation bg-move 3s ease normal forwards
     overflow-x hidden
 
-a:not(.link)
-    text-decoration none
 a
-    color link-decoration-color
+    text-decoration none
+    color textColor1
     transition color 0.2s ease
-a:hover
+.link a
+a.link
+    color link-decoration-color
+.link a:hover
+a.link:hover
     color link-decoration-color-hover
-a.link:visited
-    color visited-link-color
 
+
+hr
+    height 2px
+    border none
+    background hr-color
 
 
 #app

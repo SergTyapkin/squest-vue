@@ -36,11 +36,16 @@ export class Api extends ApiRequest {
     restartBranch = (branchId) => this.put(`/branch/progress/reset`, {branchId})
 
     getBranchTasks = (branchId) => this.get(`/task`, {branchId});
+    getTaskInfo = (taskId) => this.get(`/task`, {taskId});
     updateTaskOrderId = (id, title, orderId) => this.put('/task', {id, title, orderId});
+    updateTaskInfo = (id, title, description, question, answers, isQrAnswer) => this.put('/task', {id, title, description, question, answers, isQrAnswer});
+    deleteTask = (id) => this.delete('/task', {id});
     createTasksMany = (branchId, tasks = [{title: '', description: '', question: '', answers: []}]) => this.post('/task/many', {branchId, tasks});
 
     updateHelper = (id, questId, name) => this.put('/quest/helpers', {id, questId, name});
     createHelper = (questId, name) => this.post('/quest/helpers', {questId, name});
     deleteHelper = (id) => this.delete('/quest/helpers', {id});
     getQuestHelpers = (questId) => this.get('/quest/helpers', {questId});
+
+    uploadImage = (dataUrl) => this.post('/image', {dataUrl});
 }

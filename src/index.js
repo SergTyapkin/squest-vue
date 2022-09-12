@@ -8,9 +8,7 @@ import Api from "./Api";
 import './styles/buttons.styl';
 
 import './styles/global.styl';
-import './styles/pages.styl';
 import './styles/show-hide.styl';
-import './styles/markdown-redactor.styl';
 import './styles/scrollbars.styl';
 
 

@@ -25,7 +25,7 @@
 </style>
 
 <template>
-  <div>
+  <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
         {name: 'Назад', description: 'К твоим квестам', to: '/quests/my'},
     ]"></TopButtons>
@@ -241,6 +241,7 @@ export default {
       await this.saveQuestInfo()
       await this.saveBranches();
       await this.saveHelpers();
+      window.onbeforeunload = null;
     },
 
     async saveQuestInfo() {
@@ -351,8 +352,13 @@ export default {
         return;
       }
       this.$popups.success('Сохранено', 'Информация сохранена');
+      window.onbeforeunload = null;
       this.$router.push('/quests/my');
     },
+
+    onChange() {
+      this.edited = true;
+    }
   }
 };
 </script>

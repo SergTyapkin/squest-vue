@@ -35,6 +35,8 @@ footer
 
   a
     color inherit
+  a:visited
+    color visited-link-color
 </style>
 
 <template>

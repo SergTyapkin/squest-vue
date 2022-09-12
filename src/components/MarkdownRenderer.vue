@@ -4,7 +4,7 @@
 </style>
 
 <template>
-  <div v-html="html"></div>
+  <div v-html="html" class="link"></div>
 </template>
 
 <script>
@@ -27,6 +27,10 @@ export default {
   },
 
   mounted() {
+    HtmlSanitizer.AllowedTags['AUDIO'] = true;
+    HtmlSanitizer.AllowedTags['S'] = true;
+    HtmlSanitizer.AllowedTags['DEL'] = true;
+
     if (this.text)
       this.update();
   },
@@ -35,9 +39,9 @@ export default {
     update(text) {
       if (text)
         this.text = text;
-      HtmlSanitizer.AllowedTags['AUDIO'] = true;
-      HtmlSanitizer.AllowedTags['S'] = true;
-      this.html = HtmlSanitizer.SanitizeHtml(marked.parse(this.text, {breaks: true}));
+
+      const parsed = marked.parse(this.text, {breaks: true});
+      this.html = HtmlSanitizer.SanitizeHtml(parsed);
     }
   }
 };
