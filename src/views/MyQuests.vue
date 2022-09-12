@@ -13,7 +13,7 @@
     <div class="quests-page">
       <div>
         <TopButtons bg :buttons="[
-          {name: 'Выбор квеста', description: 'Выбирай первый понравившийся и погнали!'},
+          {name: 'Твои квесты', description: 'Здесь собраны созданные тобой квесты'},
         ]"></TopButtons>
 
         <CircleLoading v-if="loading"></CircleLoading>
@@ -49,7 +49,7 @@ export default {
 
   async mounted() {
     this.loading = true;
-    const res = await this.$api.getAllQuests();
+    const res = await this.$api.getMyQuests(this.$user.id);
     this.loading = false;
 
     if (!res.ok_) {

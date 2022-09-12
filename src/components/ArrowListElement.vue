@@ -152,7 +152,7 @@ export default {
 
   mounted() {
     if (!this.closed) {
-      this.$refs?.arrow?.setDirection('bottom');
+      this.$refs?.arrow?.setDirection(this.$refs.arrow.directions.bottom);
     }
   },
 
@@ -164,13 +164,13 @@ export default {
 
       if (this.closed) {
         openRoll(this.$refs.list);
-        this.$refs?.arrow?.setDirection('bottom');
+        this.$refs?.arrow?.setDirection(this.$refs.arrow.directions.bottom);
         this.closed = false;
         this.$emit('open');
         return;
       }
       closeRoll(this.$refs.list);
-      this.$refs?.arrow?.setDirection('right');
+      this.$refs?.arrow?.setDirection(this.$refs.arrow.directions.right);
       this.closed = true;
       this.$emit('close');
     },

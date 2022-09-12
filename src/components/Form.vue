@@ -1,9 +1,10 @@
-<style lang="stylus" scoped>
+<style lang="stylus">
 @require '../styles/constants.styl'
 
 input-box-shadow = 0 0 15px 0 rgb(24, 19, 3) inset, 0 0 10px 0 rgba(162, 116, 14, 0.7)
 input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
 
+textarea
 input
   all unset
   width 100%
@@ -20,12 +21,12 @@ input
   box-shadow input-box-shadow
 
 
-form:not(.no-bg)
+.form:not(.no-bg)
   background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgb(88, 58, 24) 50%, rgba(84, 67, 24, 0) 100%) 50% 50% no-repeat
   box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.7), 0 0 15px 0 rgba(34, 28, 4, 0.4) inset
   padding 40px 30px
   margin-top 100px
-form
+.form
   margin-left auto
   margin-right auto
   width 100%
@@ -41,16 +42,23 @@ form
     .info
       margin-top 15px
 
-  .info
-    linkButton
-      color empColor4
-      text-shadow none
-      transition all 0.5s ease-out
-    linkButton:hover
-      color #e2c5a3
-      text-shadow 0 0 2px #c4a25e
+  .fields-container
+    > div
+      margin 20px 0
+      transition all 0.3s ease
+      > label
+        font-family Arial, monospace
+      > textarea,
+      > input[type=text]
+      > input[type=password],
+      > input[type=email],
+      display block
+        width 100%
+        padding 10px
+      .info
+        margin 5px 0
 
-form
+.form
   > div // containers
     margin 30px 0
   > div:last-child
@@ -58,7 +66,7 @@ form
   > div:first-child
     margin-top 0
 
-form
+.form
   textarea
     resize vertical
     transition border-color 0.3s ease
@@ -79,8 +87,8 @@ form
 .form-info
   opacity 0
   transition all 0.3s
-form.error
-form.success
+.form.error
+.form.success
   .form-info
     opacity 1
 
@@ -101,96 +109,34 @@ form.success
     border-color #c4ff72
 //animation success 3s forwards
 
+.form.disabled
+  input
+    user-select none
+    filter saturate(0)
 
 @media ({mobile})
-  form
+  .form
     padding-left 10px
     padding-right 10px
 </style>
 
 <template>
-  <form @submit.prevent.stop="submit" ref="form" :class="{'no-bg': noBg}">
-    <div class="info-container">
-      <div class="text-big-xx">{{ title }}</div>
-      <div class="text-small">{{ description }}</div>
-    </div>
-
-    <div class="fields-container">
-      <div id="error" class="form-info text-middle">{{ info }}</div>
-      <FloatingInput v-for="field in fields"
-                     :title="field.title"
-                     :autocomplete="field.autocomplete"
-                     :type="field.type"
-                     :error="errors[field.jsonName]"
-                     v-model="values[field.jsonName]"
-      >{{ field.info }}
-      </FloatingInput>
-    </div>
-
-    <div class="submit-container" v-if="!noSubmit">
-      <input v-if="!loading" type="submit" :value="submitText">
-      <CircleLoading v-else></CircleLoading>
-    </div>
-
-    <div class="text-small info">
-      <slot></slot>
-    </div>
+  <form @submit.prevent.stop="submit" class="form" :class="{disabled: loading}" ref="form">
+    <slot></slot>
   </form>
 </template>
 
 <script>
-import FloatingInput from "./FloatingInput.vue";
-import CircleLoading from '/src/components/loaders/CircleLoading.vue';
 import {setTimedClass} from "../utils/utils";
 
 export default {
-  components: {FloatingInput, CircleLoading},
   emits: ['submit'],
-
-  props: {
-    title: {
-      type: String,
-    },
-    description: {
-      type: String,
-    },
-
-    fields: {
-      type: Array,
-      default: []
-    },
-
-    submitText: {
-      type: String,
-    },
-    submitInfo: {
-      type: String,
-    },
-
-    noBg: {
-      type: Boolean,
-      default: false
-    },
-    noSubmit: {
-      type: Boolean,
-      default: false
-    }
-  },
 
   data() {
     return {
       loading: false,
       info: '',
-      errors: {},
-      values: {}
     };
-  },
-
-  mounted() {
-    for (const field of this.fields) {
-      this.values[field.jsonName] = '';
-      this.errors[field.jsonName] = '';
-    }
   },
 
   methods: {
@@ -200,6 +146,9 @@ export default {
 
     showError() {
       setTimedClass([this.$refs.form], 'error');
+    },
+    showSuccess() {
+      setTimedClass([this.$refs.form], 'success');
     },
   }
 };

@@ -33,15 +33,11 @@
 </style>
 
 <template>
-  <span class="arrow" :class="{right, left, top, bottom}" :style="`--size: ${size}`"></span>
+  <span :class="`arrow ${direction}`" :style="`--size: ${size}`"></span>
 </template>
 
 <script>
 export default {
-  name: 'ArrowListElement',
-
-  emits: ['choose'],
-
   props: {
     size: {
       type: String,
@@ -56,21 +52,30 @@ export default {
 
   data() {
     return {
-      right: this.$props.right,
-      top: this.$props.top,
-      left: this.$props.left,
-      bottom: this.$props.bottom,
+      direction: '',
+      directions: {
+        top: 'top',
+        right: 'right',
+        left: 'left',
+        bottom: 'bottom',
+      }
     }
+  },
+
+  mounted() {
+    if (this.$props?.top)
+      this.direction = this.directions.top;
+    if (this.$props?.left)
+      this.direction = this.directions.left;
+    if (this.$props?.right)
+      this.direction = this.directions.right;
+    if (this.$props?.bottom)
+      this.direction = this.directions.bottom;
   },
 
   methods: {
     setDirection(dirName) {
-      this.right = false;
-      this.top = false;
-      this.left = false;
-      this.bottom = false;
-
-      this[dirName] = true;
+      this.direction = dirName;
     }
   }
 }

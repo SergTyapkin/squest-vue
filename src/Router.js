@@ -6,6 +6,10 @@ import Profile from '/src/views/User/Profile.vue'
 import Page404 from '/src/views/Page404.vue'
 import About from "/src/views/About.vue";
 import Quests from "/src/views/Quests.vue";
+import MyQuests from "/src/views/MyQuests.vue";
+import QuestEdit from "/src/views/QuestEdit.vue";
+import BranchEdit from "/src/views/BranchEdit.vue";
+import TaskEdit from "/src/views/TaskEdit.vue";
 import Quest from "/src/views/Quest.vue";
 import Play from "/src/views/Play.vue";
 
@@ -22,11 +26,13 @@ export default function createVueRouter(Store) {
         {path: BASE_URL_PATH + '/play', component: Play},
 
         {path: BASE_URL_PATH + '/quests', component: Quests},
-        {path: BASE_URL_PATH + '/quests/my', component: Quests, meta: {loginRequired: true}},
+        {path: BASE_URL_PATH + '/quests/my', component: MyQuests, meta: {loginRequired: true}},
         {path: BASE_URL_PATH + '/quests/create', component: Quests, meta: {loginRequired: true}},
-        {path: BASE_URL_PATH + '/quests/change', component: Quests, meta: {loginRequired: true}},
 
         {path: BASE_URL_PATH + '/quest', component: Quest},
+        {path: BASE_URL_PATH + '/quest/edit', component: QuestEdit, meta: {loginRequired: true}},
+        {path: BASE_URL_PATH + '/quest/branch/edit', component: BranchEdit, meta: {loginRequired: true}},
+        {path: BASE_URL_PATH + '/quest/branch/task/edit', component: TaskEdit, meta: {loginRequired: true}},
 
         {path: BASE_URL_PATH + '/:catchAll(.*)', component: Page404}
     ]
@@ -36,7 +42,7 @@ export default function createVueRouter(Store) {
         routes: routes,
     });
 
-    let router_got_user = false
+    let router_got_user = false;
     Router.beforeEach(async (to, from, next) => {
         if (!router_got_user) {
             await Store.dispatch('GET_USER');
@@ -77,9 +83,19 @@ export default function createVueRouter(Store) {
         }
         smartBasePartRedirect();
     });
+    Router.beforeResolve(async (to) => {
+        if (window?.onbeforeunload) {
+            if (confirm("Изменения не сохранены. Вы уверены, что хотите покинуть страницу?"))
+                window.onbeforeunload = null;
+            else
+                return false;
+        }
+    });
+
 
     return Router;
 }
+
 
 function isStartsOnBasePart(string) {
     return new RegExp(`^${BASE_URL_PATH}`, 'i').test(string);

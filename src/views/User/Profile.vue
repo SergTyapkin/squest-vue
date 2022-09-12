@@ -15,7 +15,7 @@ hr
   margin-top 50px
   margin-left auto
   margin-right auto
-  padding 40px 30px
+  padding 20px 30px 30px 30px
   width 100%
   max-width 460px
   border-radius 150px 150px 10px 10px / 100px 100px 10px 10px
@@ -26,13 +26,12 @@ hr
     > *
       display flex
       justify-content space-between
+      align-items flex-end
       width 100%
       text-align center
     .rating
     .position
       flex 1
-      height 80px
-      line-height 80px
       font-size 30px
     .avatar
       width 80px
@@ -41,12 +40,13 @@ hr
       border-radius 50%
 
     .username
-      margin-top 5px
+      margin-top 20px
       background none
       outline none
       border none
       transition all 0.2s ease
       padding 5px
+      padding-top 2px
     .username:focus
       box-shadow input-box-shadow
 
@@ -102,7 +102,7 @@ input[type=submit]:hover
           <div class="info-container">
             <div>
               <span class="rating">★ {{ $user.rating }}</span>
-              <img class="avatar" :src="$user.avatarUrl" alt="avatar">
+              <img class="avatar" src="../../res/default_avatar.png" alt="avatar">
               <span class="position"># {{ $user.ratingPosition }}</span>
             </div>
             <input class="username text-big" v-model="username">
@@ -155,7 +155,7 @@ input[type=submit]:hover
 
 <script>
 import TopBar from "/src/components/TopBar.vue";
-import Form from "/src/components/Form.vue";
+import Form from "/src/components/FormExtended.vue";
 import FloatingInput from "../../components/FloatingInput.vue";
 import {isClosedRoll, openRoll} from "../../utils/show-hide";
 import TopButtons from "../../components/TopButtons.vue";

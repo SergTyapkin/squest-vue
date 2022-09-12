@@ -1,126 +1,104 @@
 <style lang="stylus" scoped>
-  @require '../../styles/constants.styl'
+@require '../../styles/constants.styl'
 
-  .addable-list
-    padding 0
-    margin 0 100px
-    list-style none
-    > li
-      margin-top 10px
-      margin-bottom 10px
-      justify-content space-between
-      align-items center
+.addable-list
+  padding 0
+  list-style none
+  overflow-x hidden
 
-      :last-child
-        margin-bottom 0
-      :first-child
-        margin-top 0
-    > li:first-child
-      > .move-buttons
-        > .button:first-child
-          opacity 0.2
-          pointer-events none
-    > li:last-child
-      > .move-buttons
-        > .button:last-child
-          opacity 0.2
-          pointer-events none
-
-  .btn.delete
-    display flex
-    align-content center
-    justify-content center
-    background color3
-    padding 8px
-  .btn.delete:hover
-    background color4
-  .btn.thin
-    padding-top 2px
-    padding-bottom 2px
-
-.form
-  text-align left
-  margin 10px 0
-  max-width unset
-  padding 20px 40px
-.add-button
+.button
   display flex
   align-items center
   justify-content center
-  border 1px solid white
-  width fit-content
-  margin 0 auto
-  padding 7px
-  padding-right 12px
-  border-radius 30px
-  opacity 0.7
-  transition all 0.2s ease
-  cursor pointer
-  > img
+  padding 0
+  img
     width 40px
-    transition all 0.2s ease
-.add-button:hover
-  opacity 1
-  > img
-    transform scale(1.1)
-
 </style>
 
 <template>
-  <ul class="addable-list" @input="">
-    <li v-for="(item, idx) in modelValue" class="form">
-      <ListItem v-model="modelValue[idx]" :idx="idx + 1" @deleteListItem="deleteItem"></ListItem>
-    </li>
-    <li>
-      <div class="add-button" @click="addItem">
-        <img src="../../res/plus.svg" alt="add">
-        Добавить тему
-      </div>
-    </li>
-  </ul>
+  <div>
+    <label class="text-big">{{ title }} <span></span></label>
+    <div class="info text-small">{{ description }}</div>
+
+    <ul class="addable-list roll-active closed" ref="list">
+      <ListItem v-for="(item, idx) in modelValue"
+                v-model="modelValue[idx]"
+                :idx="idx"
+                :action-text="this.$props.actionText"
+                @delete="deleteItem"
+                @move="moveItem"
+                :action-to="actionTo"
+                :can-delete="canDelete"
+                :placeholder="placeholder"
+      ></ListItem>
+    </ul>
+
+    <div class="button rounded" @click="addItem">
+      <img src="../../res/plus.svg" alt="add"> {{ addText }}
+    </div>
+  </div>
 </template>
 
 <script>
   import ListItem from "./ListItem.vue";
+  import {openRoll} from "../../utils/show-hide";
 
   export default {
     components: {ListItem},
+
+    emits: ['add', 'delete', 'update:modelValue', 'input'],
+
     props: {
-      modelValue: [], // aka "items"
+      modelValue: Array, // aka "items"
+      title: String,
+      description: String,
+      addText: String,
+      actionText: String,
+      actionTo: Function,
+      placeholder: String,
+      canDelete: {
+        type: Boolean,
+        default: true,
+      }
     },
 
     mounted() {
+      openRoll(this.$refs.list);
     },
 
     methods: {
-      async addItem() {
-        const topic = {name: "", keys: ""};
+      addItem() {
+        this.$emit('add');
+        this.$emit('input');
 
-        const res = await this.$api.createTopic(topic.name, topic.keys);
-        if (!res.ok_) {
-          this.$popups.error("Не удалось создать тему");
-          return;
-        }
-        topic.id = res.id;
-        this.modelValue.push(topic);
+        this.modelValue.push({
+          title: ''
+        });
         this.updateVModel();
       },
 
-      async deleteItem(idx) {
-        const topic = this.modelValue[idx];
+      deleteItem(idx) {
+        this.$emit('delete', this.modelValue[idx]);
+        this.$emit('input');
 
-        const res = await this.$api.deleteTopic(topic.id);
-        if (!res.ok_) {
-          this.$popups.error("Не удалось удалить тему");
+        this.modelValue.splice(idx, 1);
+        this.updateVModel();
+      },
+
+      moveItem({idx, to}) {
+        if ((idx < 0 || idx >= this.modelValue.length) ||
+            (to < 0 || to >= this.modelValue.length))
           return;
-        }
-        this.modelValue.splice(idx - 1, 1);
+        const buff = this.modelValue[idx];
+        this.modelValue[idx] = this.modelValue[to];
+        this.modelValue[to] = buff;
+
         this.updateVModel();
       },
 
       updateVModel() {
         this.$emit('update:modelValue', this.modelValue);
       }
-    }
+    },
   }
 </script>

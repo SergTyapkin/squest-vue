@@ -24,7 +24,7 @@
 
 
 <script>
-import Form from "../../components/Form.vue";
+import Form from "../../components/FormExtended.vue";
 import User from "/src/models/user";
 
 export default {

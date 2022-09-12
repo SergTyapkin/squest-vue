@@ -92,7 +92,8 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
 <template>
   <div>
     <TopButtons clickable arrows low-opacity :buttons="[
-        {name: 'Назад', description: 'К списку квестов', to: '/quests'},
+        {name: 'Назад', description: 'К списку квестов',
+        to: $router.options.history.state.back ? $router.options.history.state.back : '/quests'},
     ]"></TopButtons>
 
     <div class="quest-preview">
@@ -145,6 +146,7 @@ export default {
       branches: [],
       timeUnits: 'мин',
       id: this.$route.query.id,
+      uid: this.$route.query.uid,
 
       loading: false,
       branchesLoading: false,
@@ -162,26 +164,36 @@ export default {
     }
   },
 
-  mounted() {
-    if (this.id === undefined) {
+  async mounted() {
+    if (this.id === undefined && this.uid === undefined) {
+      this.$popups.error("Квест не найден", "Не указаны id или uid квеста");
       this.$router.push('/quests')
       return;
     }
 
-    this.getQuestInfo();
+    if (this.id)
+      this.getQuestInfo();
+    else
+      await this.getQuestInfo();
+
     this.getBranches();
   },
 
   methods: {
     async getQuestInfo() {
       this.loading = true;
-      const questInfo = await this.$api.getQuestInfo(this.id);
+      let questInfo;
+      if (this.id !== undefined)
+        questInfo = await this.$api.getQuestInfo(this.id);
+      else if (this.uid !== undefined)
+        questInfo = await this.$api.getQuestInfoByUid(this.uid);
       this.loading = false;
 
       if (!questInfo.ok_) {
         this.$popups.error("Ошибка", "Не удалось получить информацио о квесте");
         return;
       }
+      this.id = questInfo.id;
       this.title = questInfo.title;
       this.description = questInfo.description;
       this.ispublished = questInfo.ispublished;
@@ -221,6 +233,8 @@ export default {
         this.$popups.error("Ошибка", "Не удалось выбрать ветку");
         return;
       }
+
+      this.$store.dispatch('GET_USER');
       this.$router.push('/play');
     }
   }

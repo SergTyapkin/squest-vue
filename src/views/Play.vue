@@ -101,7 +101,7 @@ import FloatingInput from "../components/FloatingInput.vue";
 import QRScanner from "../components/QRScanner.vue";
 import TopButtons from "../components/TopButtons.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
-import Form from "../components/Form.vue";
+import Form from "../components/FormExtended.vue";
 
 
 export default {
