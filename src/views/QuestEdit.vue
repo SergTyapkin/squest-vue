@@ -180,7 +180,7 @@ export default {
       this.helper = Boolean(questInfo.helper);
 
       this.questLink = this.$url + `/quest?uid=${this.uid}`;
-      this.$refs.qrGenerator.generate(this.questLink);
+      this.$refs.qrGenerator.regenerate(this.questLink);
       this.onChangeLink();
     },
 

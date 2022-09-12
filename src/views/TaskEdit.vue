@@ -18,7 +18,7 @@
 <template>
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'Назад', description: `К ветке: <b>${branchTitle}</b>` /* <br> Квеста: <b>${questTitle}</b>` */, to: `/quest/edit?id=${questId}`},
+        {name: 'Назад', description: `К ветке: <b>${branchTitle}</b>` /* <br> Квеста: <b>${questTitle}</b>` */, to: `/quest/branch/edit?id=${branchId}`},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -60,19 +60,19 @@
                        v-if="!isQrAnswer"
           ></AddableList>
 
-          <div class="roll-active" v-else>
+          <div class="roll-active" ref="qrFields" v-else>
             <label class="text-big">Правильный ответ <span id="qr-answer-error"></span></label>
             <div class="info text-small">
               Чтобы сделать ответом ЛЮБОЙ существующий QR, Просто отсканируй его ниже. <br>
               Либо, если такого QR ещё нет - можно сгенерировать новый QR ниже. <br>
               Игроку для прохождения этапа нужно будет отсканировать его через сканер внутри сайта на странице с вопросом
             </div>
-            <QRScanner closed></QRScanner>
-            <QRGenerator ref="qrGenerator"></QRGenerator>
+            <QRScanner ref="qrScanner" class="roll-active closed" @scan="genQr"></QRScanner>
+            <QRGenerator ref="qrGenerator" class="roll-active"></QRGenerator>
 
             <div class="flex-string">
-              <input type="button" value="Сканировать QR">
-              <input type="button" value="Создать QR">
+              <input type="button" value="Сканировать QR" @click="scanQr()">
+              <input type="button" value="Создать QR" @click="genQr()">
             </div>
           </div>
         </div>
@@ -99,6 +99,15 @@ import MarkdownRedactor from "../components/MarkdownRedactor.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import QRScanner from "../components/QRScanner.vue";
 import QRGenerator from "../components/QRGenerator.vue";
+import {closeRoll, openRoll} from "../utils/show-hide";
+
+
+export function generateUid(len) {
+  const arr = new Uint8Array((len || 40) / 2);
+  window.crypto.getRandomValues(arr);
+  return Array.from(arr, (dec) => dec.toString(16).padStart(2, "0")).join('');
+
+}
 
 export default {
   components: {QRGenerator, QRScanner, MarkdownRenderer, MarkdownRedactor, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
@@ -134,7 +143,7 @@ export default {
 
     await this.getTaskInfo();
     this.$refs.renderer.update(this.description);
-    this.$refs.qrGenerator.generate(this.answers[0]?.title);
+    this.$refs.qrGenerator.regenerate(this.answers[0]?.title);
   },
 
   methods: {
@@ -169,6 +178,7 @@ export default {
     },
 
     async saveTaskInfo() {
+      console.log(this.isQrAnswer)
       const answers = this.answers.map(answerObj => answerObj.title);
 
       this.$refs.form.loading = true;
@@ -203,6 +213,28 @@ export default {
 
     onChange() {
       this.edited = true;
+    },
+
+
+    scanQr() {
+      this.$refs.qrScanner.start();
+
+      closeRoll(this.$refs.qrGenerator.$el);
+      openRoll(this.$refs.qrScanner.$el);
+    },
+    genQr(link) {
+      openRoll(this.$refs.qrGenerator.$el);
+      closeRoll(this.$refs.qrScanner.$el);
+
+      this.$refs.qrScanner.stop();
+
+      if (!link)
+        link = `${this.$url}/found_qr?data=${generateUid(10)}`;
+      else
+        this.$popups.success("QR отсканирован", link);
+      this.answers = [{title: link}];
+
+      this.$refs.qrGenerator.regenerate(link);
     }
   },
 

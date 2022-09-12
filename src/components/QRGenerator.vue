@@ -6,8 +6,12 @@
 .qr-image
   width 100%
   max-height 400px
-.invert
+  transition filter 0.5s ease
+.qr-image.invert
   filter invert(1)
+
+.switch
+  display inline-block
 </style>
 
 <template>
@@ -16,8 +20,9 @@
     <div ref="qr" v-html="html" class="qr-image" :class="{invert}"></div>
     <label>Размер</label>
     <input type="range" min="1" max="3" step="1" v-model="size" @input="onInput">
+    <label>Белый</label>
+    <FloatingInput type="checkbox" v-model="invert" class="switch"></FloatingInput>
     <label>Черный</label>
-    <FloatingInput type="checkbox" v-model="invert"></FloatingInput>
   </div>
 </template>
 
@@ -31,7 +36,7 @@ export default {
 
   props: {
     text: String,
-    errorCorrectionLevel: {
+    size: {
       type: String,
       default: 'L',
     }
@@ -44,7 +49,7 @@ export default {
       text: this.$props.text,
 
       size: 0,
-      errorCorrectionLevel: this.$props.errorCorrectionLevel,
+      errorCorrectionLevel: this.$props.size,
       invert: false,
     };
   },
@@ -61,8 +66,6 @@ export default {
   methods: {
     create() {
       this._qr = new qrcode(0, this.errorCorrectionLevel);
-      if (this.text)
-        this.generate();
     },
     destroy() {
       delete this._qr;
@@ -70,17 +73,25 @@ export default {
     },
 
 
-    generate(text) {
+    regenerate(text) {
+      if (!this._qr)
+        this.create();
+
       if (text)
         this.text = text;
+      else if (!this.text)
+        this.text = '';
+
+      this.refresh();
       this._qr.addData(this.text);
       this._qr.make();
       this.html = this._qr.createSvgTag({});
     },
-
-    clear() {
-      this.html = '';
+    refresh() {
+      this.destroy();
+      this.create();
     },
+
 
     onInput() {
       if (this.size === '1')
@@ -89,8 +100,7 @@ export default {
         this.errorCorrectionLevel = 'M';
       else if (this.size === '3')
         this.errorCorrectionLevel = 'H';
-      this.destroy();
-      this.create();
+      this.regenerate();
     }
   }
 };

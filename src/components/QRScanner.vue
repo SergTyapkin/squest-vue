@@ -36,7 +36,7 @@ export default {
 
   mounted() {
     this._scanner = new QrScanner(this.$refs.video, (result) => {
-      this.$emit('scan', result);
+      this.$emit('scan', result.data);
     }, {highlightScanRegion: true});
   },
 
