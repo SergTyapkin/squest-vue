@@ -8,11 +8,18 @@
 .renderer
   display block
 
+.qr-gen
+  margin 10px 0
+
 .flex-string
   display flex
   justify-content space-between
   input[type=button]
     flex 0.45
+    padding 7px
+
+.save-button
+  margin-bottom 10px
 </style>
 
 <template>
@@ -46,6 +53,7 @@
         <FloatingInput type="checkbox"
                        title="QR-ответ"
                        v-model="isQrAnswer"
+                       @change="changeIsQrAnswer"
         >Ответом можно сделать <b>ЛЮБОЙ</b> QR-код вместо текстового ответа. Даже уже существующий и не твой
         </FloatingInput>
 
@@ -57,10 +65,11 @@
                        v-model="answers"
                        can-delete
                        placeholder="ответ"
-                       v-if="!isQrAnswer"
+                       class="roll-active"
+                       ref="answers"
           ></AddableList>
 
-          <div class="roll-active" ref="qrFields" v-else>
+          <div class="roll-active closed" ref="qrFields">
             <label class="text-big">Правильный ответ <span id="qr-answer-error"></span></label>
             <div class="info text-small">
               Чтобы сделать ответом ЛЮБОЙ существующий QR, Просто отсканируй его ниже. <br>
@@ -68,7 +77,7 @@
               Игроку для прохождения этапа нужно будет отсканировать его через сканер внутри сайта на странице с вопросом
             </div>
             <QRScanner ref="qrScanner" class="roll-active closed" @scan="genQr"></QRScanner>
-            <QRGenerator ref="qrGenerator" class="roll-active"></QRGenerator>
+            <QRGenerator ref="qrGenerator" class="roll-active qr-gen"></QRGenerator>
 
             <div class="flex-string">
               <input type="button" value="Сканировать QR" @click="scanQr()">
@@ -79,10 +88,7 @@
       </div>
 
       <div class="submit-container">
-        <input type="submit" value="Сохранить" @click="saveTask">
-      </div>
-
-      <div class="submit-container">
+        <input type="submit" value="Сохранить" class="save-button" @click="saveTask">
         <input type="submit" value="Удалить задание" @click="deleteTask">
       </div>
     </Form>
@@ -99,15 +105,9 @@ import MarkdownRedactor from "../components/MarkdownRedactor.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import QRScanner from "../components/QRScanner.vue";
 import QRGenerator from "../components/QRGenerator.vue";
-import {closeRoll, openRoll} from "../utils/show-hide";
+import {closeRoll, isClosedRoll, openRoll} from "../utils/show-hide";
+import {generateUid} from "../utils/utils";
 
-
-export function generateUid(len) {
-  const arr = new Uint8Array((len || 40) / 2);
-  window.crypto.getRandomValues(arr);
-  return Array.from(arr, (dec) => dec.toString(16).padStart(2, "0")).join('');
-
-}
 
 export default {
   components: {QRGenerator, QRScanner, MarkdownRenderer, MarkdownRedactor, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
@@ -124,6 +124,7 @@ export default {
       question: '',
       answers: [],
       isQrAnswer: false,
+      qrAnswer: '',
 
       // questTitle: '',
       branchTitle: '',
@@ -143,7 +144,8 @@ export default {
 
     await this.getTaskInfo();
     this.$refs.renderer.update(this.description);
-    this.$refs.qrGenerator.regenerate(this.answers[0]?.title);
+    this.$refs.qrGenerator?.regenerate(this.qrAnswer);
+    this.changeIsQrAnswer();
   },
 
   methods: {
@@ -169,6 +171,8 @@ export default {
       this.isQrAnswer = taskInfo.isqranswer;
 
       this.answers = taskInfo.answers.map(answer => { return {title: answer}; });
+      if (this.isQrAnswer)
+        this.qrAnswer = taskInfo.answers[0];
     },
 
 
@@ -178,7 +182,9 @@ export default {
     },
 
     async saveTaskInfo() {
-      console.log(this.isQrAnswer)
+      if (this.isQrAnswer)
+        this.answers = [{title: this.qrAnswer}];
+
       const answers = this.answers.map(answerObj => answerObj.title);
 
       this.$refs.form.loading = true;
@@ -208,23 +214,36 @@ export default {
       }
       this.$popups.success('Удалено', 'Задание удалено');
       window.onbeforeunload = null;
-      this.$router.push('/quests/my');
+      this.$router.push(`/quest/branch/edit?id=${this.branchId}`);
     },
 
     onChange() {
       this.edited = true;
     },
 
+    changeIsQrAnswer() {
+      if (this.isQrAnswer) {
+        openRoll(this.$refs.qrFields);
+        closeRoll(this.$refs.answers.$el);
+        return;
+      }
+      closeRoll(this.$refs.qrFields);
+      openRoll(this.$refs.answers.$el);
+    },
 
     scanQr() {
       this.$refs.qrScanner.start();
 
-      closeRoll(this.$refs.qrGenerator.$el);
-      openRoll(this.$refs.qrScanner.$el);
+      if (isClosedRoll(this.$refs.qrScanner.$el)) {
+        openRoll(this.$refs.qrScanner.$el);
+        closeRoll(this.$refs.qrGenerator.$el);
+      }
     },
     genQr(link) {
-      openRoll(this.$refs.qrGenerator.$el);
-      closeRoll(this.$refs.qrScanner.$el);
+      if (isClosedRoll(this.$refs.qrGenerator.$el)) {
+        openRoll(this.$refs.qrGenerator.$el);
+        closeRoll(this.$refs.qrScanner.$el);
+      }
 
       this.$refs.qrScanner.stop();
 
@@ -232,7 +251,7 @@ export default {
         link = `${this.$url}/found_qr?data=${generateUid(10)}`;
       else
         this.$popups.success("QR отсканирован", link);
-      this.answers = [{title: link}];
+      this.qrAnswer = link;
 
       this.$refs.qrGenerator.regenerate(link);
     }

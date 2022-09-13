@@ -22,6 +22,7 @@
 .quest-link
   padding-right 30px
   margin-left 20px
+  word-break break-all
 </style>
 
 <template>
@@ -80,7 +81,7 @@
 
           <div class="text-big roll-active closed link-fields" ref="linkFields">
             <span>Ссылка на квест:</span>
-            <a target="_blank" :href="questLink" class="quest-link">{{ questLink }}</a>
+            <a target="_blank" :href="questLink" class="quest-link text-middle link">{{ questLink }}</a>
             <span class="button rounded link-button" @click="copyLink">
                 <img src="../res/link_copy.svg" alt="copy" class="link-image">
             </span>
@@ -88,7 +89,7 @@
             <br>
 
             <span>Ссылка в виде QR:</span>
-            <QRGenerator class="qr" :text="questLink" ref="qrGenerator"></QRGenerator>
+            <QRGenerator class="qr" :text="questLink" ref="qrGenerator" no-text></QRGenerator>
           </div>
         </div>
       </div>

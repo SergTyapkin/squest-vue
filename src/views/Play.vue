@@ -148,14 +148,14 @@ export default {
         this.taskQuestion = res.question;
         this.isQrAnswer = res.isqranswer;
         this.isEnd = res.question === undefined;
-
-      } else if (res.status_ === 400) {
-        this.$router.push('/quests');
-        return;
-      } else {
-        this.$popups.error(`Ошибка ${res.status}!`, res.info);
         return;
       }
+      if (res.status_ === 400) {
+        this.$router.push('/quests');
+        return;
+      }
+
+      this.$popups.error(`Ошибка ${res.status}!`, res.info);
     },
 
     async checkQrAnswer(answer) {
@@ -163,19 +163,25 @@ export default {
         return;
       this.answerLink = answer;
 
-      if (await this.checkAnswer({answer: this.answerLink})) {
+      this.loading = true;
+      const res = await this.checkAnswer({answer: this.answerLink});
+      this.loading = false;
+      if (res) {
         this.$popups.success('Правильно', 'QR отсканирован');
         return;
       }
+
       this.$popups.error('Неверно', 'QR не тот');
     },
 
     async checkAnswer(values) {
       this.answer = values.answer.trim();
 
-      this.$refs.form.loading = true;
+      if (this.$refs.form)
+        this.$refs.form.loading = true;
       const res = await this.$api.checkAnswer(this.answer);
-      this.$refs.form.loading = false;
+      if (this.$refs.form)
+        this.$refs.form.loading = false;
 
       if (res.ok_) {
         this.$popups.success('Правильно');
@@ -183,7 +189,7 @@ export default {
         await this.update();
         return true;
       }
-      if (res.status_ === 418) {
+      if (res.status_ === 418 && this.$refs.form) {
         this.$refs.form.info = 'Ответ неверный';
         this.$refs.form.showError();
         return false;
@@ -213,7 +219,7 @@ export default {
       if (!this.$refs.qrScanner.active) {
         this.$refs.qrScanner.start();
         this.$refs.qrScanner.show();
-        this.qrScanButtonText = "Пока хватит";
+        this.qrScanButtonText = "Выключить сканер";
         return;
       }
       this.$refs.qrScanner.stop();

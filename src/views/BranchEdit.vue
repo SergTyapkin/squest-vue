@@ -212,7 +212,7 @@ export default {
       }
       this.$popups.success('Удалено', 'Ветка удалено');
       window.onbeforeunload = null;
-      this.$router.push('/quests/my');
+      this.$router.push(`/quest/edit?id=${this.questId}`);
     },
 
     onChange() {

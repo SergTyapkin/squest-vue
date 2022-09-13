@@ -1,28 +1,132 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
 
+
+slider-length = 300px
+slider-width = 13px
+thumb-size = 15px
+
 .qr-generator
-  max-width 400px
+  overflow hidden
+
 .qr-image
-  width 100%
+  width 400px
   max-height 400px
   transition filter 0.5s ease
+  box-shadow 0 0 5px colorShadow
 .qr-image.invert
   filter invert(1)
+  box-shadow 0 0 5px white
+.qr-image.blured
+  filter blur(10px)
+  overflow hidden
 
 .switch
   display inline-block
+
+.link
+  word-break break-all
+
+
+.flex-container
+  display flex
+  flex-wrap wrap
+
+.container-bg
+  background #00000044
+  box-shadow 0 0 10px colorShadow
+
+.switch-container
+  padding 10px 10px
+  padding-bottom 0
+  display flex
+  border-radius 0 0 10px 10px
+  width min-content
+  .switch
+    margin 0 10px
+.range-container
+  padding 10px
+  border-radius 0 10px 10px 0
+  width 100%
+  max-width 400px
+  .title
+    display block
+  .slider-container
+    display flex
+    flex-direction column
+    .slider
+      all unset
+      margin 10px
+      height slider-width
+      max-width slider-length
+      width calc(100% - 10px)
+      background: bgColor2;
+      outline: none;
+      border-radius: thumb-size;
+      overflow hidden
+      box-shadow: inset 0 0 5px empColor1;
+    .slider::-webkit-slider-thumb
+      -webkit-appearance none
+      width thumb-size
+      height thumb-size
+      border-radius 50%
+      background empColor2
+      cursor pointer
+      border 4px solid #333
+      box-shadow (- slider-length - 5px) 0 0 (slider-length) mix(empColor1, transparent, 30%)
+    .range-labels
+      max-width slider-length
+      width calc(100% - 10px)
+      display flex
+      flex-direction row
+      justify-content space-between
+
+@media (min-width: 560px)
+  .range-container
+    width 90px
+    .slider-container
+      display block
+      height slider-length
+      flex-direction row
+      .slider
+        transform rotate(-90deg) translateX(- slider-length + 3px)
+        transform-origin left
+        min-width slider-length
+      .range-labels
+        transform translate(slider-width + 10px, - slider-width - 10px)
+        flex-direction column-reverse
+        width unset
+        height slider-length
 </style>
 
 <template>
   <div class="qr-generator">
-    <div class="text-middle">Закодировано: {{ text }}</div>
-    <div ref="qr" v-html="html" class="qr-image" :class="{invert}"></div>
-    <label>Размер</label>
-    <input type="range" min="1" max="3" step="1" v-model="size" @input="onInput">
-    <label>Белый</label>
-    <FloatingInput type="checkbox" v-model="invert" class="switch"></FloatingInput>
-    <label>Черный</label>
+    <div v-if="!noText">
+      <div class="text-big">Закодировано:</div>
+      <div class="text-middle link">{{ text || '???' }}</div>
+    </div>
+
+    <div class="flex-container">
+      <div ref="qr" v-html="html" class="qr-image" :class="{invert, blured: !text}"></div>
+
+      <div class="range-container container-bg">
+        <label class="text-big title">Размер</label>
+        <div class="slider-container">
+          <input type="range" class="slider" min="1" max="3" step="1" v-model="size" @input="onInput">
+          <div class="range-labels text-small">
+            <div>Low</div>
+            <div>Mid</div>
+            <div>High</div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <div class="switch-container container-bg">
+      <label class="text-big">Белый</label>
+      <FloatingInput type="checkbox" v-model="invert" class="switch"></FloatingInput>
+      <label class="text-big">Черный</label>
+    </div>
   </div>
 </template>
 
@@ -35,10 +139,14 @@ export default {
   emits: ['scan'],
 
   props: {
-    text: String,
-    size: {
+    initialText: String,
+    errorCorrection: {
       type: String,
       default: 'L',
+    },
+    noText: {
+      type: Boolean,
+      default: false,
     }
   },
 
@@ -46,10 +154,10 @@ export default {
     return {
       _qr: null,
       html: '',
-      text: this.$props.text,
+      text: this.$props.initialText,
 
       size: 0,
-      errorCorrectionLevel: this.$props.size,
+      errorCorrectionLevel: this.$props.errorCorrection,
       invert: false,
     };
   },
@@ -77,7 +185,7 @@ export default {
       if (!this._qr)
         this.create();
 
-      if (text)
+      if (text !== undefined)
         this.text = text;
       else if (!this.text)
         this.text = '';

@@ -186,7 +186,7 @@ export default {
     global.$popups = this.$refs.popups;
 
     global.$user = this.$store.state.user;
-    global.$url = 'https://squest.herokuapp.com';
+    global.$url = 'https://sergtyapkin.herokuapp.com/squest';
   },
 };
 </script>

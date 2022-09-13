@@ -13,7 +13,7 @@ import {HtmlSanitizer} from "@jitbit/htmlsanitizer";
 
 export default {
   props: {
-    text: {
+    initialText: {
       type: String,
       default: '',
     },
@@ -22,7 +22,7 @@ export default {
   data() {
     return {
       html: '',
-      text: this.$props.text,
+      text: this.$props.initialText,
     }
   },
 
