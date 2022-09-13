@@ -1,7 +1,7 @@
 <style lang="stylus" scoped>
   @require '../../styles/constants.styl'
 
-  close-btn-size = 25px
+  close-btn-size = 20px
 
   .modal
     position fixed
@@ -18,8 +18,7 @@
       width 100%
       height 100vh
 
-      background-color colorShadowDark
-      cursor pointer
+      background-color #000000AA
 
     .form
       position relative
@@ -33,16 +32,17 @@
       .close-btn
         position absolute
         color textColor2
-        text-shadow textLightingNormal2
+        text-shadow textColor2
         right 20px
         top 10px
         width close-btn-size
         height close-btn-size
-        transition all 0.3s ease
+        transition all 0.2s ease
         cursor pointer
       .close-btn:hover
-        color clHighlight
-        text-shadow textLightingNormal1
+        color textColor1
+        text-shadow textColor1
+        transform scale(1.1)
 </style>
 <template>
   <div class="modal" v-show="isShowed" @keydown.enter.prevent="__resolve(true)" @keydown.esc="__resolve(false)">
@@ -55,8 +55,8 @@
       </span>
 
       <div class="info-container">
-        <div class="title">{{ title }}</div>
-        <div class="description">{{ description }}</div>
+        <div class="title text-big-x">{{ title }}</div>
+        <div class="description text-small">{{ description }}</div>
       </div>
 
       <div class="fields-container">
@@ -69,8 +69,8 @@
         <div class="form-group">
           <button @click="__resolve()" class="btn submit" v-if="type !== 'confirm'" ref="buttonOk">Ок</button>
           <div v-else class="confirm-buttons">
-            <button @click="__resolve(true)" class="confirm-button btn submit" ref="buttonYes">Да</button>
-            <button @click="__resolve(false)" class="confirm-button btn btn-danger">Нет</button>
+            <input type="submit" @click="__resolve(true)" class="confirm-button btn submit" ref="buttonYes" value="Да"/>
+            <input type="submit" @click="__resolve(false)" class="confirm-button btn btn-danger" value="Нет"/>
           </div>
         </div>
       </div>

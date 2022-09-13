@@ -22,6 +22,7 @@
     right indent
     width messageWidth
     z-index 1000
+    font-family Arial
     .popup-message
       box-sizing content-box
       overflow hidden

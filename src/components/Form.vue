@@ -84,15 +84,17 @@ input
     box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 15px rgb(255, 235, 164)
 
 
-.form-info
-  opacity 0
-  transition all 0.3s
+.form
+  .form-info
+    opacity 0
+    transition all 0.3s
 .form.error
 .form.success
   .form-info
     opacity 1
 
-.error
+.form.error
+.form .error
   color #ff8e72
   *
     color #ff8e72
@@ -101,7 +103,8 @@ input
   .input-like
     border-color #ff8e72
 //animation error 3s forwards
-.success
+.form.success
+.form .success
   color #c4ff72
   *
     color #c4ff72

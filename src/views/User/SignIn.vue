@@ -54,9 +54,9 @@ export default {
 
       if (response.ok_) {
         await this.$store.dispatch('GET_USER');
-        await this.$router.push('/profile');
-        this.$popups.success('Успешный вход!');
+        this.$popups.success('Прекрасно входит...', 'и замечательно выходит');
         this.$refs.form.errors = {};
+        this.$router.push('/profile');
         return;
       }
 
