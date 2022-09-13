@@ -15,6 +15,7 @@ import Quest from "/src/views/Quest.vue";
 import Play from "/src/views/Play.vue";
 import Ratings from "/src/views/Ratings.vue";
 import Admin from "/src/views/Admin.vue";
+import FoundQR from "/src/views/FoundQR.vue";
 
 export const BASE_URL_PATH = '';
 
@@ -40,6 +41,7 @@ export default function createVueRouter(Store) {
 
         {path: BASE_URL_PATH + '/ratings', component: Ratings},
         {path: BASE_URL_PATH + '/admin', component: Admin, meta: {loginRequired: true}},
+        {path: BASE_URL_PATH + '/qr/:data', component: FoundQR},
 
         {path: BASE_URL_PATH + '/:catchAll(.*)', component: Page404}
     ]

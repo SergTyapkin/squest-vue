@@ -12,26 +12,21 @@ textarea
 <template>
   <div>
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'В профиль', description: `Когда устранил весь кринж`, to: `/profile`},
+        {name: 'На главную', description: `Не стесняйся, проходи`, to: `/`},
     ]"></TopButtons>
 
-    <Form class="form-fullwidth" ref="form" @submit="execute">
+    <Form class="form-fullwidth" ref="form">
       <div class="info-container">
-        <div class="text-big-xx">Админская страничка</div>
+        <div class="text-big-xx">Ты нашёл QR!</div>
       </div>
 
       <CircleLoading v-if="loading"></CircleLoading>
 
-      <div class="fields-container">
-        <div id="sql-fields">
-          <label class="text-big">Выполнить SQL</label>
-          <div class="text-small">Вот сейчас спокойно, дыши, без DROP, DELETE и TRUNCATE, пожалуйста</div>
-          <textarea rows=8 class="text-middle scrollable" v-model="sql"></textarea>
-
-          <label class="text-big">Результат</label>
-          <textarea rows=4 class="text-middle scrollable" :value="result" disabled></textarea>
-          <input type="submit" value="Выполнить">
-        </div>
+      <div class="text-big">Но так низя(</div>
+      <div class="text-small">
+        Кажется, этот QR является ответом на один из вопросов какого-то квеста. <br>
+        Вот только чтобы он сработал, его нужно отсканировать не каким-то другим сканером, а сканером прямо со страницы с вопросом. <br>
+        Что ж, удачи) А если ты нашёл этот QR случайно, то жми на кнопку выше - там всё расскажут
       </div>
     </Form>
   </div>
