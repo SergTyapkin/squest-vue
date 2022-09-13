@@ -92,6 +92,10 @@
         <input type="submit" value="Удалить задание" @click="deleteTask">
       </div>
     </Form>
+
+    <FloatingButton v-if="edited" title="Сохранить" green @click="saveTask">
+      <img src="../res/save.svg" alt="save">
+    </FloatingButton>
   </div>
 </template>
 
@@ -105,12 +109,15 @@ import MarkdownRedactor from "../components/MarkdownRedactor.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import QRScanner from "../components/QRScanner.vue";
 import QRGenerator from "../components/QRGenerator.vue";
+import FloatingButton from "../components/FloatingButton.vue";
 import {closeRoll, isClosedRoll, openRoll} from "../utils/show-hide";
 import {generateUid} from "../utils/utils";
 
 
 export default {
-  components: {QRGenerator, QRScanner, MarkdownRenderer, MarkdownRedactor, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
+  components: {
+    FloatingButton,
+    QRGenerator, QRScanner, MarkdownRenderer, MarkdownRedactor, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
 
   data() {
     return {
@@ -179,6 +186,7 @@ export default {
     async saveTask() {
       await this.saveTaskInfo();
       window.onbeforeunload = null;
+      this.edited = false;
     },
 
     async saveTaskInfo() {
@@ -188,6 +196,7 @@ export default {
       const answers = this.answers.map(answerObj => answerObj.title);
 
       this.$refs.form.loading = true;
+      console.log(this.description)
       const newTaskInfo = await this.$api.updateTaskInfo(this.id, this.title, this.description, this.question, answers, this.isQrAnswer);
       this.$refs.form.loading = false;
 
@@ -248,7 +257,7 @@ export default {
       this.$refs.qrScanner.stop();
 
       if (!link)
-        link = `${this.$url}/found_qr?data=${generateUid(10)}`;
+        link = `${this.$url}/qr/${generateUid(8)}`;
       else
         this.$popups.success("QR отсканирован", link);
       this.qrAnswer = link;

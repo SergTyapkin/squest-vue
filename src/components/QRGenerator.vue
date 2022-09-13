@@ -20,6 +20,8 @@ thumb-size = 15px
 .qr-image.blured
   filter blur(10px)
   overflow hidden
+.qr-image.invert.blured
+  filter invert(1) blur(10px)
 
 .switch
   display inline-block

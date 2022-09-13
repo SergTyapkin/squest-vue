@@ -46,6 +46,9 @@ padding = 5px
     transform scale(1.1)
     opacity 1
 
+.float-button.green
+  background mix(colorYes, black, 70%)
+
 
 @media ({mobile})
   .float-button
@@ -53,13 +56,20 @@ padding = 5px
 </style>
 
 <template>
-  <div class="float-button text-middle">
-    <router-link class="fields" :to="to">
+  <div class="float-button text-middle" :class="{green}">
+    <router-link class="fields" :to="to" v-if="to">
       <span class="hover-text">{{ title }}</span>
       <span class="image">
         <slot></slot>
       </span>
     </router-link>
+
+    <div class="fields" v-else>
+      <span class="hover-text">{{ title }}</span>
+      <span class="image">
+        <slot></slot>
+      </span>
+    </div>
   </div>
 </template>
 
@@ -68,6 +78,7 @@ export default {
   props: {
     title: String,
     to: String,
+    green: Boolean,
   }
 };
 </script>

@@ -53,6 +53,10 @@
         <input type="submit" value="Удалить ветку" @click="deleteBranch">
       </div>
     </Form>
+
+    <FloatingButton v-if="edited" title="Сохранить" green @click="saveBranch">
+      <img src="../res/save.svg" alt="save">
+    </FloatingButton>
   </div>
 </template>
 
@@ -62,10 +66,11 @@ import CircleLoading from "../components/loaders/CircleLoading.vue";
 import Form from "../components/Form.vue";
 import FloatingInput from "../components/FloatingInput.vue";
 import AddableList from "../components/AddableList/AddableList.vue";
+import FloatingButton from "../components/FloatingButton.vue";
 import {deepClone} from "../utils/utils";
 
 export default {
-  components: {AddableList, FloatingInput, Form, CircleLoading, TopButtons},
+  components: {FloatingButton, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
 
   data() {
     return {
@@ -139,6 +144,7 @@ export default {
       await this.saveBranchInfo();
       await this.saveTasks();
       window.onbeforeunload = null;
+      this.edited = false;
     },
 
     async saveBranchInfo() {

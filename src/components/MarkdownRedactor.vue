@@ -80,48 +80,11 @@ markdown-button-svg-photo-fill = transparent
     text-decoration underline
   > div._strikethrough
     text-decoration line-through
-
-
-// Decoration for html tags inside messages
-code-decoration-background = bgColor2
-code-decoration-border-radius = 2px
-blockquote-decoration-color = bgColor2
-blockquote-decoration-width = 2px
-blockquote-decoration-margin = 5px 0
-blockquote-decoration-padding = 0 0 0 10px
-blockquote-decoration-offset = 25px
-list-decoration-margin = 5px 0
-list-decoration-offset = 40px
-list-decoration-color = bgColor2
-p-decoration-margin = 3px 0
-img-decoration-margin = 0
-
-code
-  font-family monospace
-  background code-decoration-background
-  border-radius code-decoration-border-radius
-blockquote
-  border-left blockquote-decoration-width blockquote-decoration-color solid
-  margin blockquote-decoration-margin
-  padding blockquote-decoration-padding
-  margin-inline-start blockquote-decoration-offset
-ul
-  list-style-type disc
-  margin list-decoration-margin
-  padding-inline-start list-decoration-offset
-  li::marker
-    color list-decoration-color
-
-p
-  margin p-decoration-margin
-img
-  max-width 100%
-  margin img-decoration-margin
 </style>
 
 <template>
   <div class="markdown" @change.stop="" @input="onInput">
-    <textarea class="markdowned scrollable link" ref="textarea" rows="5" v-model="modelValue" @input="updateVModel"></textarea>
+    <textarea class="markdowned scrollable link" ref="textarea" rows="5" v-model="modelValue" @input="updateVModel()"></textarea>
     <div class="markdown-panel">
       <div class="_bold" @click="encaseInputText('**', '**')">B</div>
       <div class="_italic" @click="encaseInputText(' _', '_ ')">I</div>
@@ -154,7 +117,6 @@ export default {
 
   data() {
     return {
-      text: '',
       attachedImages: [],
       lastInputTime: Date.now(),
       timeout: null,
@@ -164,8 +126,11 @@ export default {
   },
 
   methods: {
-    updateVModel() {
-      this.$emit('update:modelValue', this.modelValue);
+    updateVModel(text) {
+      console.log(text, this.modelValue)
+      const textSend = text || this.modelValue;
+      this.$emit('input', textSend);
+      this.$emit('update:modelValue', textSend);
     },
 
     /**
@@ -175,17 +140,19 @@ export default {
      * @param rightText - text to add on left side
      */
     encaseInputText(leftText, rightText = '') {
+      let text = this.modelValue;
       const element = this.$refs.textarea;
       const start = element.selectionStart;
       const end = element.selectionEnd;
       if (start === end) {
         return;
       }
-      const selected = leftText + this.modelValue.substring(start, end) + rightText;
-      this.modelValue = this.modelValue.substring(0, start) + selected + this.modelValue.substring(end);
+      const selected = leftText + text.substring(start, end) + rightText;
+      text = text.substring(0, start) + selected + text.substring(end);
       element.focus();
-      this.$emit('input');
-      this.onInput(true);
+
+      this.updateVModel(text)
+      this.onInput();
     },
 
     /**
@@ -195,28 +162,31 @@ export default {
      * @param rightText - text to add on end of line
      */
     encaseInputLines(leftText, rightText = '') {
+      let text = this.modelValue;
       const element = this.$refs.textarea;
       let start = element.selectionStart;
       let end = element.selectionEnd;
       console.log(start, end)
-      start = this.modelValue.substring(0, start).lastIndexOf('\n') + 1;
+      start = text.substring(0, start).lastIndexOf('\n') + 1;
       if (start === -1) {
         start = 0;
       }
-      const addToEndLength = this.modelValue.substring(end).indexOf('\n');
+      const addToEndLength = text.substring(end).indexOf('\n');
       if (addToEndLength === -1) {
-        end = this.modelValue.length;
+        end = text.length;
       } else {
         end += addToEndLength;
       }
-      const selected = leftText + this.modelValue.substring(start, end).replaceAll(/\n/g, rightText + '\n' + leftText) + rightText;
-      this.modelValue = this.modelValue.substring(0, start) + selected + this.modelValue.substring(end);
+      const selected = leftText + text.substring(start, end).replaceAll(/\n/g, rightText + '\n' + leftText) + rightText;
+      text = text.substring(0, start) + selected + text.substring(end);
       element.focus();
-      this.$emit('input');
-      this.onInput(true);
+
+      this.updateVModel(text)
+      this.onInput();
     },
 
     async attachLink() {
+      let text = this.modelValue;
       const element = this.$refs.textarea;
       const link = await this.$modal.prompt('Введите адрес ссылки');
       if (!link) {
@@ -225,15 +195,17 @@ export default {
       const end = element.selectionEnd ? element.selectionEnd : 0;
       const name = await this.$modal.prompt('Теперь придумайте ей замещающий текст (необязательно)');
       if (!name) {
-        this.modelValue = this.modelValue.substring(0, end) + ' ' + link + ' ' + this.modelValue.substring(end);
+        text = text.substring(0, end) + ' ' + link + ' ' + text.substring(end);
         return;
       }
-      this.modelValue = this.modelValue.substring(0, end) + `[${name}](${link})` + this.modelValue.substring(end);
-      this.$emit('input');
-      this.onInput(true);
+      text = text.substring(0, end) + `[${name}](${link})` + text.substring(end);
+
+      this.updateVModel(text)
+      this.onInput();
     },
 
     async attachPhoto() {
+      let text = this.modelValue;
       const element = this.$refs.textarea;
       let dataURL;
       try {
@@ -258,20 +230,19 @@ export default {
       }
       this.$popups.success('Загружено', 'Картинка загружена');
 
-      this.modelValue = this.modelValue.substring(0, end) + '![image](' + this.$api.apiUrl + '/image/' + response.id + ')' + element.value.substring(end);
-      this.$emit('input');
-      this.onInput(true);
+      text = text.substring(0, end) + '![image](' + this.$api.apiUrl + '/image/' + response.id + ')' + element.value.substring(end);
+
+      this.updateVModel(text)
+      this.onInput();
     },
 
-    onInput(e) {
+    onInput() {
       this.changedFromEmit = true;
 
       if (this.stopEmitting)
         return;
       this.stopEmitting = true;
 
-      if (e)
-        this.emitChange();
 
       this.timeout = setTimeout(() => {
         if (this.changedFromEmit) {

@@ -102,6 +102,10 @@
         <input type="submit" value="Удалить квест" @click="deleteQuest">
       </div>
     </Form>
+
+    <FloatingButton v-if="edited" title="Сохранить" green @click="saveQuest">
+      <img src="../res/save.svg" alt="save">
+    </FloatingButton>
   </div>
 </template>
 
@@ -112,11 +116,12 @@ import Form from "../components/Form.vue";
 import FloatingInput from "../components/FloatingInput.vue";
 import AddableList from "../components/AddableList/AddableList.vue";
 import QRGenerator from "../components/QRGenerator.vue";
+import FloatingButton from "../components/FloatingButton.vue";
 import {closeRoll, openRoll} from "../utils/show-hide";
 import {deepClone} from "../utils/utils";
 
 export default {
-  components: {QRGenerator, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
+  components: {FloatingButton, QRGenerator, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
 
   data() {
     return {
@@ -144,6 +149,8 @@ export default {
       played: '',
       uid: '',
       helper: false,
+
+      edited: false,
     }
   },
 
@@ -243,6 +250,7 @@ export default {
       await this.saveBranches();
       await this.saveHelpers();
       window.onbeforeunload = null;
+      this.edited = false;
     },
 
     async saveQuestInfo() {
