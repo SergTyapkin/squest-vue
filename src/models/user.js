@@ -13,14 +13,16 @@ export default class User extends Model {
     username: "",
     password: "",
     rating: 0,
-    ratingPosition: 0,
-    chosenQuestId: '?',
-    chosenQuest: '',
-    chosenBranchId: '?',
-    chosenBranch: '',
+    position: 0,
+    chosenquestid: '?',
+    chosenquest: '',
+    chosenbranchId: '?',
+    chosenbranch: '',
     progress: 0,
     progressMax: 0,
-    avatarUrl: '',
+    avatarurl: '',
+    createdquests: 0,
+    completedbranches: 0,
   }
 
   set(data) {

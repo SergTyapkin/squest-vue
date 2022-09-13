@@ -34,7 +34,10 @@
     <Form class="form-fullwidth" ref="form">
       <div class="info-container">
         <div class="text-big-xx">Изменить квест</div>
-        <div class="text-middle" v-if="helper">Вы - соавтор квеста, а не создатель, потому некоторые возможности вам недоступны</div>
+        <div class="text-middle" v-if="helper">
+          Автор: <b>{{ authorName }}</b> <br>
+          Вы - соавтор квеста, некоторые возможности вам недоступны
+        </div>
       </div>
 
       <div class="fields-container">
@@ -150,16 +153,17 @@ export default {
     }
   },
 
-  mounted() {
+  async mounted() {
     if (this.id === undefined) {
       this.$popups.error("Ошибка", "id квеста не задано");
       this.$router.push('/quests/my')
       return;
     }
 
-    this.getQuestInfo();
+    await this.getQuestInfo();
     this.getBranches();
-    this.getHelpers();
+    if (!this.helper)
+      this.getHelpers();
   },
 
   methods: {
@@ -177,6 +181,7 @@ export default {
       this.ispublished = questInfo.ispublished;
       this.islinkactive = questInfo.islinkactive;
       this.author = questInfo.author;
+      this.authorName = questInfo.authorname;
       this.previewUrl = questInfo.previewUrl;
       this.uid = questInfo.uid;
       this.helper = Boolean(questInfo.helper);
@@ -210,7 +215,7 @@ export default {
       this.helpersLoading = false;
 
       if (!helpers.ok_) {
-        this.$popups.error("Ошибка", "Не удалось получить ветки квесте");
+        this.$popups.error("Ошибка", "Не удалось получить соавторов квеста");
         return;
       }
       this.helpers = helpers.helpers;

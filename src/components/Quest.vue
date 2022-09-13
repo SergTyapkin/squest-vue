@@ -63,15 +63,16 @@ plate-max-width = 400px
 
     .statistics
       display flex
-      margin 10px 0
+      margin-top 15px
+      margin-bottom 15px
       .rating
       .time
         display flex
         align-items center
-        font-size 20px
+        font-size 15px
         margin-right 20px
         img
-          width 45px
+          width 30px
       .rating.good
         color colorYes
       .rating.bad
@@ -105,6 +106,19 @@ plate-max-width = 400px
 .container
   *
     z-index 2
+
+.author-fields
+  display flex
+  align-items center
+  img
+    height 17px
+    margin-right 3px
+  span
+    transition all 0.3s ease
+    color textColor3
+.author-fields:hover
+  span
+    color textColor1
 </style>
 
 <template>
@@ -115,7 +129,7 @@ plate-max-width = 400px
 
     <div class="container" :class="{inactive: branchesOpened}">
       <div class="main-info">
-        <router-link :to="`/quest/edit?id=${id}`" v-if="$user.id === author" class="edit">
+        <router-link :to="`/quest/edit?id=${id}`" v-if="canedit" class="edit">
           <img src="../res/edit.svg" alt="edit">
         </router-link>
 
@@ -133,7 +147,10 @@ plate-max-width = 400px
             <img src="../res/time.svg" alt="time">{{time}}{{timeUnits}}
           </span>
         </div>
-        <div class="text-small">{{authorName}}</div>
+        <router-link :to="`/profile?id=${author}`" class="link text-small author-fields">
+          <img src="../res/profile.svg" alt="">
+          <span>{{authorname}}</span>
+        </router-link>
       </div>
 
       <CircleLoading v-if="loading"></CircleLoading>
@@ -161,9 +178,10 @@ export default {
     time: Number,
     previewUrl: String,
     author: String,
-    authorName: String,
+    authorname: String,
     islinkactive: Boolean,
     ispublished: Boolean,
+    canedit: Boolean
   },
 
   data() {

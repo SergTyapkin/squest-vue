@@ -127,7 +127,6 @@ export default {
 
   methods: {
     updateVModel(text) {
-      console.log(text, this.modelValue)
       const textSend = text || this.modelValue;
       this.$emit('input', textSend);
       this.$emit('update:modelValue', textSend);
@@ -166,7 +165,6 @@ export default {
       const element = this.$refs.textarea;
       let start = element.selectionStart;
       let end = element.selectionEnd;
-      console.log(start, end)
       start = text.substring(0, start).lastIndexOf('\n') + 1;
       if (start === -1) {
         start = 0;

@@ -11,6 +11,7 @@ export class Api extends ApiRequest {
     signIn = (username, password) => this.post(`/user/auth`, {username, password});
     signOut = () => this.delete(`/user/session`);
     getUser = () => this.get(`/user`);
+    getUserInfo = (id) => this.get(`/user`, {id})
     signUp = (username, password, email, name) => this.post(`/user`, {username, password, email, name});
     updateUser = (email, username, name) => this.put(`/user`, {email, username, name});
     updatePassword = (oldPassword, newPassword) => this.put(`/user/password`, {oldPassword, newPassword});
@@ -49,4 +50,6 @@ export class Api extends ApiRequest {
     getQuestHelpers = (questId) => this.get('/quest/helpers', {questId});
 
     uploadImage = (dataUrl) => this.post('/image', {dataUrl});
+
+    getRatings = () => this.get('/ratings');
 }

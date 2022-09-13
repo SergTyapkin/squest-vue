@@ -19,10 +19,10 @@ const Store = new Vuex.Store({
       if (u.ok_)
         state.commit('SET_USER', {
           avatarUrl: u.avatarurl,
-          chosenBranchId: u.chosenbranchid,
-          chosenBranch: u.chosenbranch,
-          chosenQuestId: u.chosenquestid,
-          chosenQuest: u.chosenquest,
+          chosenbranchid: u.chosenbranchid,
+          chosenbranch: u.chosenbranch,
+          chosenbuestid: u.chosenquestid,
+          chosenquest: u.chosenquest,
           email: u.email,
           id: u.id,
           isAdmin: u.isadmin,
@@ -30,6 +30,10 @@ const Store = new Vuex.Store({
           joinedDate: u.joineddate,
           name: u.name,
           username: u.username,
+          position: u.position,
+          rating: u.rating,
+          createdquests: u.createdquests,
+          completedbranches: u.completedbranches,
         });
       else
         state.commit('DELETE_USER');

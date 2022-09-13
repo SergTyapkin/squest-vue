@@ -196,7 +196,6 @@ export default {
       const answers = this.answers.map(answerObj => answerObj.title);
 
       this.$refs.form.loading = true;
-      console.log(this.description)
       const newTaskInfo = await this.$api.updateTaskInfo(this.id, this.title, this.description, this.question, answers, this.isQrAnswer);
       this.$refs.form.loading = false;
 

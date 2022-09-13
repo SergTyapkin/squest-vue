@@ -23,7 +23,7 @@ hr
   box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.7), 0 0 15px 0 rgba(34, 28, 4, 0.4) inset
 
   .info-container
-    > *
+    .top-container
       display flex
       justify-content space-between
       align-items flex-end
@@ -33,6 +33,14 @@ hr
     .position
       flex 1
       font-size 30px
+    //  .info
+    //    overflow hidden
+    //    max-height 0
+    //    transition all 0.3s ease
+    //.rating:hover
+    //.position:hover
+    //  .info
+    //    max-height 20px
     .avatar
       width 80px
       height 80px
@@ -47,13 +55,18 @@ hr
       transition all 0.2s ease
       padding 5px
       padding-top 2px
+      text-align center
+      width 100%
     .username:focus
       box-shadow input-box-shadow
 
   .quest-statistics
+    padding 10px
+    background #00000033
     .quest
-      height 40px
-      line-height 40px
+      height 30px
+      line-height 30px
+
 
 
 input[type=submit]
@@ -86,40 +99,59 @@ input[type=submit]:hover
 
 .fields-container
   margin-top 30px
+
+.another-user-info
+  margin-top 5px
+
+.now-playing
+  margin-top 5px
 </style>
 
 <template>
   <div>
     <div class="profile-page">
-      <TopButtons arrows clickable :buttons="[
-          {name: 'В игру', to: '/play'},
-          {name: 'Мои квесты', to: '/quests/my'},
-          {name: 'Рейтинг', to: '/ratings'},
-      ]"></TopButtons>
+      <TopButtons arrows clickable :buttons="buttons"></TopButtons>
 
       <div class="profile-plate">
         <div>
           <div class="info-container">
-            <div>
-              <span class="rating">★ {{ $user.rating }}</span>
-              <img class="avatar" src="../../res/default_avatar.png" alt="avatar">
-              <span class="position"># {{ $user.ratingPosition }}</span>
+            <div class="top-container">
+              <div class="rating">
+                <div>★ {{ user.rating }}</div>
+                <div class="info text-small-x">рейтинг</div>
+              </div>
+
+              <CircleLoading v-if="loading"></CircleLoading>
+              <img v-else class="avatar" src="../../res/default_avatar.png" alt="avatar">
+
+              <div class="position">
+                <div># {{ user.position }}</div>
+                <div class="info text-small-x">позиция</div>
+              </div>
             </div>
-            <input class="username text-big" v-model="username">
+            <input v-if="yours" class="username text-big" v-model="username">
+            <div v-else class="username text-big">
+              <div>{{username}}</div>
+              <div class="text-small another-user-info">{{ user.name }}</div>
+            </div>
           </div>
 
           <hr>
 
           <div class="quest-statistics text-middle">
-            <div class="quest">Пройдено квестов: {{ finishedQuests }}</div>
-            <div class="quest">Создано квестов: {{ createdQuests }}</div>
+            <div class="quest">Пройдено веток: {{ user.completedbranches }}</div>
+            <router-link class="quest link" :to="`/quests?userId=${user.id}`">Создано квестов: {{ user.createdquests }}</router-link>
           </div>
 
           <hr>
 
-          <span class="text-small" v-if="$user.chosenQuest && $user.chosenBranch">Сейчас играет в: {{ $user.chosenQuest }} - {{ $user.chosenBranch }}</span>
+          <div class="now-playing text-small link" v-if="user.chosenquest && user.chosenbranch">
+            Сейчас играет в: <br>
+            Квест: <router-link :to="`/quest?id=${user.chosenquestid}`">{{ user.chosenquest }}</router-link> <br>
+            Ветка: <router-link :to="`/quest?id=${user.chosenquestid}`">{{ user.chosenbranch }}</router-link>
+          </div>
 
-          <Form ref="form" no-bg
+          <Form v-if="yours" ref="form" no-bg
                 :fields="[
                   { title: 'ТВОЁ ИМЯ', jsonName: 'name' },
                   { title: 'ТВОЙ E-mail', jsonName: 'email', type: 'email'},
@@ -129,7 +161,7 @@ input[type=submit]:hover
           ></Form>
         </div>
 
-        <div ref="passwordFormContainer" class="roll-active closed">
+        <div v-if="yours" ref="passwordFormContainer" class="roll-active closed">
           <Form ref="passwordForm" no-bg no-submit
                 :fields="[
                     { title: 'Старый пароль', jsonName: 'oldPassword', type: 'password'},
@@ -140,11 +172,11 @@ input[type=submit]:hover
                 @submit="changePassword"
           ></Form>
         </div>
-        <div id="" class="submit-container" @click.prevent="clickOnChangePassword">
+        <div v-if="yours" class="submit-container" @click.prevent="clickOnChangePassword">
           <input type="submit" value="Сменить пароль">
         </div>
 
-        <button class="text-middle button bg outline rounded logout" @click="logOut">Выйти</button>
+        <button v-if="yours" class="text-middle button bg outline rounded logout" @click="logOut">Выйти</button>
       </div>
 
       <router-link to="/admin" class="text-big-x button rounded outline centered-horizontal hidden">На админскую</router-link>
@@ -159,21 +191,53 @@ import Form from "/src/components/FormExtended.vue";
 import FloatingInput from "../../components/FloatingInput.vue";
 import {isClosedRoll, openRoll} from "../../utils/show-hide";
 import TopButtons from "../../components/TopButtons.vue";
+import CircleLoading from "../../components/loaders/CircleLoading.vue";
+import {nextTick} from "vue";
 
 export default {
-  components: {TopButtons, FloatingInput, TopBar, Form},
+  components: {CircleLoading, TopButtons, FloatingInput, TopBar, Form},
+
   data() {
     return {
       username: '',
+
+      id: this.$route.query.id,
+      yours: this.$route.query.id === undefined,
+
+      user: {},
+      loading: false,
+
+      buttons: [],
     }
   },
 
-  async mounted() {
-    this.$refs.form.values = this.$user;
-    this.username = this.$user.username;
+  mounted() {
+    this.init();
   },
 
   methods: {
+    async init() {
+      if (this.yours) {
+        this.$refs.form.values = this.$user;
+        this.username = this.$user.username;
+        this.user = this.$user;
+
+        this.buttons = [
+          {name: 'В игру', to: '/play'},
+          {name: 'Мои квесты', to: '/quests/my'},
+          {name: 'Рейтинги', to: '/ratings'},
+        ];
+        return;
+      }
+
+      await this.getAnotherUser();
+      this.username = this.user.username;
+      this.buttons = [
+        {name: 'Рейтинги', to: '/ratings'},
+      ];
+    },
+
+
     validate(username, name, email) {
       let ok = true;
       if (username.length === 0) {
@@ -258,6 +322,34 @@ export default {
       this.$user.setDefault();
       await this.$router.push('/');
     },
+
+    async getAnotherUser() {
+      this.loading = true;
+      const user = await this.$api.getUserInfo(this.id);
+      this.loading = false;
+
+      if (!user.ok_) {
+        this.$popups.error("Ошибка", "Не удалось получить информацио о пользователе");
+        return;
+      }
+
+      this.user = user;
+    }
+  },
+
+  watch: {
+    '$route.query.id': {
+      handler: async function (to, from) {
+        if (this.$route.path !== '/profile') // go to another page
+          return;
+
+        this.id = to;
+        this.yours = this.id === undefined
+        await nextTick();
+        await this.init();
+      },
+      deep: true,
+    }
   }
 }
 </script>
