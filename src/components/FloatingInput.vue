@@ -253,7 +253,7 @@ input
 <template>
   <div :class="{error: error?.length}" class="floating-input-fields">
     <span class="error-text">{{ error }}</span>
-    <input ref="input" :type="type" :autocomplete="autocomplete" placeholder=" " @input="updateVModel" :value="modelValue" :checked="this.modelValue"
+    <input ref="input" :type="type" :autocomplete="autocomplete" placeholder=" " @input="updateVModel" :value="modelValue" :checked="this.modelValue" :disabled="disabled"
       :class="{
         left: textAlign === 'left',
         right: textAlign === 'right',
@@ -282,6 +282,7 @@ export default {
     textAlign: {
       default: "center"
     },
+    disabled: Boolean,
     info: String,
 
     modelValue: null,

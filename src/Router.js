@@ -8,6 +8,7 @@ import About from "/src/views/About.vue";
 import Quests from "/src/views/Quests.vue";
 import MyQuests from "/src/views/MyQuests.vue";
 import QuestEdit from "/src/views/QuestEdit.vue";
+import QuestCreate from "/src/views/QuestCreate.vue";
 import BranchEdit from "/src/views/BranchEdit.vue";
 import TaskEdit from "/src/views/TaskEdit.vue";
 import Quest from "/src/views/Quest.vue";
@@ -27,7 +28,8 @@ export default function createVueRouter(Store) {
 
         {path: BASE_URL_PATH + '/quests', component: Quests},
         {path: BASE_URL_PATH + '/quests/my', component: MyQuests, meta: {loginRequired: true}},
-        {path: BASE_URL_PATH + '/quests/create', component: Quests, meta: {loginRequired: true}},
+
+        {path: BASE_URL_PATH + '/quest/create', component: QuestCreate, meta: {loginRequired: true}},
 
         {path: BASE_URL_PATH + '/quest', component: Quest},
         {path: BASE_URL_PATH + '/quest/edit', component: QuestEdit, meta: {loginRequired: true}},

@@ -55,7 +55,8 @@
     </Form>
 
     <FloatingButton v-if="edited" title="Сохранить" green @click="saveBranch">
-      <img src="../res/save.svg" alt="save">
+      <CircleLoading v-if="loading"></CircleLoading>
+      <img v-else src="../res/save.svg" alt="save">
     </FloatingButton>
   </div>
 </template>

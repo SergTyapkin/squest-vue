@@ -20,6 +20,7 @@ export class Api extends ApiRequest {
     getMyQuests = (userId) => this.get(`/quest`, {userId});
     getQuestInfo = (questId) => this.get(`/quest`, {questId});
 
+    createQuest = (title, description, isPublished) => this.post(`/quest`, {title, description, isPublished});
     updateQuestInfo = (id, title, description, isPublished, isLinkActive) => this.put(`/quest`, {id, title, description, isPublished, isLinkActive});
     getQuestInfoByUid = (questUid) => this.get(`/quest`, {questUid});
     deleteQuest = (id) => this.delete(`/quest`, {id});

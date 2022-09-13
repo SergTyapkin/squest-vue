@@ -190,6 +190,16 @@ export default {
       this.loading = false;
 
       if (!questInfo.ok_) {
+        if (questInfo.status_ === 404) {
+          this.$popups.error("Ошибка", "Квест не найден");
+          this.$router.push('/quests')
+          return;
+        }
+        if (questInfo.status_ === 403) {
+          this.$popups.error("Ошибка", "Доступ к квесту запрещён");
+          this.$router.push('/quests')
+          return;
+        }
         this.$popups.error("Ошибка", "Не удалось получить информацио о квесте");
         return;
       }

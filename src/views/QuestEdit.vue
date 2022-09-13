@@ -129,7 +129,6 @@ export default {
       prevHelpers: [],
       branches: [],
       helpers: [],
-      timeUnits: 'мин',
       id: this.$route.query.id,
 
       loading: false,
@@ -139,14 +138,11 @@ export default {
 
       title: '',
       description: '',
-      rating: '',
-      time: '',
       previewUrl: '',
       author: '',
       authorName: '',
       islinkactive: false,
       ispublished: false,
-      played: '',
       uid: '',
       helper: false,
 
@@ -182,8 +178,6 @@ export default {
       this.islinkactive = questInfo.islinkactive;
       this.author = questInfo.author;
       this.previewUrl = questInfo.previewUrl;
-      this.time = questInfo.time;
-      this.rating = questInfo.rating;
       this.uid = questInfo.uid;
       this.helper = Boolean(questInfo.helper);
 
