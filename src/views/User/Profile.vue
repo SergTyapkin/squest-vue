@@ -105,6 +105,12 @@ input[type=submit]:hover
 
 .now-playing
   margin-top 5px
+
+.admin-button
+  margin 30px auto
+  width 30%
+  min-width 300px
+  display block
 </style>
 
 <template>
@@ -179,7 +185,7 @@ input[type=submit]:hover
         <button v-if="yours" class="text-middle button bg outline rounded logout" @click="logOut">Выйти</button>
       </div>
 
-      <router-link to="/admin" class="text-big-x button rounded outline centered-horizontal hidden">На админскую</router-link>
+      <router-link v-if="yours && user.isAdmin" to="/admin" class="admin-button text-big-x button rounded outline">На админскую</router-link>
     </div>
   </div>
 </template>

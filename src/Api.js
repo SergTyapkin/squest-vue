@@ -52,4 +52,6 @@ export class Api extends ApiRequest {
     uploadImage = (dataUrl) => this.post('/image', {dataUrl});
 
     getRatings = () => this.get('/ratings');
+
+    executeAdminSql = (sql) => this.post('/admin/sql', {sql});
 }

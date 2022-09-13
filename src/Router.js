@@ -14,6 +14,7 @@ import TaskEdit from "/src/views/TaskEdit.vue";
 import Quest from "/src/views/Quest.vue";
 import Play from "/src/views/Play.vue";
 import Ratings from "/src/views/Ratings.vue";
+import Admin from "/src/views/Admin.vue";
 
 export const BASE_URL_PATH = '';
 
@@ -38,6 +39,7 @@ export default function createVueRouter(Store) {
         {path: BASE_URL_PATH + '/quest/branch/task/edit', component: TaskEdit, meta: {loginRequired: true}},
 
         {path: BASE_URL_PATH + '/ratings', component: Ratings},
+        {path: BASE_URL_PATH + '/admin', component: Admin, meta: {loginRequired: true}},
 
         {path: BASE_URL_PATH + '/:catchAll(.*)', component: Page404}
     ]
