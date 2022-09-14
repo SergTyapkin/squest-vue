@@ -16,7 +16,7 @@ export default class User extends Model {
     position: 0,
     chosenquestid: '?',
     chosenquest: '',
-    chosenbranchId: '?',
+    chosenbranchid: '?',
     chosenbranch: '',
     progress: 0,
     progressMax: 0,

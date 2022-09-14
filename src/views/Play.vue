@@ -205,7 +205,7 @@ export default {
 
       if (await this.$modal.confirm("Точно начинаем заново?", "Рейтинг останется")) {
         this.loading = true;
-        const res = await this.$api.restartBranch(this.$user.chosenBranchId);
+        const res = await this.$api.restartBranch(this.$user.chosenbranchid);
         this.loading = false;
         if (!res.ok_) {
           this.$popups.error("Ошибка", "Не удалось начать заново");

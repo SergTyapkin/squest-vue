@@ -16,6 +16,7 @@ const Store = new Vuex.Store({
   actions: {
     async GET_USER(state) {
       const u = await this.$app.$api.getUser();
+      const p = await this.$app.$api.getPlay();
       if (u.ok_)
         state.commit('SET_USER', {
           avatarUrl: u.avatarurl,
@@ -34,6 +35,8 @@ const Store = new Vuex.Store({
           rating: u.rating,
           createdquests: u.createdquests,
           completedbranches: u.completedbranches,
+          progress: p.progress,
+          progressMax: p.length,
         });
       else
         state.commit('DELETE_USER');

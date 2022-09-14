@@ -134,10 +134,22 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 <template>
   <div class="navbar absolute-wrapper">
     <div class="center text-lighting progress">
-      <span v-if="$store.state.user.isLogined">{{$store.state.user.progress}}</span>
+      <vue3autocounter
+          v-if="$store.state.user.isLogined"
+          ref='counter'
+          :startAmount='prevProgress'
+          :endAmount='newProgress'
+          :duration='2'
+          prefix=''
+          suffix='%'
+          separator=''
+          decimalSeparator=','
+          :decimals='1'
+          autoinit
+      ></vue3autocounter>
       <span v-else>SQuest</span>
     </div>
-    <div class="progressbar" :style="`--progress: ${$store.state.user.progressMax / $store.state.user.progress}`"></div>
+    <div class="progressbar" :style="`--progress: ${newProgress / 100}`"></div>
     <router-link to="/quests" class="left side-item opacity-in delayedBig">Квесты</router-link>
     <router-link to="/profile" class="right side-item opacity-in delayedBig">
       <span>
@@ -150,6 +162,38 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 </template>
 
 <script>
+import Vue3autocounter from 'vue3-autocounter';
+
 export default {
+  components: {Vue3autocounter},
+
+  data() {
+    return {
+      prevProgress: 0,
+      newProgress: 0,
+    };
+  },
+
+  methods: {
+    updateProgress() {
+      this.prevProgress = this.newProgress;
+      this.newProgress = this.$store.state.user.progress / this.$store.state.user.progressMax * 100;
+    }
+  },
+
+  watch: {
+    '$store.state.user.progress': {
+      handler: async function (to, from) {
+        this.updateProgress();
+      },
+      deep: true,
+    },
+    '$store.state.user.progressMax': {
+      handler: async function (to, from) {
+        this.updateProgress();
+      },
+      deep: true,
+    }
+  }
 };
 </script>

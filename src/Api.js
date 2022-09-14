@@ -35,7 +35,7 @@ export class Api extends ApiRequest {
 
     checkAnswer = (answer) => this.post(`/task/play`, {answer});
     chooseBranch = (questId, branchId) => this.post(`/quest/choose`, {questId, branchId});
-    restartBranch = (branchId) => this.put(`/branch/progress/reset`, {branchId})
+    restartBranch = (branchId) => this.put(`/branch/progress/reset`, {branchId});
 
     getBranchTasks = (branchId) => this.get(`/task`, {branchId});
     getTaskInfo = (taskId) => this.get(`/task`, {taskId});
