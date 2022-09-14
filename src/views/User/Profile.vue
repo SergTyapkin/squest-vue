@@ -238,9 +238,17 @@ export default {
 
       await this.getAnotherUser();
       this.username = this.user.username;
-      this.buttons = [
-        {name: 'Рейтинги', to: '/ratings'},
-      ];
+      const prevPage = this.$router.options.history.state.back;
+      if (prevPage && prevPage !== '/ratings') {
+        this.buttons = [
+          {name: 'Назад', to: prevPage},
+          {name: 'Рейтинги', to: '/ratings'},
+        ];
+      } else {
+        this.buttons = [
+          {name: 'Рейтинги', to: '/ratings'},
+        ];
+      }
     },
 
 
