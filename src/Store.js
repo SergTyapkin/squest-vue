@@ -22,7 +22,7 @@ const Store = new Vuex.Store({
           avatarUrl: u.avatarurl,
           chosenbranchid: u.chosenbranchid,
           chosenbranch: u.chosenbranch,
-          chosenbuestid: u.chosenquestid,
+          chosenquestid: u.chosenquestid,
           chosenquest: u.chosenquest,
           email: u.email,
           id: u.id,

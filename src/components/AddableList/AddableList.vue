@@ -30,6 +30,7 @@
                 :action-to="actionTo"
                 :can-delete="canDelete"
                 :placeholder="placeholder"
+                :class="{'last-child': (item.confirmed) && ((idx + 1 >= modelValue.length) || (!modelValue[idx + 1].confirmed))}"
       ></ListItem>
     </ul>
 
@@ -41,7 +42,8 @@
 
 <script>
   import ListItem from "./ListItem.vue";
-  import {openRoll} from "../../utils/show-hide";
+  import {closeRollList, openRollList} from "../../utils/show-hide";
+  import {nextTick} from "vue";
 
   export default {
     components: {ListItem},
@@ -62,8 +64,7 @@
       }
     },
 
-    mounted() {
-      openRoll(this.$refs.list);
+    async mounted() {
     },
 
     methods: {
@@ -81,6 +82,8 @@
         this.$emit('delete', this.modelValue[idx]);
         this.$emit('input');
 
+        closeRollList(this.$refs.list);
+
         this.modelValue.splice(idx, 1);
         this.updateVModel();
       },
@@ -89,6 +92,8 @@
         if ((idx < 0 || idx >= this.modelValue.length) ||
             (to < 0 || to >= this.modelValue.length))
           return;
+
+        this.$emit('input');
         const buff = this.modelValue[idx];
         this.modelValue[idx] = this.modelValue[to];
         this.modelValue[to] = buff;
@@ -98,7 +103,19 @@
 
       updateVModel() {
         this.$emit('update:modelValue', this.modelValue);
+        this.rollOpenList();
+      },
+
+      async rollOpenList() {
+        await nextTick();
+        openRollList(this.$refs.list);
       }
     },
+
+    watch: {
+      modelValue: function (to, from) {
+        this.rollOpenList();
+      }
+    }
   }
 </script>

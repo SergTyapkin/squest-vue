@@ -44,7 +44,7 @@ hr
     .avatar
       width 80px
       height 80px
-      border textColor1 1px solid
+      border mix(textColor2, transparent) 1px solid
       border-radius 50%
 
     .username
@@ -128,7 +128,7 @@ input[type=submit]:hover
               </div>
 
               <CircleLoading v-if="loading"></CircleLoading>
-              <img v-else class="avatar" src="../../res/default_avatar.png" alt="avatar">
+              <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
 
               <div class="position">
                 <div># {{ user.position }}</div>
@@ -217,8 +217,8 @@ export default {
     }
   },
 
-  mounted() {
-    this.init();
+  async mounted() {
+    await this.init();
   },
 
   methods: {

@@ -58,11 +58,25 @@ export function fastRoll(element) {
 }
 
 
-export function closeRollList(element) {
-    element.removeAttribute('data-open-roll');
+export async function closeRollList(element) {
+    const fromHeight = element.style.height;
+    element.classList.add("no-animations");
     element.style.removeProperty("height");
+
+    setTimeout(() => {
+        const toHeight = element.scrollHeight + "px";
+        element.style.height = fromHeight;
+
+        setTimeout(() => {
+            element.classList.remove("no-animations");
+            element.style.height = toHeight;
+        }, 20);
+    }, 1);
 }
 export function openRollList(element) {
     element.setAttribute('data-open-roll', '');
     element.style.height = element.scrollHeight + "px";
+    setTimeout(() => {
+        element.classList.remove('closed');
+    }, 300)
 }

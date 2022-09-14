@@ -77,6 +77,20 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
     left 50%
     top 50%
     transform translate(-50%, -50%)
+    .progress-container
+      display flex
+      align-items center
+      flex-direction column
+      .info
+        display block
+        max-height 0
+        text-align center
+        overflow-y hidden
+        transition all 0.3s ease
+  .progress:hover
+    .progress-container
+      .info
+        max-height 20px
 
   .progressbar // uses --progress
     position absolute
@@ -84,10 +98,10 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
     width 100%
     height 5px
     background linear-gradient(90deg, rgba(218, 165, 32, 0.7) 50%, rgba(0, 0, 0, 0.5) 53%) 0 0 no-repeat
-    background-position-x 0
-    background-size calc(200% * var(--progress))
+    background-position-x calc(100% - 100% * var(--progress))
+    background-size 200%
     box-shadow rgba(231, 190, 28, 0.7) 0 0 5px 0
-    transition background-size ease 3s
+    transition background-position-x ease 3s
 
 
 @media ({mobile})
@@ -134,19 +148,21 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 <template>
   <div class="navbar absolute-wrapper">
     <div class="center text-lighting progress">
-      <vue3autocounter
-          v-if="$store.state.user.isLogined"
-          ref='counter'
-          :startAmount='prevProgress'
-          :endAmount='newProgress'
-          :duration='2'
-          prefix=''
-          suffix='%'
-          separator=''
-          decimalSeparator=','
-          :decimals='1'
-          autoinit
-      ></vue3autocounter>
+      <div v-if="$store.state.user.isLogined" class="progress-container">
+        <vue3autocounter
+            ref='counter'
+            :startAmount='prevProgress'
+            :endAmount='newProgress'
+            :duration='2'
+            prefix=''
+            suffix='%'
+            separator=''
+            decimalSeparator=','
+            :decimals='1'
+            autoinit
+        ></vue3autocounter>
+        <span class="text-small info">Прогресс прохождения</span>
+      </div>
       <span v-else>SQuest</span>
     </div>
     <div class="progressbar" :style="`--progress: ${newProgress / 100}`"></div>

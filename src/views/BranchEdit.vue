@@ -167,8 +167,8 @@ export default {
 
       const tasksToCreate = [];
       const tasksCreated = [];
-      for (const task of this.tasks) {
-        const idx = this.tasks.indexOf(task);
+      for (let idx = 0; idx < this.tasks.length; idx += 1) {
+        const task = this.tasks[idx];
         const prevTask = this.prevTasks[idx];
 
         if (!task.confirmed) {
@@ -177,7 +177,7 @@ export default {
         } else if (task.title !== prevTask?.title ||
             task.id !== prevTask?.id ||
             task.orderid !== prevTask?.orderid) {
-          const res = await this.$api.updateTaskOrderId(task.id, task.title, task.orderid);
+          const res = await this.$api.updateTaskOrderId(task.id, task.title, idx);
           if (!res.ok_) {
             this.$popups.error('Ошибка', 'Не удалось изменить название задания (или поменять местами)');
             this.$refs.form.showError();

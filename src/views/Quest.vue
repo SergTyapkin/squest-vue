@@ -187,6 +187,9 @@ export default {
         questInfo = await this.$api.getQuestInfo(this.id);
       else if (this.uid !== undefined)
         questInfo = await this.$api.getQuestInfoByUid(this.uid);
+
+      const questStatistics = await this.$api.getQuestStatistics(this.id);
+      console.log("STATS:", questStatistics);
       this.loading = false;
 
       if (!questInfo.ok_) {

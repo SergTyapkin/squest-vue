@@ -55,6 +55,7 @@
                      :can-delete="false"
                      placeholder="Название ветки"
                      :action-to="(branchId) => `/quest/branch/edit?id=${branchId}`"
+                     @input="onChange"
         ></AddableList>
         <AddableList title="Соавторы"
                      description="Хотите делать квест вместе? Просто добавьте никнеймы соавторов ниже и они получат доступ к редактированию квеста"
@@ -62,6 +63,7 @@
                      v-model="helpers"
                      placeholder="Логин соавтора"
                      v-if="!helper"
+                     @input="onChange"
         ></AddableList>
 
         <FloatingInput type="checkbox"
@@ -271,8 +273,8 @@ export default {
 
       const branchesToCreate = [];
       const branchesCreated = [];
-      for (const branch of this.branches) {
-        const idx = this.branches.indexOf(branch);
+      for (let idx = 0; idx < this.branches.length; idx += 1) {
+        const branch = this.branches[idx];
         const prevBranch = this.prevBranches[idx];
 
         if (!branch.confirmed) {
@@ -281,7 +283,7 @@ export default {
         } else if (branch.title !== prevBranch?.title ||
             branch.id !== prevBranch?.id ||
             branch.orderid !== prevBranch?.orderid) {
-          const res = await this.$api.updateBranchOrderId(branch.id, branch.title, branch.orderid);
+          const res = await this.$api.updateBranchOrderId(branch.id, branch.title, idx);
           if (!res.ok_) {
             this.$popups.error('Ошибка', 'Не удалось изменить название ветки (или поменять местами)');
             this.$refs.form.showError();

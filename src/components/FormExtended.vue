@@ -95,7 +95,13 @@ export default {
     },
 
     showError() {
-      setTimedClass([this.$refs.form], 'error');
+      this.$refs.form.info = this.info;
+      this.$refs.form.showError();
+    },
+
+    showSuccess() {
+      this.$refs.form.info = this.info;
+      this.$refs.form.showSuccess();
     },
   }
 };

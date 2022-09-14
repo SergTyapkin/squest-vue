@@ -67,6 +67,7 @@
                        placeholder="ответ"
                        class="roll-active"
                        ref="answers"
+                       @input="onChange"
           ></AddableList>
 
           <div class="roll-active closed" ref="qrFields">

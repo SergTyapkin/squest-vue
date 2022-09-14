@@ -58,7 +58,7 @@ li:first-child
     > .button:first-child
       opacity 0.2
       pointer-events none
-li:last-child
+li.last-child
   > .move-buttons
     > .button:last-child
       opacity 0.2
@@ -83,7 +83,7 @@ li:last-child
   <li>
     <span class="text-big-x orderid">{{ idx + 1 }}</span>
     <div v-if="canDelete" class="button rounded delete-button" @click="$emit('delete', idx)"><Cross></Cross></div>
-    <div class="move-buttons">
+    <div class="move-buttons" v-if="modelValue.confirmed">
       <div class="button half-height rounded" @click="this.$emit('move', {idx, to: idx-1})">˄</div>
       <div class="button half-height rounded" @click="this.$emit('move', {idx, to: idx+1})">˅</div>
     </div>
