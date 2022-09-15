@@ -57,7 +57,6 @@ export default {
       return;
     }
     this.quests = res.quests;
-    this.quests.forEach((quest) => quest.authorname = this.$user.username)
   },
 }
 </script>

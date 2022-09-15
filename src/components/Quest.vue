@@ -63,8 +63,8 @@ plate-max-width = 400px
 
     .statistics
       display flex
-      margin-top 15px
-      margin-bottom 15px
+      margin-top 10px
+      margin-bottom 10px
       .rating
       .time
         display flex
@@ -72,11 +72,13 @@ plate-max-width = 400px
         font-size 15px
         margin-right 20px
         img
-          width 30px
+          width 40px
+      .rating
+        font-size 25px
       .rating.good
-        color colorYes
+        color #a9ff5b
       .rating.bad
-        color colorNo
+        color #ff7963
 
     .branches
       position absolute
@@ -144,7 +146,7 @@ plate-max-width = 400px
             <img src="../res/star.svg" alt="star">{{rating}}
           </span>
           <span class="time">
-            <img src="../res/time.svg" alt="time">{{time}}{{timeUnits}}
+            <img src="../res/time.svg" alt="time">{{time}}
           </span>
         </div>
         <router-link :to="`/profile?id=${author}`" class="link text-small author-fields">
@@ -166,6 +168,7 @@ plate-max-width = 400px
 <script>
 import ArrowListElement from "./ArrowListElement.vue";
 import CircleLoading from "./loaders/CircleLoading.vue";
+import {secondsToStrTime} from "../utils/utils";
 
 export default {
   components: {CircleLoading, ArrowListElement},
@@ -193,8 +196,16 @@ export default {
       loading: false,
       branches: [],
 
+      time: '-',
+      rating: '-',
+      played: 0,
+
       rootHeight: null,
     }
+  },
+
+  mounted() {
+    this.getQuestStats();
   },
 
   methods: {
@@ -218,6 +229,18 @@ export default {
     closeBranches() {
       this.branchesOpened = false;
       this.rootHeight = null;
+    },
+
+    async getQuestStats() {
+      this.loading = true;
+      const questStatistics = await this.$api.getQuestStatistics(this.id);
+      this.loading = false;
+
+      if (questStatistics.ok_) {
+        this.played = questStatistics.played;
+        this.rating = questStatistics.rating;
+        this.time = secondsToStrTime(questStatistics.time);
+      }
     }
   }
 };

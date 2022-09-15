@@ -50,6 +50,47 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   text-align center
   .buttons
     text-align left
+
+.stats
+  .stats-container
+    display flex
+    align-items center
+    justify-content center
+    margin-bottom 20px
+    > *
+      margin 0 5px
+    img
+      width 30px
+  .stars
+    flex-direction row-reverse
+    img
+      cursor pointer
+      transition all 0.3s ease
+    img.checked
+      transform scale(1.2)
+    img:hover
+      transform scale(1.3)
+
+    img:hover ~ img
+    img:hover
+    img:focus ~ img
+    img.checked
+      color #d62a9d
+      filter saturate(5)
+
+    img.checked + img
+      animation scaleup 0.5s
+
+@keyframes scaleup {
+  from {
+    transform: scale(1.4);
+    color: #600040;
+  }
+  to {
+    transform: scale(1.3);
+    color: #d62a9d;
+  }
+}
 </style>
 
 <template>
@@ -60,10 +101,27 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
     <MarkdownRenderer ref="markdown" class="description text-middle app-flex-filler"></MarkdownRenderer>
 
-    <CircleLoading v-if="loading"></CircleLoading>
-
     <div v-if="isEnd" class="text-big-xx congratulations">
-      Вы прошли ветку!
+      <CircleLoading v-if="statsLoading" class="preview-image"></CircleLoading>
+
+      <div>Вы прошли ветку!</div>
+
+      <div class="stats">
+        <div class="text-middle stats-container">
+          <img src="../res/time.svg" alt="time">
+          Пройдено за: <b>{{ timeSpent }}</b>
+        </div>
+        <div>
+          <div>Оценка:</div>
+          <div class="stats-container stars" @click="sendVote">
+            <img src="../res/star.svg" alt="5" :class="{checked: this.ratingVote >= 5}" @click="this.ratingVote = 5">
+            <img src="../res/star.svg" alt="4" :class="{checked: this.ratingVote >= 4}" @click="this.ratingVote = 4">
+            <img src="../res/star.svg" alt="3" :class="{checked: this.ratingVote >= 3}" @click="this.ratingVote = 3">
+            <img src="../res/star.svg" alt="2" :class="{checked: this.ratingVote >= 2}" @click="this.ratingVote = 2">
+            <img src="../res/star.svg" alt="1" :class="{checked: this.ratingVote >= 1}" @click="this.ratingVote = 1">
+          </div>
+        </div>
+      </div>
 
       <TopButtons @click="restart" class="buttons" bg clickable arrows big :buttons="[
           { name: 'Начать заново', description: 'Прогресс сохранится' },
@@ -102,6 +160,7 @@ import QRScanner from "../components/QRScanner.vue";
 import TopButtons from "../components/TopButtons.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import Form from "../components/FormExtended.vue";
+import {secondsToStrTime, secondsToValPrefix} from "../utils/utils";
 
 
 export default {
@@ -124,6 +183,10 @@ export default {
       isQrAnswer: false,
 
       loading: false,
+      statsLoading: false,
+
+      timeSpent: 0,
+      ratingVote: 0,
     }
   },
 
@@ -148,6 +211,20 @@ export default {
         this.taskQuestion = res.question;
         this.isQrAnswer = res.isqranswer;
         this.isEnd = res.question === undefined;
+
+        if (!this.isEnd)
+          return;
+
+        this.statsLoading = true;
+        const stats = await this.$api.getProgressStats(this.$user.chosenbranchid);
+        this.statsLoading = false;
+
+        if (!stats.ok_) {
+          this.$popups.error('Ошибка', 'Не удалось получить статистику прохождения');
+          return;
+        }
+        this.timeSpent = secondsToStrTime(stats.time);
+        this.ratingVote = stats.rating;
         return;
       }
       if (res.status_ === 400) {
@@ -155,7 +232,7 @@ export default {
         return;
       }
 
-      this.$popups.error(`Ошибка ${res.status}!`, res.info);
+      this.$popups.error(`Ошибка ${res.status_}!`, res.info);
     },
 
     async checkQrAnswer(answer) {
@@ -225,6 +302,18 @@ export default {
       this.$refs.qrScanner.stop();
       this.$refs.qrScanner.hide();
       this.qrScanButtonText = "Сканировать дальше";
+    },
+
+    async sendVote() {
+      this.statsLoading = true;
+      const res = await this.$api.voteBranchRating(this.$user.chosenbranchid, this.ratingVote);
+      this.statsLoading = false;
+
+      if (!res.ok_) {
+        this.$popups.error('Ошибка', 'Не получилось сохранить голос');
+        return;
+      }
+      this.$popups.success('Спасибо!', 'Вас голос очень важен для нас');
     }
   }
 }

@@ -45,3 +45,27 @@ export function generateUid(len) {
     window.crypto.getRandomValues(arr);
     return Array.from(arr, (dec) => dec.toString(16).padStart(2, "0")).join('');
 }
+
+export function secondsToStrTime(seconds) {
+    let val, units;
+    if (seconds < 60) {
+        val = seconds;
+        units = 'сек';
+    } else if (seconds < 60*60) {
+        val = seconds / 60;
+        units = 'мин';
+    } else if (seconds < 60*60*24) {
+        val = seconds / (60*60);
+        units = 'ч';
+    } else if (seconds < 60*60*24*30) {
+        val = seconds / (60*60*24);
+        units = 'дн';
+    } else if (seconds < 60*60*24*365) {
+        val = seconds / (60*60*24*30);
+        units = 'мес';
+    } else {
+        val = seconds / (60*60*24*365);
+        units = 'лет';
+    }
+    return val.toFixed(1).toString() + ' ' + units;
+}

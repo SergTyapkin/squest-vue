@@ -45,14 +45,16 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
       .time
         display flex
         align-items center
-        font-size 20px
+        font-size 17px
         margin-right 20px
         img
           width 45px
+      .rating
+        font-size 30px
       .rating.good
-        color colorYes
+        color #a9ff5b
       .rating.bad
-        color colorNo
+        color #ff7963
 
     .author
       margin-bottom 30px
@@ -113,13 +115,13 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
               <img src="../res/star.svg" alt="star">{{rating}}
             </span>
             <span class="time">
-              <img src="../res/time.svg" alt="time">{{time}}{{timeUnits}}
+              <img src="../res/time.svg" alt="time">{{time}}
             </span>
           </div>
           <div class="text-small played">Прошли: {{played}}</div>
-
           <div class="text-small author">Автор: {{authorName}}</div>
 
+          <div class="text-small">Описание: </div>
           <div class="text-small description">{{description}}</div>
         </div>
       </div>
@@ -137,6 +139,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
 import ArrowListElement from "../components/ArrowListElement.vue";
 import TopButtons from "../components/TopButtons.vue";
 import CircleLoading from "../components/loaders/CircleLoading.vue";
+import {secondsToStrTime} from "../utils/utils";
 
 export default {
   components: {CircleLoading, TopButtons, ArrowListElement},
@@ -144,7 +147,6 @@ export default {
   data() {
     return {
       branches: [],
-      timeUnits: 'мин',
       id: this.$route.query.id,
       uid: this.$route.query.uid,
 
@@ -153,14 +155,15 @@ export default {
 
       title: '',
       description: '',
-      rating: '',
-      time: '',
       previewUrl: '',
       author: '',
       authorName: '',
       islinkactive: false,
       ispublished: false,
-      played: '',
+
+      rating: '-',
+      time: '-',
+      played: 0,
     }
   },
 
@@ -189,7 +192,6 @@ export default {
         questInfo = await this.$api.getQuestInfoByUid(this.uid);
 
       const questStatistics = await this.$api.getQuestStatistics(this.id);
-      console.log("STATS:", questStatistics);
       this.loading = false;
 
       if (!questInfo.ok_) {
@@ -198,6 +200,7 @@ export default {
           this.$router.push('/quests')
           return;
         }
+
         if (questInfo.status_ === 403) {
           this.$popups.error("Ошибка", "Доступ к квесту запрещён");
           this.$router.push('/quests')
@@ -206,15 +209,23 @@ export default {
         this.$popups.error("Ошибка", "Не удалось получить информацио о квесте");
         return;
       }
+
       this.id = questInfo.id;
       this.title = questInfo.title;
       this.description = questInfo.description;
       this.ispublished = questInfo.ispublished;
       this.islinkactive = questInfo.islinkactive;
       this.author = questInfo.author;
+      this.authorName = questInfo.authorname;
       this.previewUrl = questInfo.previewUrl;
       this.time = questInfo.time;
       this.rating = questInfo.rating;
+
+      if (questStatistics.ok_) {
+        this.played = questStatistics.played;
+        this.rating = questStatistics.rating;
+        this.time = secondsToStrTime(questStatistics.time);
+      }
     },
 
     async getBranches() {
