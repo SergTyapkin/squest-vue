@@ -99,6 +99,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
         {name: taskTitle, description: `Квест: ${questTitle} <br> Ветка: ${branchTitle}`},
     ]"></TopButtons>
 
+    <CircleLoading v-if="loading"></CircleLoading>
     <MarkdownRenderer ref="markdown" class="description text-middle app-flex-filler"></MarkdownRenderer>
 
     <div v-if="isEnd" class="text-big-xx congratulations">

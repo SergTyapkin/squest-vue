@@ -166,8 +166,8 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
       <span v-else>SQuest</span>
     </div>
     <div class="progressbar" :style="`--progress: ${newProgress / 100}`"></div>
-    <router-link to="/quests" class="left side-item opacity-in delayedBig">Квесты</router-link>
-    <router-link to="/profile" class="right side-item opacity-in delayedBig">
+    <router-link :to="`/quests`" class="left side-item opacity-in delayedBig">Квесты</router-link>
+    <router-link :to="`/profile`" class="right side-item opacity-in delayedBig">
       <span>
         <span v-if="!$store.state.user.isLogined">Войти</span>
         <span v-else>{{ $store.state.user.username }}</span>

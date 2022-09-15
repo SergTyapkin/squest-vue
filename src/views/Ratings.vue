@@ -10,14 +10,15 @@
         {name: 'Назад', description: 'В профиль', to: '/profile'},
     ]"></TopButtons>
 
-    <CircleLoading v-if="loading" class="preview-image"></CircleLoading>
 
     <div class="container">
-      <ArrowListElement class="ratings" ref="ratings" title="Рейтинг"
+      <ArrowListElement class="ratings" ref="ratings" title="Рейтинг" closed open-on-set-elements
                         :elements="ratings"
                         @click-inside="goToProfile"
       ></ArrowListElement>
     </div>
+
+    <CircleLoading v-if="loading" class="preview-image"></CircleLoading>
   </div>
 </template>
 

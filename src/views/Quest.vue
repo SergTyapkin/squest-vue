@@ -111,7 +111,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
             <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
           </div>
           <div class="statistics text-big-xx">
-            <span class="rating" :class="{good: rating > 4.5, bad: rating < 3.5}">
+            <span class="rating" :class="{good: rating >= 4.5, bad: rating < 3.5}">
               <img src="../res/star.svg" alt="star">{{rating}}
             </span>
             <span class="time">
@@ -129,6 +129,8 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
 
     <CircleLoading v-if="branchesLoading"></CircleLoading>
     <ArrowListElement class="branches" ref="branches" title="Ветки"
+                      closed
+                      open-on-set-elements
                       :elements="branches"
                       @click-inside="selectBranch"
     ></ArrowListElement>
@@ -223,7 +225,7 @@ export default {
 
       if (questStatistics.ok_) {
         this.played = questStatistics.played;
-        this.rating = questStatistics.rating;
+        this.rating = questStatistics.rating.toFixed(1);
         this.time = secondsToStrTime(questStatistics.time);
       }
     },

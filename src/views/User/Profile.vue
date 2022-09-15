@@ -185,7 +185,7 @@ input[type=submit]:hover
         <button v-if="yours" class="text-middle button bg outline rounded logout" @click="logOut">Выйти</button>
       </div>
 
-      <router-link v-if="yours && user.isAdmin" to="/admin" class="admin-button text-big-x button rounded outline">На админскую</router-link>
+      <router-link v-if="yours && user.isAdmin" :to="`/admin`" class="admin-button text-big-x button rounded outline">На админскую</router-link>
     </div>
   </div>
 </template>
@@ -199,6 +199,7 @@ import {isClosedRoll, openRoll} from "../../utils/show-hide";
 import TopButtons from "../../components/TopButtons.vue";
 import CircleLoading from "../../components/loaders/CircleLoading.vue";
 import {nextTick} from "vue";
+import {BASE_URL_PATH} from "../../constants";
 
 export default {
   components: {CircleLoading, TopButtons, FloatingInput, TopBar, Form},
@@ -354,7 +355,7 @@ export default {
   watch: {
     '$route.query.id': {
       handler: async function (to, from) {
-        if (this.$route.path !== '/profile') // go to another page
+        if (this.$route.path !== BASE_URL_PATH + '/profile') // go to another page
           return;
 
         this.id = to;

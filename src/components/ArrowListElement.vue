@@ -90,7 +90,8 @@ li.bg
 
 <script>
 import Arrow from "./Arrow.vue";
-import {closeRoll, openRoll} from "../utils/show-hide";
+import {closeRoll, openRoll, openRollList} from "../utils/show-hide";
+import {nextTick} from "vue";
 
 export default {
   components: {Arrow},
@@ -142,6 +143,14 @@ export default {
       type: Boolean,
       default: true
     },
+    openOnSetElements: {
+      type: Boolean,
+      default: false
+    },
+    preserveClickOpen: {
+      type: Boolean,
+      default: false
+    },
   },
 
   data() {
@@ -163,17 +172,39 @@ export default {
         return;
 
       if (this.closed) {
-        openRoll(this.$refs.list);
-        this.$refs?.arrow?.setDirection(this.$refs.arrow.directions.bottom);
-        this.closed = false;
+        if (this.preserveClickOpen) {
+          this.$emit('open');
+          return;
+        }
+        this.open();
         this.$emit('open');
         return;
       }
+      this.close();
+      this.$emit('close');
+    },
+
+    open() {
+      openRoll(this.$refs.list);
+      this.$refs?.arrow?.setDirection(this.$refs.arrow.directions.bottom);
+      this.closed = false;
+    },
+    close() {
       closeRoll(this.$refs.list);
       this.$refs?.arrow?.setDirection(this.$refs.arrow.directions.right);
       this.closed = true;
-      this.$emit('close');
     },
+  },
+
+  watch: {
+    elements: async function (to, from) {
+      if (!this.openOnSetElements)
+        return;
+
+      await nextTick();
+      this.open();
+      this.$emit('open');
+    }
   }
 }
 </script>

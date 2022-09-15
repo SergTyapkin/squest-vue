@@ -53,18 +53,22 @@ plate-max-width = 400px
       transform scale(1.1)
       opacity 1
 
-    .title
-      img
-        width 30px
-
-    .description
+    .text-container
+      max-height 75px
+      height 100%
+      min-height 60px
       overflow hidden
-      text-overflow ellipsis
+      .title
+        img
+          width 30px
+
+      .description
+        overflow hidden
+        text-overflow ellipsis
 
     .statistics
       display flex
-      margin-top 10px
-      margin-bottom 10px
+      margin-bottom 5px
       .rating
       .time
         display flex
@@ -135,14 +139,23 @@ plate-max-width = 400px
           <img src="../res/edit.svg" alt="edit">
         </router-link>
 
-        <div class="text-big-x title">
-          {{title}}
-          <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
-          <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
+        <div class="text-container">
+          <div class="title"
+               :class="{
+                  'text-big-x': title.length < 20,
+                  'text-big': title.length >= 20 && title.length < 40,
+                  'text-middle': title.length >= 40
+                }"
+          >
+            <span>{{title}}</span>
+            <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
+            <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
+          </div>
+          <div class="text-small description">{{description}}</div>
         </div>
-        <div class="text-small description">{{description}}</div>
+
         <div class="statistics text-big-xx">
-          <span class="rating" :class="{good: rating > 4.5, bad: rating < 3.5}">
+          <span class="rating" :class="{good: rating >= 4.5, bad: rating < 3.5}">
             <img src="../res/star.svg" alt="star">{{rating}}
           </span>
           <span class="time">
@@ -157,9 +170,11 @@ plate-max-width = 400px
 
       <CircleLoading v-if="loading"></CircleLoading>
       <ArrowListElement class="branches" ref="branches" title="Ветки" action-text="развернуть" closed :elements="branches"
-        @open="openBranches"
-        @close="closeBranches"
-        @click-inside="$router.push(`/quest?id=${id}`)"
+                        open-on-set-elements
+                        preserve-click-open
+                        @open="openBranches"
+                        @close="closeBranches"
+                        @click-inside="$router.push(`/quest?id=${id}`)"
       ></ArrowListElement>
     </div>
   </router-link>
@@ -211,8 +226,10 @@ export default {
   methods: {
     async openBranches() {
       this.branchesOpened = true;
-      if (this.branchesGotten)
+      if (this.branchesGotten) {
+        this.$refs.branches.open();
         return;
+      }
       this.branchesGotten = true;
 
       this.loading = true;
@@ -238,7 +255,7 @@ export default {
 
       if (questStatistics.ok_) {
         this.played = questStatistics.played;
-        this.rating = questStatistics.rating;
+        this.rating = questStatistics.rating.toFixed(1);
         this.time = secondsToStrTime(questStatistics.time);
       }
     }

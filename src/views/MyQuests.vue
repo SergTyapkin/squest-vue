@@ -6,6 +6,9 @@
   display flex
   flex-wrap wrap
   justify-content space-around
+
+.float-button
+  z-index 10
 </style>
 
 <template>
@@ -22,7 +25,7 @@
         </div>
       </div>
 
-      <FloatingButton title="Создать квест" to="/quest/create">
+      <FloatingButton title="Создать квест" :to="`/quest/create`" class="float-button">
         <img src="../res/plus_bold.svg" alt="">
       </FloatingButton>
     </div>
