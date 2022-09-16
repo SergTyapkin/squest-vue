@@ -468,7 +468,7 @@ export default {
         this.$popups.error('Ошибка', 'Не удалось удалить изображение');
         return;
       }
-    }
+    },
     async savePreview() {
       this.loading = true;
       const res = await this.$api.updateQuestPreviewUrl(this.id, this.previewUrl);
