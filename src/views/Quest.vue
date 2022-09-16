@@ -192,8 +192,6 @@ export default {
         questInfo = await this.$api.getQuestInfo(this.id);
       else if (this.uid !== undefined)
         questInfo = await this.$api.getQuestInfoByUid(this.uid);
-
-      const questStatistics = await this.$api.getQuestStatistics(this.id);
       this.loading = false;
 
       if (!questInfo.ok_) {
@@ -222,6 +220,11 @@ export default {
       this.previewUrl = questInfo.previewUrl;
       this.time = questInfo.time;
       this.rating = questInfo.rating;
+
+
+      this.loading = true;
+      const questStatistics = await this.$api.getQuestStatistics(this.id);
+      this.loading = false;
 
       if (questStatistics.ok_) {
         this.played = questStatistics.played;
