@@ -438,18 +438,25 @@ export default {
 
 
     async updatePreview() {
-      this.loading = true;
+      // this.loading = true;
       const imageId = await this.ImageUploader.upload();
-      this.loading = false;
+      // this.loading = false;
+
+      await this.deletePreview();
 
       this.previewUrl = this.$api.apiUrl + `/image/` + imageId;
-
       await this.savePreview();
     },
-    async deletePreview() {
+    async deletePreviewClick() {
       if (!await this.$modal.confirm('Удаляем картинку-превью квеста?', 'Восстановить не получится'))
         return;
 
+      await this.deletePreview();
+
+      this.previewUrl = '';
+      await this.savePreview();
+    },
+    async deletePreview() {
       let imageId = this.previewUrl.split('/');
       imageId = imageId[imageId.length - 1];
 
@@ -461,10 +468,7 @@ export default {
         this.$popups.error('Ошибка', 'Не удалось удалить изображение');
         return;
       }
-
-      this.previewUrl = '';
-      await this.savePreview();
-    },
+    }
     async savePreview() {
       this.loading = true;
       const res = await this.$api.updateQuestPreviewUrl(this.id, this.previewUrl);

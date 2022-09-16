@@ -41,11 +41,8 @@ hr
     //.position:hover
     //  .info
     //    max-height 20px
-    .avatar
-      width 80px
-      height 80px
-      border mix(textColor2, transparent) 1px solid
-      border-radius 50%
+//    .avatar
+
 
     .username
       margin-top 20px
@@ -111,6 +108,54 @@ input[type=submit]:hover
   width 30%
   min-width 300px
   display block
+
+
+.avatar
+.avatar-div
+  width 80px
+  height 80px
+  border mix(textColor2, transparent) 1px solid
+  border-radius 50%
+  position relative
+  overflow hidden
+
+.avatar-container
+  position relative
+  .delete-avatar
+    position absolute
+    right -40px
+    top 20px
+    cursor pointer
+    transition all 0.2s ease
+    width 40px
+    opacity 0
+    pointer-events none
+  .delete-avatar:hover
+    transform scale(1.1)
+.avatar-container:hover
+  .delete-avatar
+    opacity 1
+    pointer-events auto
+
+.avatar-container
+  .avatar-div::before
+    content 'Изменить'
+    font-family Arial
+    padding-left 5px
+    font-size 15px
+    text-align center
+    display flex
+    align-items center
+    position absolute
+    inset 0
+    background #000000AA
+    z-index 1
+    opacity 0
+    transition opacity 0.3s ease
+    cursor pointer
+.avatar-container
+  .avatar-div:hover::before
+    opacity 1
 </style>
 
 <template>
@@ -128,7 +173,18 @@ input[type=submit]:hover
               </div>
 
               <CircleLoading v-if="loading"></CircleLoading>
-              <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
+
+              <div v-else-if="yours" class="avatar-container">
+                <div class="avatar-div" @click.stop="updateAvatar">
+                  <img v-if="user.avatarurl" class="avatar" :src="user.avatarurl" alt="avatar">
+                  <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
+                </div>
+                <img v-if="user.avatarurl" class="delete-avatar" src="../../res/trash.svg" alt="delete" @click.stop="deleteAvatarClick">
+              </div>
+              <div v-else class="avatar-div">
+                <img v-if="user.avatarurl" class="avatar" :src="user.avatarurl" alt="avatar">
+                <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
+              </div>
 
               <div class="position">
                 <div># {{ user.position }}</div>
@@ -200,12 +256,15 @@ import TopButtons from "../../components/TopButtons.vue";
 import CircleLoading from "../../components/loaders/CircleLoading.vue";
 import {nextTick} from "vue";
 import {BASE_URL_PATH} from "../../constants";
+import ImageUploader from "../../utils/imageUploader";
 
 export default {
   components: {CircleLoading, TopButtons, FloatingInput, TopBar, Form},
 
   data() {
     return {
+      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage),
+
       username: '',
 
       id: this.$route.query.id,
@@ -349,6 +408,51 @@ export default {
       }
 
       this.user = user;
+    },
+
+
+    async updateAvatar() {
+      // this.loading = true;
+      const imageId = await this.ImageUploader.upload();
+      // this.loading = false;
+
+      await this.deleteAvatar();
+
+      this.user.avatarurl = this.$api.apiUrl + `/image/` + imageId;
+      await this.saveAvatar();
+    },
+    async deleteAvatarClick() {
+      if (!await this.$modal.confirm('Удаляем аватарку?', 'Восстановить не получится'))
+        return;
+
+      await this.deleteAvatar();
+
+      this.user.avatarurl = '';
+      await this.saveAvatar();
+    },
+    async deleteAvatar() {
+      let imageId = this.user.avatarurl.split('/');
+      imageId = imageId[imageId.length - 1];
+
+      this.loading = true;
+      const res = await this.$api.deleteImage(imageId);
+      this.loading = false;
+
+      if (!res.ok_) {
+        this.$popups.error('Ошибка', 'Не удалось удалить изображение');
+        return;
+      }
+    },
+    async saveAvatar() {
+      this.loading = true;
+      const res = await this.$api.updateUserAvatarUrl(this.user.avatarurl);
+      this.loading = false;
+
+      if (!res.ok_) {
+        this.$popups.error('Ошибка', 'Не удалось сохранить изображение');
+        return;
+      }
+      this.$popups.success('Сохранено', 'Аватарка обновлена');
     }
   },
 

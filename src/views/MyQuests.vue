@@ -16,7 +16,7 @@
     <div class="quests-page">
       <div>
         <TopButtons bg :buttons="[
-          {name: 'Твои квесты', description: 'Здесь собраны созданные тобой квесты'},
+          {name: 'Твои квесты', description: 'Здесь собраны квесты, которые ты можешь редактировать'},
         ]"></TopButtons>
 
         <CircleLoading v-if="loading"></CircleLoading>
