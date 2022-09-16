@@ -23,6 +23,7 @@ export class Api extends ApiRequest {
 
     createQuest = (title, description, isPublished) => this.post(`/quest`, {title, description, isPublished});
     updateQuestInfo = (id, title, description, isPublished, isLinkActive) => this.put(`/quest`, {id, title, description, isPublished, isLinkActive});
+    updateQuestPreviewUrl = (id, previewUrl) => this.put(`/quest`, {id, previewUrl});
     getQuestInfoByUid = (questUid) => this.get(`/quest`, {questUid});
     getQuestStatistics = (questId) => this.get(`/quest/stats`, {questId});
     deleteQuest = (id) => this.delete(`/quest`, {id});
@@ -53,6 +54,7 @@ export class Api extends ApiRequest {
     getQuestHelpers = (questId) => this.get('/quest/helpers', {questId});
 
     uploadImage = (dataUrl) => this.post('/image', {dataUrl});
+    deleteImage = (imageId) => this.delete('/image', {imageId});
 
     getRatings = () => this.get('/ratings');
 

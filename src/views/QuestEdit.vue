@@ -23,6 +23,53 @@
   padding-right 30px
   margin-left 20px
   word-break break-all
+
+.image-fields
+  .flex-container
+    display flex
+    align-items center
+    .image-container
+      width 400px
+      height 200px
+      position relative
+      border-radius 10px
+      border textColor4 1px solid
+      overflow hidden
+      .preview-image
+        position absolute
+        inset 0
+      .preview-image.default
+        text-align right
+        padding-right 20px
+        font-size 100px
+        letter-spacing 10px
+        opacity 0.8
+        color textColor3
+        background mix(bgColor2, transparent)
+    .image-container::before
+      content 'Изменить'
+      font-family Arial
+      padding-left 20px
+      font-size 20px
+      text-align center
+      display flex
+      align-items center
+      position absolute
+      inset 0
+      background #000000AA
+      z-index 1
+      opacity 0
+      transition opacity 0.3s ease
+      cursor pointer
+    .image-container:hover::before
+      opacity 1
+
+
+    .delete-button
+      padding 5px
+      margin 10px
+      img
+        width 40px
 </style>
 
 <template>
@@ -45,6 +92,20 @@
         <div>
           <label class="text-big">Описание <span></span></label>
           <textarea class="text scrollable" rows="5" v-model="description"></textarea>
+        </div>
+
+        <div class="image-fields">
+          <div class="text-big">Картинка-превью</div>
+
+          <div class="flex-container">
+            <div class="image-container" @click="updatePreview">
+              <img v-if="previewUrl" class="preview-image" :src="previewUrl" alt="preview">
+              <div v-else class="preview-image default text-big-xx">SQ</div>
+            </div>
+            <div class="button rounded delete-button" @click="deletePreview">
+              <img src="../res/trash.svg" alt="delete">
+            </div>
+          </div>
         </div>
 
         <AddableList title="Ветки"
@@ -123,13 +184,18 @@ import AddableList from "../components/AddableList/AddableList.vue";
 import QRGenerator from "../components/QRGenerator.vue";
 import FloatingButton from "../components/FloatingButton.vue";
 import {closeRoll, openRoll} from "../utils/show-hide";
-import {deepClone} from "../utils/utils";
+import {deepClone, hashSHA256} from "../utils/utils";
+import {getImageAsDataURL} from "@korolion/get-image-as-dataurl";
+import ImageUploader from "../utils/imageUploader";
+import {BASE_URL_PATH} from "../constants";
 
 export default {
   components: {FloatingButton, QRGenerator, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
 
   data() {
     return {
+      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage),
+
       prevBranches: [],
       prevHelpers: [],
       branches: [],
@@ -184,7 +250,7 @@ export default {
       this.islinkactive = questInfo.islinkactive;
       this.author = questInfo.author;
       this.authorName = questInfo.authorname;
-      this.previewUrl = questInfo.previewUrl;
+      this.previewUrl = questInfo.previewurl;
       this.uid = questInfo.uid;
       this.helper = Boolean(questInfo.helper);
 
@@ -368,6 +434,47 @@ export default {
 
     onChange() {
       this.edited = true;
+    },
+
+
+    async updatePreview() {
+      this.loading = true;
+      const imageId = await this.ImageUploader.upload();
+      this.loading = false;
+
+      this.previewUrl = this.$api.apiUrl + `/image/` + imageId;
+
+      await this.savePreview();
+    },
+    async deletePreview() {
+      if (!await this.$modal.confirm('Удаляем картинку-превью квеста?', 'Восстановить не получится'))
+        return;
+
+      let imageId = this.previewUrl.split('/');
+      imageId = imageId[imageId.length - 1];
+
+      this.loading = true;
+      const res = await this.$api.deleteImage(imageId);
+      this.loading = false;
+
+      if (!res.ok_) {
+        this.$popups.error('Ошибка', 'Не удалось удалить изображение');
+        return;
+      }
+
+      this.previewUrl = '';
+      await this.savePreview();
+    },
+    async savePreview() {
+      this.loading = true;
+      const res = await this.$api.updateQuestPreviewUrl(this.id, this.previewUrl);
+      this.loading = false;
+
+      if (!res.ok_) {
+        this.$popups.error('Ошибка', 'Не удалось сохранить изображение');
+        return;
+      }
+      this.$popups.success('Сохранено', 'Изображение квеста обновлено');
     }
   }
 };

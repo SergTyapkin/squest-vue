@@ -104,6 +104,7 @@ markdown-button-svg-photo-fill = transparent
 <script>
 import { getImageAsDataURL } from '@korolion/get-image-as-dataurl';
 import {hashSHA256} from "../utils/utils";
+import ImageUploader from "../utils/imageUploader";
 
 
 const TIME_DIFF_TO_EMIT_CHANGE = 500; // ms
@@ -117,6 +118,8 @@ export default {
 
   data() {
     return {
+      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage),
+
       attachedImages: [],
       lastInputTime: Date.now(),
       timeout: null,
@@ -205,30 +208,11 @@ export default {
     async attachPhoto() {
       let text = this.modelValue;
       const element = this.$refs.textarea;
-      let dataURL;
-      try {
-        dataURL = await getImageAsDataURL(null, undefined, 2);
-      } catch (err) {
-        this.$popups.error("Ошибка загрузки", err.toString());
-        return;
-      }
-
-      if (this.attachedImages.includes(hashSHA256(dataURL))) {
-        this.$popups.alert("Уже загружено", "Для повторения картинки скопируйте текст со ссылкой в редакторе");
-        return;
-      }
-      this.attachedImages.push(hashSHA256(dataURL));
-
       const end = element.selectionEnd ? element.selectionEnd : 0;
 
-      const response = await this.$api.uploadImage(dataURL);
-      if (!response.ok_) {
-        this.$popups.error(`Ошибка ${response.status_}!`, `Не удалось загрузить картинку на сервер: ${response.info}`);
-        return;
-      }
-      this.$popups.success('Загружено', 'Картинка загружена');
+      const imageId = this.ImageUploader.upload();
 
-      text = text.substring(0, end) + '![image](' + this.$api.apiUrl + '/image/' + response.id + ')' + element.value.substring(end);
+      text = text.substring(0, end) + '![image](' + this.$api.apiUrl + '/image/' + imageId + ')' + element.value.substring(end);
 
       this.updateVModel(text)
       this.onInput();
