@@ -431,6 +431,9 @@ export default {
       await this.saveAvatar();
     },
     async deleteAvatar() {
+      if (!this.user.avatarurl)
+        return;
+
       let imageId = this.user.avatarurl.split('/');
       imageId = imageId[imageId.length - 1];
 

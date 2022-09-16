@@ -457,6 +457,9 @@ export default {
       await this.savePreview();
     },
     async deletePreview() {
+      if (!this.previewUrl)
+        return;
+
       let imageId = this.previewUrl.split('/');
       imageId = imageId[imageId.length - 1];
 
