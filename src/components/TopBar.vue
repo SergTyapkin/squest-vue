@@ -20,9 +20,8 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 
   border-bottom-left-radius 100px 60px
   border-bottom-right-radius 100px 60px
-  box-shadow 0 0 30px 0 rgba(17, 12, 1, 1) inset, rgba(231, 190, 28, 0.4) 0 0 8px 0
   overflow hidden
-  background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgba(84, 67, 24, 0.6) 50%, rgba(84, 67, 24, 0) 100%)
+  background linear-gradient(25deg, #070505 10%, #543616 50%, #070505 100%)
   animation open-navbar 3s ease forwards
   position relative
 
@@ -39,6 +38,8 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
     padding-left 15px
     padding-right 15px
     text-shadow textLightingLow
+    @media({mobile})
+      text-shadow none
 
   a
     text-decoration none
@@ -76,7 +77,10 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
     position absolute
     left 50%
     top 50%
+    text-shadow textLightingHigh
     transform translate(-50%, -50%)
+    @media({mobile})
+      text-shadow none
     .progress-container
       display flex
       align-items center
@@ -100,7 +104,8 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
     background linear-gradient(90deg, rgba(218, 165, 32, 0.7) 50%, rgba(0, 0, 0, 0.5) 53%) 0 0 no-repeat
     background-position-x calc(100% - 100% * var(--progress))
     background-size 200%
-    box-shadow rgba(231, 190, 28, 0.7) 0 0 5px 0
+    //box-shadow rgba(231, 190, 28, 0.7) 0 0 5px 0
+    border mix(empColor5, transparent, 30%) 1px solid
     transition background-position-x ease 3s
 
 
@@ -147,7 +152,9 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 
 <template>
   <div class="navbar absolute-wrapper">
-    <div class="center text-lighting progress">
+    <div class="progressbar" :style="`--progress: ${newProgress / 100}`"></div>
+
+    <div class="center progress">
       <div v-if="$store.state.user.isLogined" class="progress-container">
         <vue3autocounter
             ref='counter'
@@ -163,9 +170,9 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
         ></vue3autocounter>
         <span class="text-small info">Прогресс прохождения</span>
       </div>
-      <span v-else>SQuest</span>
+      <span v-else>SQ</span>
     </div>
-    <div class="progressbar" :style="`--progress: ${newProgress / 100}`"></div>
+
     <router-link :to="`/quests`" class="left side-item opacity-in delayedBig">Квесты</router-link>
     <router-link :to="`/profile`" class="right side-item opacity-in delayedBig">
       <span>

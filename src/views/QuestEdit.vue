@@ -90,8 +90,11 @@
       <div class="fields-container">
         <FloatingInput v-model="title" title="Название"></FloatingInput>
         <div>
-          <label class="text-big">Описание <span></span></label>
-          <textarea class="text scrollable" rows="5" v-model="description"></textarea>
+          <label class="text-big">Описание</label>
+          <div class="info text-small">Можно использовать Markdown-оформление, вставлять ссылки и загружать фото</div>
+          <MarkdownRedactor ref="redactor" @change="changePreview" v-model="description"></MarkdownRedactor>
+          <label class="text-big">Превью</label>
+          <MarkdownRenderer ref="renderer"></MarkdownRenderer>
         </div>
 
         <div class="image-fields">
@@ -102,7 +105,7 @@
               <img v-if="previewUrl" class="preview-image" :src="previewUrl" alt="preview">
               <div v-else class="preview-image default text-big-xx">SQ</div>
             </div>
-            <div class="button rounded delete-button" @click="deletePreview">
+            <div v-if="previewUrl" class="button rounded delete-button" @click="deletePreviewClick">
               <img src="../res/trash.svg" alt="delete">
             </div>
           </div>
@@ -184,13 +187,16 @@ import AddableList from "../components/AddableList/AddableList.vue";
 import QRGenerator from "../components/QRGenerator.vue";
 import FloatingButton from "../components/FloatingButton.vue";
 import {closeRoll, openRoll} from "../utils/show-hide";
-import {deepClone, hashSHA256} from "../utils/utils";
-import {getImageAsDataURL} from "@korolion/get-image-as-dataurl";
+import {deepClone} from "../utils/utils";
 import ImageUploader from "../utils/imageUploader";
-import {BASE_URL_PATH} from "../constants";
+import MarkdownRedactor from "../components/MarkdownRedactor.vue";
+import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 
 export default {
-  components: {FloatingButton, QRGenerator, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
+  components: {
+    MarkdownRenderer,
+    MarkdownRedactor,
+    FloatingButton, QRGenerator, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
 
   data() {
     return {
@@ -229,12 +235,17 @@ export default {
     }
 
     await this.getQuestInfo();
+    this.$refs.renderer.update(this.description);
     this.getBranches();
     if (!this.helper)
       this.getHelpers();
   },
 
   methods: {
+    changePreview(text) {
+      this.$refs.renderer.update(text);
+    },
+
     async getQuestInfo() {
       this.loading = true;
       const questInfo = await this.$api.getQuestInfo(this.id);
@@ -429,10 +440,12 @@ export default {
       }
       this.$popups.success('Сохранено', 'Информация сохранена');
       window.onbeforeunload = null;
+      this.edited = false;
       this.$router.push('/quests/my');
     },
 
     onChange() {
+      window.onbeforeunload = () => true;
       this.edited = true;
     },
 

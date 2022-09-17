@@ -2,7 +2,7 @@ import { createApp } from 'vue'
 
 import App from './App.vue'
 import Store from './Store.js'
-import createVueRouter, {BASE_URL_PATH} from './Router.js'
+import createVueRouter from './Router.js'
 import Api from "./Api";
 
 import './styles/buttons.styl';

@@ -5,19 +5,6 @@ input-box-shadow = 0 0 15px 0 rgb(24, 19, 3) inset, 0 0 10px 0 rgba(162, 116, 14
 input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
 
 
-// Floating placeholders
-.input-like
-input
-  all unset
-  width 100%
-  padding 4px 10px
-  color textColor1
-  border-bottom 1px solid border-color
-  box-sizing border-box
-  transition all 0.2s
-  font-size 16px
-  font-family Arial
-
 .floating-input-fields
   position relative
   input:not([type=checkbox]) + label
@@ -32,10 +19,14 @@ input
     top -16px
     left 4px
     font-size 14px
+  input
+    text-align center
   input.left
     text-align left
+    border-left none
   input.right
     text-align right
+    border-right none
 .floating-input-fields.error
   .input-like
   input
@@ -58,28 +49,6 @@ input
       padding 10px
     .info
       margin 5px 0
-
-  textarea
-  input
-  .input-area
-    padding 10px
-    font-size 1rem
-    color textColor1
-    border 1px solid colorShadow
-    transition all 0.3s ease
-    border-radius 3px
-    box-sizing border-box
-    background input-bg
-    box-shadow input-box-shadow
-
-  textarea:focus
-  input[type=text]:focus
-  input[type=email]:focus
-  input[type=password]:focus
-    outline 0
-    border-color empColor1
-    box-shadow  0 0 10px 0 rgb(179, 139, 38) inset, 0 0 15px 0 rgba(162, 116, 14, 0.8)
-
 
 
 @supports (-webkit-appearance: none) or (-moz-appearance: none) {
@@ -115,7 +84,6 @@ input
   }
   input[type=checkbox]:checked {
     --b: var(--active);
-    --bc: var(--active);
     --d-o: .3s;
     --d-t: .6s;
     --d-t-e: cubic-bezier(.2, .85, .32, 1.2);
@@ -127,7 +95,6 @@ input
   }
   input[type=checkbox]:disabled:checked {
     --b: var(--disabled-inner);
-    --bc: var(--border);
   }
   input[type=checkbox]:disabled + label {
     cursor: not-allowed;
@@ -207,45 +174,45 @@ input
   //input[type=radio]:checked {
   //    --s: .5;
   //}
-
-  .radio {
-    padding: 4px;
-    border-radius: 3px;
-    box-shadow: input-box-shadow;
-    background: input-bg;
-    position: relative;
-  }
-
-  .radio input {
-    margin-left 0
-    margin-right 0
-    width 45%
-    box-sizing border-box
-    color textColor3
-    transition all 0.3s ease
-    appearance: none;
-    outline: none;
-    border: none;
-    cursor: pointer;
-    border-radius: 2px;
-    padding: 3px 8px;
-    background: linear-gradient(colorNo 0%, empColor1 50%, colorYes 90%) no-repeat;
-    background-size 100% 200%
-    background-position-y 0
-    box-shadow inset 0 0 5px colorShadow
-  }
-
-  .radio input:checked {
-    color textColor1
-    background-position-y 100%
-  }
-
-  .radio input:before {
-    content: attr(label);
-    display: inline-block;
-    text-align: center;
-    width: 100%;
-  }
+  //
+  //.radio {
+  //  padding: 4px;
+  //  border-radius: 3px;
+  //  box-shadow: input-box-shadow;
+  //  background: input-bg;
+  //  position: relative;
+  //}
+  //
+  //.radio input {
+  //  margin-left 0
+  //  margin-right 0
+  //  width 45%
+  //  box-sizing border-box
+  //  color textColor3
+  //  transition all 0.3s ease
+  //  appearance: none;
+  //  outline: none;
+  //  border: none;
+  //  cursor: pointer;
+  //  border-radius: 2px;
+  //  padding: 3px 8px;
+  //  background: linear-gradient(colorNo 0%, empColor1 50%, colorYes 90%) no-repeat;
+  //  background-size 100% 200%
+  //  background-position-y 0
+  //  box-shadow inset 0 0 5px colorShadow
+  //}
+  //
+  //.radio input:checked {
+  //  color textColor1
+  //  background-position-y 100%
+  //}
+  //
+  //.radio input:before {
+  //  content: attr(label);
+  //  display: inline-block;
+  //  text-align: center;
+  //  width: 100%;
+  //}
 
 }
 </style>
@@ -260,7 +227,7 @@ input
         switch: type === 'checkbox',
       }"
     >
-    <label class="text-big-xx">{{ title }}</label>
+    <label class="text-big-x">{{ title }}</label>
     <div class="info text-small-x">
       <slot></slot>
     </div>
@@ -280,7 +247,7 @@ export default {
       default: "off"
     },
     textAlign: {
-      default: "center"
+      default: "left"
     },
     disabled: Boolean,
     info: String,

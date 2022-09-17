@@ -1,26 +1,12 @@
 <style lang="stylus" scoped>
 @require '../../styles/constants.styl'
 
-borderColorInputs = textColor5
-borderColorInputsFocus = textColor2
-
-input-box-shadow = 0 0 15px 0 rgb(24, 19, 3) inset, 0 0 10px 0 rgba(162, 116, 14, 0.7)
-input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
-
-
 hr
   margin 0
 
 .profile-plate
-  margin-top 50px
-  margin-left auto
-  margin-right auto
-  padding 20px 30px 30px 30px
-  width 100%
-  max-width 460px
+  padding 5px 30px 30px 30px
   border-radius 150px 150px 10px 10px / 100px 100px 10px 10px
-  background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgb(88, 58, 24) 50%, rgba(84, 67, 24, 0) 100%) 50% 50% no-repeat
-  box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.7), 0 0 15px 0 rgba(34, 28, 4, 0.4) inset
 
   .info-container
     .top-container
@@ -41,21 +27,12 @@ hr
     //.position:hover
     //  .info
     //    max-height 20px
-//    .avatar
 
 
     .username
       margin-top 20px
-      background none
-      outline none
-      border none
-      transition all 0.2s ease
       padding 5px
       padding-top 2px
-      text-align center
-      width 100%
-    .username:focus
-      box-shadow input-box-shadow
 
   .quest-statistics
     padding 10px
@@ -65,37 +42,8 @@ hr
       line-height 30px
 
 
-
-input[type=submit]
-input[type=button]
-input[type=submit]
-  all unset
-  width 100%
-  color textColor1
-  box-sizing border-box
-  font-family Arial
-  padding 10px
-  font-size 1rem
-  border 1px solid colorShadow
-  border-bottom 1px solid border-color
-  border-radius 3px
-  background input-bg
-  box-shadow input-box-shadow
-  background linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(90, 56, 25, 0.7) 50%, rgba(55, 43, 16, 0.4) 100%) 50% 50% no-repeat
-  text-align center
-  border-color empColor3
-  cursor pointer
-  transition all 0.2s ease
-input[type=button]:hover
-input[type=submit]:hover
-  box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 15px rgb(255, 235, 164)
-
 .logout
   width 100%
-  margin-top 20px
-
-.fields-container
-  margin-top 30px
 
 .another-user-info
   margin-top 5px
@@ -163,7 +111,7 @@ input[type=submit]:hover
     <div class="profile-page">
       <TopButtons arrows clickable :buttons="buttons"></TopButtons>
 
-      <div class="profile-plate">
+      <Form class="profile-plate">
         <div>
           <div class="info-container">
             <div class="top-container">
@@ -213,18 +161,18 @@ input[type=submit]:hover
             Ветка: <router-link :to="`/quest?id=${user.chosenquestid}`">{{ user.chosenbranch }}</router-link>
           </div>
 
-          <Form v-if="yours" ref="form" no-bg
+          <FormExtended v-if="yours" ref="form" no-bg
                 :fields="[
                   { title: 'ТВОЁ ИМЯ', jsonName: 'name' },
                   { title: 'ТВОЙ E-mail', jsonName: 'email', type: 'email'},
                 ]"
                 submit-text="Изменить данные"
                 @submit="changeData"
-          ></Form>
+          ></FormExtended>
         </div>
 
         <div v-if="yours" ref="passwordFormContainer" class="roll-active closed">
-          <Form ref="passwordForm" no-bg no-submit
+          <FormExtended ref="passwordForm" no-bg no-submit
                 :fields="[
                     { title: 'Старый пароль', jsonName: 'oldPassword', type: 'password'},
                     { title: 'Новый пароль', jsonName: 'newPassword', type: 'password'},
@@ -232,14 +180,14 @@ input[type=submit]:hover
                   ]"
                 submit-text="Сменить пароль"
                 @submit="changePassword"
-          ></Form>
+          ></FormExtended>
         </div>
         <div v-if="yours" class="submit-container" @click.prevent="clickOnChangePassword">
           <input type="submit" value="Сменить пароль">
         </div>
 
         <button v-if="yours" class="text-middle button bg outline rounded logout" @click="logOut">Выйти</button>
-      </div>
+      </Form>
 
       <router-link v-if="yours && user.isAdmin" :to="`/admin`" class="admin-button text-big-x button rounded outline">На админскую</router-link>
     </div>
@@ -249,7 +197,8 @@ input[type=submit]:hover
 
 <script>
 import TopBar from "/src/components/TopBar.vue";
-import Form from "/src/components/FormExtended.vue";
+import Form from "/src/components/Form.vue";
+import FormExtended from "/src/components/FormExtended.vue";
 import FloatingInput from "../../components/FloatingInput.vue";
 import {isClosedRoll, openRoll} from "../../utils/show-hide";
 import TopButtons from "../../components/TopButtons.vue";
@@ -259,7 +208,7 @@ import {BASE_URL_PATH} from "../../constants";
 import ImageUploader from "../../utils/imageUploader";
 
 export default {
-  components: {CircleLoading, TopButtons, FloatingInput, TopBar, Form},
+  components: {CircleLoading, TopButtons, FloatingInput, TopBar, FormExtended, Form},
 
   data() {
     return {

@@ -1,6 +1,13 @@
 <style lang="stylus">
 @require '../styles/constants.styl'
 
+._markdown_renderer
+  display block
+  background colorShadowLight
+  padding 20px
+  font-size 16px
+  font-family Arial
+
 // Decoration for html tags inside messages
 code-decoration-background = bgColor2
 code-decoration-border-radius = 2px
@@ -12,7 +19,7 @@ blockquote-decoration-offset = 25px
 list-decoration-margin = 5px 0
 list-decoration-offset = 40px
 list-decoration-color = bgColor2
-p-decoration-margin = 3px 0
+p-decoration-margin = 5px 0
 img-decoration-margin = 0
 
 code
@@ -39,7 +46,7 @@ img
 </style>
 
 <template>
-  <div v-html="html" class="link"></div>
+  <div v-html="html" class="link _markdown_renderer"></div>
 </template>
 
 <script>

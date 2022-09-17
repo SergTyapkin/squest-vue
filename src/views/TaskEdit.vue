@@ -5,9 +5,6 @@
   margin-top 0
   max-width unset
 
-.renderer
-  display block
-
 .qr-gen
   margin 10px 0
 
@@ -40,7 +37,7 @@
           <div class="info text-small">Можно использовать Markdown-оформление, вставлять ссылки и загружать фото</div>
           <MarkdownRedactor ref="redactor" @change="changePreview" v-model="description"></MarkdownRedactor>
           <label class="text-big">Превью</label>
-          <MarkdownRenderer ref="renderer" class="renderer input-like"></MarkdownRenderer>
+          <MarkdownRenderer ref="renderer"></MarkdownRenderer>
         </div>
 
 

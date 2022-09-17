@@ -2,7 +2,7 @@
 @require '../styles/constants.styl'
 
 // quest-background = linear-gradient(100deg, #775939 0%, rgba(116, 73, 33, 0.9) 40%, rgba(90, 56, 25, 0.7) 65%, transparent 100%) no-repeat
-quest-background = linear-gradient(100deg, #6b4f33 0%, rgb(116, 73, 33) 40%, rgba(90, 56, 25, 0.95) 65%, transparent 100%) no-repeat
+quest-background = linear-gradient(100deg, #6c421e 0%, rgb(116, 73, 33) 40%, rgba(90, 56, 25, 0.9) 60%, transparent 100%) no-repeat
 plate-height = 200px
 plate-width = 100%
 plate-max-width = 400px
@@ -10,7 +10,7 @@ plate-max-width = 400px
 .quest-preview
   display block
   transition all 0.2s ease
-  box-shadow 0 0 20px colorShadow, 0 0 15px 0 rgba(34, 28, 4, 0.4) inset
+  box-shadow 0 0 20px colorShadowDark
   margin 20px
   margin-bottom 0
   width plate-width
@@ -38,7 +38,7 @@ plate-max-width = 400px
     background quest-background
     background-size 150%
     background-position-x 80%
-    transition all 0.2s ease
+    transition all 0.5s cubic-bezier(0.2, 0.65, 0.11, 0.99);
     width 100%
     height 100%
     position relative

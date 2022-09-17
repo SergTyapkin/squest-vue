@@ -1,9 +1,11 @@
 <style lang="stylus" scoped>
 @import "../styles/constants.styl"
 
-input-box-shadow = 0 0 15px 0 rgb(24, 19, 3) inset, 0 0 10px 0 rgba(162, 116, 14, 0.7)
 input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
 
+
+.form
+  padding 20px
 
 .description
   padding 20px
@@ -102,7 +104,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     <CircleLoading v-if="loading"></CircleLoading>
     <MarkdownRenderer ref="markdown" class="description text-middle app-flex-filler"></MarkdownRenderer>
 
-    <div v-if="isEnd" class="text-big-xx congratulations">
+    <div v-if="isEnd" class="text-big-x congratulations">
       <CircleLoading v-if="statsLoading" class="preview-image"></CircleLoading>
 
       <div>Вы прошли ветку!</div>
@@ -130,7 +132,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       ]"></TopButtons>
     </div>
 
-    <Form v-else-if="!isQrAnswer" ref="form"
+    <Form v-else-if="!isQrAnswer" ref="form" class="form"
           :title="taskQuestion"
           :fields="[
             { title: 'ОТВЕТ', info: 'РеГиСтР не важен', jsonName: 'answer' },

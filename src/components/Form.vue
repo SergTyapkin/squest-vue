@@ -1,8 +1,9 @@
 <style lang="stylus">
 @require '../styles/constants.styl'
 
-input-box-shadow = 0 0 15px 0 rgb(24, 19, 3) inset, 0 0 10px 0 rgba(162, 116, 14, 0.7)
 input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
+//form-bg = linear-gradient(20deg, bgColor0 0%, empColor6 50%, empColor4 110%) 50% 50% no-repeat
+form-bg = linear-gradient(20deg, bgColor1 0%, empColor6 50%, bgColor2 100%) 50% 50% no-repeat
 
 textarea
 input
@@ -14,18 +15,33 @@ input
   font-family Arial
   padding 10px
   font-size 1rem
-  border 1px solid colorShadow
   transition all 0.2s ease
+textarea
+  background colorShadowDark
   border-radius 3px
-  background input-bg
-  box-shadow input-box-shadow
-
-
+  border transparent 1px solid
+textarea:focus
+  border empColor2 1px solid
+input
+.input-like
+  background colorShadowLight-x
+  border-radius 5px 5px 0 0
+  border-bottom 1px solid empColor3
+  border-right 100px solid transparent
+  border-left 100px solid transparent
+textarea:focus
+input:focus
+.input-like:focus
+  background colorShadowDark
+  border-width 1px
 .form:not(.no-bg)
-  background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgb(88, 58, 24) 50%, rgba(84, 67, 24, 0) 100%) 50% 50% no-repeat
-  box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.7), 0 0 15px 0 rgba(34, 28, 4, 0.4) inset
+  background form-bg
+  box-shadow 3px 3px 10px black
   padding 40px 30px
   margin-top 100px
+  @media ({mobile})
+    box-shadow none
+    border 1px solid bgColor1
 .form
   margin-left auto
   margin-right auto
@@ -52,7 +68,7 @@ input
       > input[type=text]
       > input[type=password],
       > input[type=email],
-      display block
+        display block
         width 100%
         padding 10px
       .info
@@ -79,9 +95,14 @@ input
     text-align center
     border-color empColor3
     cursor pointer
+    border 1px empColor3 solid
+    border-radius 3px
+    box-shadow inset 0 0 0 transparent, 5px 5px 10px colorShadowDark
+    @media({mobile})
+      box-shadow none
   input[type=button]:hover
   input[type=submit]:hover
-    box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 15px rgb(255, 235, 164)
+    box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 10px rgb(255, 235, 164)
 
 
 .form

@@ -18,6 +18,7 @@ li
     padding 10px
     box-sizing border-box
     float left
+    border-left none
   > .radio
     margin-left 20px
     margin-right 5px

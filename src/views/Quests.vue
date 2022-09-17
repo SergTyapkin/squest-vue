@@ -3,9 +3,12 @@
 
 .quest-container
   width 100%
+  padding 20px
+  padding-bottom 40px
+  padding-top 0
   display flex
   flex-wrap wrap
-  justify-content space-around
+  justify-content space-evenly
 
 .float-button
   z-index 10

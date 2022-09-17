@@ -5,7 +5,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
 
 .quest-preview
   background linear-gradient(20deg, rgba(90, 56, 25, 0.9) 0%, rgba(55, 43, 16, 0.5) 100%) 50% 50% no-repeat
-  box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.8), 0 0 15px 0 rgba(34, 28, 4, 0.5) inset
+  border-bottom empColor3 1px solid
   display block
   transition all 0.2s ease
   margin-bottom 0
@@ -60,8 +60,8 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
       margin-bottom 30px
 
     .description
-      color textColor1
-      font-size 16px
+      background none
+      padding 0
 
     .branches
       z-index 10
@@ -122,7 +122,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
           <div class="text-small author">Автор: {{authorName}}</div>
 
           <div class="text-small">Описание: </div>
-          <div class="text-small description">{{description}}</div>
+          <MarkdownRenderer class="description" ref="renderer"></MarkdownRenderer>
         </div>
       </div>
     </div>
@@ -142,9 +142,10 @@ import ArrowListElement from "../components/ArrowListElement.vue";
 import TopButtons from "../components/TopButtons.vue";
 import CircleLoading from "../components/loaders/CircleLoading.vue";
 import {secondsToStrTime} from "../utils/utils";
+import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 
 export default {
-  components: {CircleLoading, TopButtons, ArrowListElement},
+  components: {MarkdownRenderer, CircleLoading, TopButtons, ArrowListElement},
 
   data() {
     return {
@@ -176,11 +177,8 @@ export default {
       return;
     }
 
-    if (this.id)
-      this.getQuestInfo();
-    else
-      await this.getQuestInfo();
-
+    await this.getQuestInfo();
+    this.$refs.renderer.update(this.description);
     this.getBranches();
   },
 
@@ -217,7 +215,7 @@ export default {
       this.islinkactive = questInfo.islinkactive;
       this.author = questInfo.author;
       this.authorName = questInfo.authorname;
-      this.previewUrl = questInfo.previewUrl;
+      this.previewUrl = questInfo.previewurl;
       this.time = questInfo.time;
       this.rating = questInfo.rating;
 

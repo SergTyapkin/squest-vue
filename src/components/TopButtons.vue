@@ -1,10 +1,11 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
 
-title-background = linear-gradient(160deg,rgba(188,116,39,.3),rgba(31,26,9,.2)) no-repeat
+title-background = linear-gradient(160deg, #3b2516, #1f1313) no-repeat
 
 _side-items-background = "rgba(188,116,39, 0.3) 0%, rgba(31,26,9,0.2) 100%) no-repeat"
 side-items-background-left = unquote("linear-gradient(160deg, " + _side-items-background)
+side-items-background = linear-gradient(70deg, #1f1313, #3b2516 50%, #1f1313 100%) no-repeat
 side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-background)
 
 
@@ -15,10 +16,10 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
   align-content stretch
   justify-content center
   transition all 0.3s ease
+  box-shadow 0 10px 10px 0 black
   > *
     width 100%
     padding 20px
-    box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.8), 0 0 15px 0 rgba(34, 28, 4, 0.5) inset
     transition all 0.3s ease
     text-shadow textLightingNormal2
     color textColor1
@@ -40,14 +41,17 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
   > *
     cursor pointer
     opacity 0.8
+    background side-items-background
+    border-bottom transparent 2px solid
+    //border-right black 5px solid
   > *:hover
     width 150%
-    box-shadow 0 0 20px 0 rgba(198, 165, 91, 0.8), 0 0 10px 0 rgba(59, 50, 17, 0.3) inset
     color textColor1
     letter-spacing 2px
     transition all 0.3s ease
     text-shadow 0 0 50px #f5f0f0, 0 0 10px #eaacbf, 0 0 15px #eaa093
     opacity 1
+    border-bottom empColor1 2px solid
 
   > *
     display flex
@@ -57,6 +61,7 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
   > *:last-child
     justify-content flex-end
     background side-items-background-right
+    border-right none
   > *:first-child
     justify-content flex-start
     background side-items-background-left

@@ -13,10 +13,8 @@ thumb-size = 15px
   width 400px
   max-height 400px
   transition filter 0.5s ease
-  box-shadow 0 0 5px colorShadow
 .qr-image.invert
   filter invert(1)
-  box-shadow 0 0 5px white
 .qr-image.blured
   filter blur(10px)
   overflow hidden
@@ -37,6 +35,8 @@ thumb-size = 15px
 .container-bg
   background #00000044
   box-shadow 0 0 10px colorShadow
+  @media ({mobile})
+    box-shadow none
 
 .switch-container
   padding 10px 10px
@@ -67,6 +67,9 @@ thumb-size = 15px
       border-radius: thumb-size;
       overflow hidden
       box-shadow: inset 0 0 5px empColor1;
+      @media ({mobile})
+        background linear-gradient(170deg, bgColor2, bgColor3)
+        box-shadow none
     .slider::-webkit-slider-thumb
       -webkit-appearance none
       width thumb-size

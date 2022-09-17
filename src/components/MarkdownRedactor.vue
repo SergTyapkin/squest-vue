@@ -9,9 +9,11 @@ svg-buttons-fill-color = textColor1
 svg-stroke-width = 1px
 
 // Markdowns
-markdown-panel-shadow-offset = 2px
-markdown-panel-shadow-color = colorShadow
-markdown-panel-margin = 2px
+markdown-panel-shadow-margin = 5px
+markdown-panel-shadow-offset = 3px 3px
+markdown-panel-shadow-blur = 5px
+markdown-panel-shadow-color = black
+markdown-panel-margin = 0px
 markdown-panel-border-radius = extra-small 0 extra-small 0
 markdown-panel-font-size = small-font-size
 markdown-panel-height = 20px
@@ -30,7 +32,7 @@ markdown-button-svg-photo-fill = transparent
 .markdown
   position relative
   textarea
-    padding-top markdown-panel-height + markdown-panel-shadow-offset
+    padding-top markdown-panel-height + markdown-panel-shadow-margin
 
 .markdown-panel
   position absolute
@@ -38,7 +40,7 @@ markdown-button-svg-photo-fill = transparent
   left 0
   display flex
   overflow hidden
-  box-shadow 0 markdown-panel-shadow-offset markdown-panel-shadow-offset markdown-panel-shadow-color
+  box-shadow markdown-panel-shadow-offset markdown-panel-shadow-blur markdown-panel-shadow-color
   margin markdown-panel-margin
   border-radius markdown-panel-border-radius
   font-family Arial

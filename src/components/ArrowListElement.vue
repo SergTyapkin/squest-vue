@@ -6,7 +6,10 @@ li
   padding 0
   margin 0
   width 100%
-  box-shadow 0 0 10px 0 rgba(162, 116, 14, 200), 0 0 15px 0 rgb(34, 28, 4, 125) inset
+  border-color empColor6
+  border-style solid
+  border-width 0
+  border-top-width 1px
   transition all 0.2s ease
   cursor pointer
   background linear-gradient(20deg, rgba(121, 86, 34, 0.3) 0%, rgba(55, 43, 16, 0) 100%) -50% 50% no-repeat
@@ -40,10 +43,16 @@ li
     padding 0
     margin 0
 
+li:last-child
+  border-bottom-width 1px
 li.selected,
 li:hover
-  box-shadow 0 0 20px 0 rgb(198, 165, 91, 200), 0 0 10px 0 rgb(59, 50, 17, 80) inset
+li:hover + li
+  border-color empColor1
+li.inside:hover
+  border-left-width 20px
   > .all-info
+    border-left-width 0
     color textColor1
     letter-spacing 2px
     text-shadow 0 0 50px #f5f0f0, 0 0 10px #eaacbf, 0 0 15px #eaa093
@@ -59,9 +68,10 @@ li.selected
 
 li.inside
   > .all-info
-    padding-left 20px
-    background linear-gradient(91deg,#533d0f,transparent) no-repeat
+    //padding-left 20px
+    //background linear-gradient(91deg,#533d0f,transparent) no-repeat
     background-size 25px 100%
+    border-left colorShadowDark 20px solid
 
 li.bg
   background-size 100%
