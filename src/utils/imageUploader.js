@@ -4,17 +4,19 @@ import {hashSHA256} from "./utils";
 export default class ImageUploader {
     attachedImages = {};
     popups = null;
+    cropSize = null;
     apiUpload = (dataURL) => {};
 
-    constructor(popups, apiUpload) {
+    constructor(popups, apiUpload, cropSize=null) {
         this.popups = popups
         this.apiUpload = apiUpload;
+        this.cropSize = cropSize;
     }
 
     async upload() {
         let dataURL;
         try {
-            dataURL = await getImageAsDataURL(null, undefined, 2);
+            dataURL = await getImageAsDataURL(this.cropSize, undefined, Infinity);
         } catch (err) {
             this.popups.error("Ошибка загрузки изображения", err.toString());
             return;

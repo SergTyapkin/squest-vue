@@ -5,7 +5,7 @@ title-background = linear-gradient(160deg, #3b2516, #1f1313) no-repeat
 
 _side-items-background = "rgba(188,116,39, 0.3) 0%, rgba(31,26,9,0.2) 100%) no-repeat"
 side-items-background-left = unquote("linear-gradient(160deg, " + _side-items-background)
-side-items-background = linear-gradient(70deg, #1f1313, #3b2516 50%, #1f1313 100%) no-repeat
+side-items-background = title-background
 side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-background)
 
 
@@ -23,6 +23,8 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
     transition all 0.3s ease
     text-shadow textLightingNormal2
     color textColor1
+    @media ({mobile})
+      padding 10px
     > .text-small,
     > .text-big,
     > .text-big-x,
@@ -43,7 +45,6 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
     opacity 0.8
     background side-items-background
     border-bottom transparent 2px solid
-    //border-right black 5px solid
   > *:hover
     width 150%
     color textColor1

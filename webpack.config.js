@@ -16,7 +16,10 @@ module.exports = {
     plugins: [
         new HtmlWebpackPlugin({
             template: 'src/index.html',
-            favicon: 'src/res/favicon.ico'
+            favicon: 'src/res/favicon.ico',
+            meta: {
+                'theme-color': '#38240b',
+            }
         }),
         new VueLoaderPlugin(),
         new webpack.DefinePlugin({

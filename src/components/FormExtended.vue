@@ -6,7 +6,7 @@
 <template>
   <Form @submit="submit" ref="form" :class="{'no-bg': noBg}">
     <div class="info-container">
-      <div class="text-big-xx">{{ title }}</div>
+      <div class="text-big-xx" :class="{'text-big': smallTitle}">{{ title }}</div>
       <div class="text-small">{{ description }}</div>
     </div>
 
@@ -68,6 +68,10 @@ export default {
       default: false
     },
     noSubmit: {
+      type: Boolean,
+      default: false
+    },
+    smallTitle: {
       type: Boolean,
       default: false
     }

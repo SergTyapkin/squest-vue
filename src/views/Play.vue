@@ -5,12 +5,16 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
 
 .form
+  margin-top 20px
   padding 20px
 
 .description
   padding 20px
+  padding-top 0
   font-size 16px
   color textColor2
+  font-family Arial
+  border-bottom empColor6 1px solid
 .restart-button
   > *
     text-align left
@@ -104,7 +108,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     <CircleLoading v-if="loading"></CircleLoading>
     <MarkdownRenderer ref="markdown" class="description text-middle app-flex-filler"></MarkdownRenderer>
 
-    <div v-if="isEnd" class="text-big-x congratulations">
+    <div v-if="isEnd" class="text-big-xx congratulations">
       <CircleLoading v-if="statsLoading" class="preview-image"></CircleLoading>
 
       <div>Вы прошли ветку!</div>
@@ -139,6 +143,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
           ]"
           submit-text="Ответить"
           @submit="checkAnswer"
+          small-title
     ></Form>
 
     <div v-else class="qr-form">

@@ -14,6 +14,9 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
   .preview-image
     position absolute
     inset 0
+    object-fit cover
+    width 100%
+    height 100%
   .preview-image.default
     text-align right
     padding-right 20px

@@ -29,19 +29,22 @@ input
   border-bottom 1px solid empColor3
   border-right 100px solid transparent
   border-left 100px solid transparent
+  @media ({mobile})
+    border-right-width 10px
+    border-left-width 10px
 textarea:focus
 input:focus
 .input-like:focus
   background colorShadowDark
-  border-width 1px
+  border-right-width 0
+  border-left-width 0
+  //border-color empColor1
 .form:not(.no-bg)
   background form-bg
   box-shadow 3px 3px 10px black
   padding 40px 30px
   margin-top 100px
-  @media ({mobile})
-    box-shadow none
-    border 1px solid bgColor1
+
 .form
   margin-left auto
   margin-right auto
@@ -98,8 +101,6 @@ input:focus
     border 1px empColor3 solid
     border-radius 3px
     box-shadow inset 0 0 0 transparent, 5px 5px 10px colorShadowDark
-    @media({mobile})
-      box-shadow none
   input[type=button]:hover
   input[type=submit]:hover
     box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 10px rgb(255, 235, 164)

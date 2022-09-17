@@ -116,7 +116,7 @@ hr
           <div class="info-container">
             <div class="top-container">
               <div class="rating">
-                <div>★ {{ user.rating }}</div>
+                <div>★{{ user.rating }}</div>
                 <div class="info text-small-x">рейтинг</div>
               </div>
 
@@ -135,7 +135,7 @@ hr
               </div>
 
               <div class="position">
-                <div># {{ user.position }}</div>
+                <div>{{ user.position }}</div>
                 <div class="info text-small-x">позиция</div>
               </div>
             </div>
@@ -212,7 +212,7 @@ export default {
 
   data() {
     return {
-      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage),
+      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage, 80),
 
       username: '',
 

@@ -21,10 +21,10 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     font-size 14px
   input
     text-align center
-  input.left
+  input:not([type=checkbox]).left
     text-align left
     border-left none
-  input.right
+  input:not([type=checkbox]).right
     text-align right
     border-right none
 .floating-input-fields.error
@@ -73,6 +73,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     border: 1px solid var(--bc, var(--border));
     background: var(--b, var(--background));
     transition: background 0.3s, border-color 0.3s, box-shadow 0.2s;
+    box-shadow: 0 0 5px 0 black inset
   }
   input[type=checkbox]:after {
     content: "";
