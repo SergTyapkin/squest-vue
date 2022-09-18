@@ -66,10 +66,12 @@ export default {
       this.$refs.form.loading = false;
 
       if (response.ok_) {
+        this.$refs.form.loading = true;
         await this.$store.dispatch('GET_USER');
-        await this.$router.push('/profile');
+        this.$refs.form.loading = false;
         this.$popups.success('Аккаунт создан!');
         this.$refs.form.errors = {};
+        this.$router.push('/profile');
         return;
       }
 

@@ -9,17 +9,18 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   position relative
   input:not([type=checkbox]) + label
     position absolute
-    top 12px
+    top 22px
     left 8px
     transition all 0.2s ease
     font-size 16px
     pointer-events none
   input:not([type=checkbox]):focus + label
   input:not([type=checkbox]):not(:placeholder-shown) + label
-    top -16px
+    top -6px
     left 4px
     font-size 14px
   input
+    margin-top 10px
     text-align center
   input:not([type=checkbox]).left
     text-align left
@@ -31,8 +32,11 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   .input-like
   input
     border-color error-color
+    border-right none
   .error-text
-    margin-left 80px
+    position absolute
+    top -6px
+    left 80px
 
 .floating-input-fields
   > div

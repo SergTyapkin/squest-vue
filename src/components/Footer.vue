@@ -55,11 +55,11 @@ footer
         </div>
       </a>
       <a href="mailto:tyapkin2002@mail.ru" target="_blank">
-        <img src="../res/email-logo.svg" alt="vk">
+        <img src="../res/email-logo.svg" alt="mail">
         <div class="description">Tyapkin2002@mail.ru</div>
       </a>
       <a href="https://t.me/tyapkin_s" target="_blank">
-        <img src="../res/telegram-logo.svg" alt="vk">
+        <img src="../res/telegram-logo.svg" alt="tg">
         <div class="description">t.me/tyapkin_s</div>
       </a>
     </footer>

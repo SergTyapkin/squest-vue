@@ -53,7 +53,9 @@ export default {
       this.$refs.form.loading = false;
 
       if (response.ok_) {
+        this.$refs.form.loading = true;
         await this.$store.dispatch('GET_USER');
+        this.$refs.form.loading = false;
         this.$popups.success('Прекрасно входит...', 'и замечательно выходит');
         this.$refs.form.errors = {};
         this.$router.push('/profile');

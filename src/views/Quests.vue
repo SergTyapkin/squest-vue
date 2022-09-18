@@ -9,6 +9,9 @@
   display flex
   flex-wrap wrap
   justify-content space-evenly
+  @media ({mobile})
+    padding-left 0
+    padding-right 0
 
 .float-button
   z-index 10
