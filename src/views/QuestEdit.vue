@@ -38,6 +38,9 @@
       .preview-image
         position absolute
         inset 0
+        object-fit cover
+        width 100%
+        height 100%
       .preview-image.default
         text-align right
         padding-right 20px

@@ -6,6 +6,7 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 .flex-root
   .side-item
     padding 20px
+    margin-bottom 30px
 
     ul
       margin 0

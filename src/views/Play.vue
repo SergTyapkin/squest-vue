@@ -8,9 +8,10 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   margin-top 20px
   padding 20px
 
+.top-buttons
+  margin-bottom 0
 .description
   padding 20px
-  padding-top 0
   font-size 16px
   color textColor2
   font-family Arial
@@ -101,7 +102,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
 <template>
   <div class="flex-root">
-    <TopButtons bg :buttons="[
+    <TopButtons class="top-buttons" bg :buttons="[
         {name: taskTitle, description: `Квест: ${questTitle} <br> Ветка: ${branchTitle}`},
     ]"></TopButtons>
 

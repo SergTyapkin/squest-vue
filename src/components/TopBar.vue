@@ -77,10 +77,8 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
     position absolute
     left 50%
     top 50%
-    text-shadow textLightingHigh
     transform translate(-50%, -50%)
-    @media({mobile})
-      text-shadow none
+    background radial-gradient(#f54da199, transparent 70%);
     .progress-container
       display flex
       align-items center

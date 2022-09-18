@@ -10,54 +10,58 @@ footer
   margin 0
   margin-top 80px
   padding 0
-  padding-bottom 15px
+  padding-bottom 10px
 
   background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgba(84, 67, 24, 0.6) 50%, rgba(84, 67, 24, 0) 100%) no-repeat
   border-top solid 2px
   border-color empColor2
-  box-shadow 0 3px 10px 0 rgba(17, 12, 1, 1) inset, rgba(231, 190, 28, 0.4) 0 0 8px 0
+  box-shadow rgba(231, 190, 28, 0.5) 0 0 8px 0
   list-style none
 
-  li
-    display inline-block
+  a
+    display inline-flex
+    align-items center
     padding 10px 15px
 
     .title
-      text-shadow textLightingHigh2
-      font-size 18px
+      font-size 14px
       font-family Arial, monospace
       color textColor1
+    img
+      width 30px
+      display compact
+      margin-right 5px
+      transition transform 0.2s ease
     .description
-      text-shadow textLightingNormal2
       font-size 12px
       font-family Arial, monospace
       color textColor4
-
-  a
-    color inherit
-  a:visited
-    color visited-link-color
+      transition color 0.2s ease
+  a:hover
+    img
+      transform scale(1.1)
+    .description
+      color textColor2
 </style>
 
 <template>
   <div>
     <footer>
-      <li>
-        <div class="title">За подсказками:</div>
-        <div class="description"><a href="https://vk.com/squest_studio" target="_blank">vk.com/squest_studio</a></div>
-      </li>
-      <li>
-        <div class="title">E-mail:</div>
+      <a href="https://vk.com/squest_studio" target="_blank">
+        <img src="../res/vk-logo.svg" alt="vk">
+        <div>
+          <div class="title">За подсказками: </div>
+          <div class="description">vk.com/squest_studio</div>
+        </div>
+      </a>
+      <a href="mailto:tyapkin2002@mail.ru" target="_blank">
+        <img src="../res/email-logo.svg" alt="vk">
         <div class="description">Tyapkin2002@mail.ru</div>
-      </li>
-      <li>
-        <div class="title">VK: <small>(лучше сюда)</small> </div>
-        <div class="description"><a href="https://vk.com/0pointer" target="_blank">vk.com/0pointer</a></div>
-      </li>
-      <li>
-        <div class="title">Telegram:</div>
-        <div class="description"><a href="https://t.me/tyapkin_s" target="_blank">t.me/tyapkin_s</a></div>
-      </li>
+      </a>
+      <a href="https://t.me/tyapkin_s" target="_blank">
+        <img src="../res/telegram-logo.svg" alt="vk">
+        <div class="description">t.me/tyapkin_s</div>
+      </a>
     </footer>
   </div>
 </template>
