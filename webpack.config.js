@@ -44,7 +44,7 @@ module.exports = {
         },
         proxy: {
             '/squest/api': {
-                target: 'http://localhost:9000',
+                target: 'http://squest-api.herokuapp.com',
                 pathRewrite: { '^/squest': '' },
                 secure: false,
                 changeOrigin: false

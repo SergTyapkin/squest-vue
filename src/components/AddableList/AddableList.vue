@@ -31,6 +31,7 @@
                 :can-delete="canDelete"
                 :placeholder="placeholder"
                 :class="{'last-child': (item.confirmed) && ((idx + 1 >= modelValue.length) || (!modelValue[idx + 1].confirmed))}"
+                @keydown.tab="() => {if (idx === modelValue.length - 1) addItem();}"
       ></ListItem>
     </ul>
 
