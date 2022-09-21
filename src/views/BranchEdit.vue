@@ -90,6 +90,8 @@ export default {
       questId: '',
 
       edited: false,
+
+      base_url_path: this.$base_url_path,
     }
   },
 

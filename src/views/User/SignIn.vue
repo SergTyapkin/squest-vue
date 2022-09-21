@@ -18,7 +18,7 @@ logo-size = 140px
           ]"
           submit-text="Погнали"
           @submit="signIn"
-    >Нужен аккаунт? <router-link to='/signup' class="link">Создать</router-link>
+    >Нужен аккаунт? <router-link :to="base_url_path + `/signup`" class="link">Создать</router-link>
     </Form>
   </div>
 </template>
@@ -29,6 +29,12 @@ import Form from "../../components/FormExtended.vue";
 
 export default {
   components: {Form},
+
+  data() {
+    return {
+      base_url_path: this.$base_url_path,
+    }
+  },
 
   methods: {
     validate(username, password) {

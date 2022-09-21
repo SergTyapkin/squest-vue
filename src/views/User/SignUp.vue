@@ -17,7 +17,7 @@
           ]"
           submit-text="Погнали"
           @submit="signUp"
-    >Уже есть аккаунт? <router-link to='/signin' class="link">Войти</router-link>
+    >Уже есть аккаунт? <router-link :to="base_url_path + `/signin`" class="link">Войти</router-link>
     </Form>
   </div>
 </template>
@@ -25,10 +25,15 @@
 
 <script>
 import Form from "../../components/FormExtended.vue";
-import User from "/src/models/user";
 
 export default {
   components: {Form},
+
+  data() {
+    return {
+      base_url_path: this.$base_url_path,
+    }
+  },
 
   methods: {
     validate(username, password, passwordConfirm, email, name) {

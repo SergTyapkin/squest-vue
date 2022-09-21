@@ -51,7 +51,6 @@
                      v-model="branches"
                      :can-delete="false"
                      placeholder="Название ветки"
-                     :action-to="(branchId) => `/quest/branch/edit?id=${branchId}`"
         ></AddableList>
         <AddableList title="Соавторы"
                      description="Хотите делать квест вместе? Просто добавьте никнеймы соавторов ниже и они получат доступ к редактированию квеста"
@@ -84,8 +83,6 @@ import CircleLoading from "../components/loaders/CircleLoading.vue";
 import Form from "../components/Form.vue";
 import FloatingInput from "../components/FloatingInput.vue";
 import AddableList from "../components/AddableList/AddableList.vue";
-import {closeRoll, openRoll} from "../utils/show-hide";
-import {deepClone} from "../utils/utils";
 
 export default {
   components: {AddableList, FloatingInput, Form, CircleLoading, TopButtons},
@@ -107,6 +104,8 @@ export default {
       ispublished: false,
 
       edited: false,
+
+      base_url_path: this.$base_url_path,
     }
   },
 

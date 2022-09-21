@@ -150,6 +150,7 @@ import Modal from "/src/components/vue-plugins/Modal.vue";
 import Popups from "/src/components/vue-plugins/Popups.vue";
 import CircleLoading from "/src/components/loaders/CircleLoading.vue";
 import TopBar from "./components/TopBar.vue";
+import {BASE_URL_PATH} from "./constants";
 
 
 export default {
@@ -187,6 +188,7 @@ export default {
 
     global.$user = this.$store.state.user;
     global.$url = 'https://sergtyapkin.herokuapp.com/squest';
+    global.$base_url_path = BASE_URL_PATH;
   },
 };
 </script>

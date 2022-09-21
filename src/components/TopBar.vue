@@ -25,14 +25,14 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
   animation open-navbar 3s ease forwards
   position relative
 
-  a
+  .side-item
     letter-spacing 2px
     color textColor3
     text-transform uppercase
     transition all 0.4s ease
     text-shadow none
 
-  a:hover
+  .side-item:hover
     letter-spacing 5px
     color textColor2
     padding-left 15px
@@ -40,9 +40,6 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
     text-shadow textLightingLow
     @media({mobile})
       text-shadow none
-
-  a
-    text-decoration none
 
   .side-item
     padding 5px 10px
@@ -71,6 +68,7 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
   // background-size 100% 1px
 
   .progress
+    display block
     margin-top -5px
     font-size 30px
     font-family counter-font
@@ -152,7 +150,7 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
   <div class="navbar absolute-wrapper">
     <div class="progressbar" :style="`--progress: ${newProgress / 100}`"></div>
 
-    <div class="center progress">
+    <router-link class="center progress" :to="base_url_path + `/play`">
       <div v-if="$store.state.user.isLogined" class="progress-container">
         <vue3autocounter
             ref='counter'
@@ -169,10 +167,10 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
         <span class="text-small info">Прогресс прохождения</span>
       </div>
       <span v-else>SQ</span>
-    </div>
+    </router-link>
 
-    <router-link :to="`/quests`" class="left side-item opacity-in delayedBig">Квесты</router-link>
-    <router-link :to="`/profile`" class="right side-item opacity-in delayedBig">
+    <router-link :to="base_url_path + `/quests`" class="left side-item opacity-in delayedBig">Квесты</router-link>
+    <router-link :to="base_url_path + `/profile`" class="right side-item opacity-in delayedBig">
       <span>
         <span v-if="!$store.state.user.isLogined">Войти</span>
         <span v-else>{{ $store.state.user.username }}</span>
@@ -192,6 +190,8 @@ export default {
     return {
       prevProgress: 0,
       newProgress: 0,
+
+      base_url_path: this.$base_url_path
     };
   },
 

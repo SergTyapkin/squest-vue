@@ -50,6 +50,7 @@
         color textColor3
         background mix(bgColor2, transparent)
     .image-container::before
+    .image-container::after
       content 'Изменить'
       font-family Arial
       padding-left 20px
@@ -64,15 +65,20 @@
       opacity 0
       transition opacity 0.3s ease
       cursor pointer
+    .image-container::after
+      content 'Отпустите, чтобы загрузить'
     .image-container:hover::before
       opacity 1
-
 
     .delete-button
       padding 5px
       margin 10px
       img
         width 40px
+
+.image-loader.in-drag
+  .image-container::after
+    opacity 1
 </style>
 
 <template>
@@ -104,10 +110,15 @@
           <div class="text-big">Картинка-превью</div>
 
           <div class="flex-container">
-            <div class="image-container" @click="updatePreview">
-              <img v-if="previewUrl" class="preview-image" :src="previewUrl" alt="preview">
-              <div v-else class="preview-image default text-big-xx">SQ</div>
-            </div>
+            <DragNDropLoader class="image-loader" @load="updatePreview"
+                             :crop-size="cropSize"
+                             :compress-size="compressSize"
+            >
+              <div class="image-container" @click="updatePreview(undefined)">
+                <img v-if="previewUrl" class="preview-image" :src="previewUrl" alt="preview">
+                <div v-else class="preview-image default text-big-xx">SQ</div>
+              </div>
+            </DragNDropLoader>
             <div v-if="previewUrl" class="button rounded delete-button" @click="deletePreviewClick">
               <img src="../res/trash.svg" alt="delete">
             </div>
@@ -194,16 +205,22 @@ import {deepClone} from "../utils/utils";
 import ImageUploader from "../utils/imageUploader";
 import MarkdownRedactor from "../components/MarkdownRedactor.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
+import {IMAGE_MAX_RES} from "../constants";
+import DragNDropLoader from "../components/DragNDropLoader.vue";
 
 export default {
   components: {
+    DragNDropLoader,
     MarkdownRenderer,
     MarkdownRedactor,
     FloatingButton, QRGenerator, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
 
   data() {
     return {
-      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage),
+      cropSize: null,
+      compressSize: IMAGE_MAX_RES,
+
+      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage, this.cropSize, this.compressSize),
 
       prevBranches: [],
       prevHelpers: [],
@@ -227,6 +244,8 @@ export default {
       helper: false,
 
       edited: false,
+
+      base_url_path: this.$base_url_path,
     }
   },
 
@@ -453,9 +472,9 @@ export default {
     },
 
 
-    async updatePreview() {
+    async updatePreview(dataURL) {
       // this.loading = true;
-      const imageId = await this.ImageUploader.upload();
+      const imageId = await this.ImageUploader.upload(dataURL);
       // this.loading = false;
 
       await this.deletePreview();

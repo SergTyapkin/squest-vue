@@ -8,7 +8,7 @@
 
 <template>
   <Form class="form" title="Ошибка 404" description="Страница не найдена" no-submit>
-    <router-link :to="`/profile`" class="title">На главную</router-link>
+    <router-link :to="base_url_path + `/profile`" class="title">На главную</router-link>
   </Form>
 </template>
 
@@ -17,5 +17,11 @@ import Form from "../components/FormExtended.vue";
 
 export default {
   components: {Form},
+
+  data() {
+    return {
+      base_url_path: this.$base_url_path,
+    }
+  }
 }
 </script>

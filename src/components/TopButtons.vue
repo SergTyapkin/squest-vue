@@ -76,7 +76,7 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
 
 <template>
   <div class="title-container text-big" :class="{bg: bg, clickable: clickable, 'low-opacity': lowOpacity}">
-    <router-link :to="(button.to || '')" v-for="(button, idx) in buttons" :class="{'no-link': button.to === undefined}"
+    <router-link :to="(base_url_path + button.to || '')" v-for="(button, idx) in buttons" :class="{'no-link': button.to === undefined}"
                   @click="$emit('click', Object.assign(button, {idx}))">
       <Arrow left v-if="arrows && idx === 0" size="20px"></Arrow>
       <div>
@@ -121,6 +121,12 @@ export default {
     big: {
       type: Boolean,
       default: false,
+    }
+  },
+
+  data() {
+    return {
+      base_url_path: this.$base_url_path
     }
   }
 };

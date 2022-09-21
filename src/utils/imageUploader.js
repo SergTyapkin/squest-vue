@@ -1,31 +1,31 @@
 import {getImageAsDataURL} from "@korolion/get-image-as-dataurl";
-import {hashSHA256} from "./utils";
 
 export default class ImageUploader {
-    attachedImages = {};
     popups = null;
     cropSize = null;
+    compressSize = null;
     apiUpload = (dataURL) => {};
 
-    constructor(popups, apiUpload, cropSize=null) {
+    constructor(popups, apiUpload, cropSize=null, compressSize=null) {
         this.popups = popups
         this.apiUpload = apiUpload;
         this.cropSize = cropSize;
+        this.compressSize = compressSize;
     }
 
-    async upload() {
+    async getUserImage() {
         let dataURL;
         try {
-            dataURL = await getImageAsDataURL(this.cropSize, undefined, Infinity);
+            dataURL = await getImageAsDataURL(this.cropSize, this.compressSize, undefined, Infinity);
         } catch (err) {
             this.popups.error("Ошибка загрузки изображения", err.toString());
-            return;
         }
+        return dataURL;
+    }
 
-        const existsId = this.attachedImages[await hashSHA256(dataURL)];
-        if (existsId) {
-            return existsId;
-        }
+    async upload(dataURL) {
+        if (dataURL === undefined)
+            dataURL = await this.getUserImage();
 
         const response = await this.apiUpload(dataURL);
         if (!response.ok_) {
@@ -34,7 +34,6 @@ export default class ImageUploader {
         }
         this.popups.success('Загружено', 'Картинка загружена');
         const id = response.id;
-        this.attachedImages[await hashSHA256(dataURL)] = id;
 
         return id;
     }

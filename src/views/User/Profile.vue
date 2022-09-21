@@ -87,6 +87,7 @@ hr
 
 .avatar-container
   .avatar-div::before
+  .avatar-div::after
     content 'Изменить'
     font-family Arial
     padding-left 5px
@@ -101,9 +102,15 @@ hr
     opacity 0
     transition opacity 0.3s ease
     cursor pointer
+  .avatar-div::after
+    content 'Отпустите, чтобы загрузить'
 .avatar-container
   .avatar-div:hover::before
     opacity 1
+.avatar-container
+  .image-loader.in-drag
+    .avatar-div::after
+      opacity 1
 </style>
 
 <template>
@@ -123,10 +130,15 @@ hr
               <CircleLoading v-if="loading"></CircleLoading>
 
               <div v-else-if="yours" class="avatar-container">
-                <div class="avatar-div" @click.stop="updateAvatar">
-                  <img v-if="user.avatarurl" class="avatar" :src="user.avatarurl" alt="avatar">
-                  <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
-                </div>
+                <DragNDropLoader class="image-loader" @load="updateAvatar"
+                                 :crop-size="cropSize"
+                                 :compress-size="compressSize"
+                >
+                  <div class="avatar-div" @click.stop="updateAvatar(undefined)">
+                    <img v-if="user.avatarurl" class="avatar" :src="user.avatarurl" alt="avatar">
+                    <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
+                  </div>
+                </DragNDropLoader>
                 <img v-if="user.avatarurl" class="delete-avatar" src="../../res/trash.svg" alt="delete" @click.stop="deleteAvatarClick">
               </div>
               <div v-else class="avatar-div">
@@ -150,15 +162,15 @@ hr
 
           <div class="quest-statistics text-middle">
             <div class="quest">Пройдено веток: {{ user.completedbranches }}</div>
-            <router-link class="quest link" :to="`/quests?userId=${user.id}`">Создано квестов: {{ user.createdquests }}</router-link>
+            <router-link class="quest link" :to="base_url_path + `/quests?userId=${user.id}`">Создано квестов: {{ user.createdquests }}</router-link>
           </div>
 
           <hr>
 
           <div class="now-playing text-small link" v-if="user.chosenquest && user.chosenbranch">
             Сейчас играет в: <br>
-            Квест: <router-link :to="`/quest?id=${user.chosenquestid}`">{{ user.chosenquest }}</router-link> <br>
-            Ветка: <router-link :to="`/quest?id=${user.chosenquestid}`">{{ user.chosenbranch }}</router-link>
+            Квест: <router-link :to="base_url_path + `/quest?id=${user.chosenquestid}`">{{ user.chosenquest }}</router-link> <br>
+            Ветка: <router-link :to="base_url_path + `/quest?id=${user.chosenquestid}`">{{ user.chosenbranch }}</router-link>
           </div>
 
           <FormExtended v-if="yours" ref="form" no-bg
@@ -189,7 +201,7 @@ hr
         <button v-if="yours" class="text-middle button bg outline rounded logout" @click="logOut">Выйти</button>
       </Form>
 
-      <router-link v-if="yours && user.isAdmin" :to="`/admin`" class="admin-button text-big-x button rounded outline">На админскую</router-link>
+      <router-link v-if="yours && user.isAdmin" :to="base_url_path + `/admin`" class="admin-button text-big-x button rounded outline">На админскую</router-link>
     </div>
   </div>
 </template>
@@ -204,15 +216,19 @@ import {isClosedRoll, openRoll} from "../../utils/show-hide";
 import TopButtons from "../../components/TopButtons.vue";
 import CircleLoading from "../../components/loaders/CircleLoading.vue";
 import {nextTick} from "vue";
-import {BASE_URL_PATH} from "../../constants";
+import {BASE_URL_PATH, IMAGE_MAX_RES, IMAGE_PROFILE_MAX_RES} from "../../constants";
 import ImageUploader from "../../utils/imageUploader";
+import DragNDropLoader from "../../components/DragNDropLoader.vue";
 
 export default {
-  components: {CircleLoading, TopButtons, FloatingInput, TopBar, FormExtended, Form},
+  components: {DragNDropLoader, CircleLoading, TopButtons, FloatingInput, TopBar, FormExtended, Form},
 
   data() {
     return {
-      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage, 80),
+      cropSize: IMAGE_PROFILE_MAX_RES,
+      compressSize: IMAGE_MAX_RES,
+
+      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage, this.cropSize, this.compressSize),
 
       username: '',
 
@@ -223,6 +239,8 @@ export default {
       loading: false,
 
       buttons: [],
+
+      base_url_path: this.$base_url_path,
     }
   },
 
@@ -360,9 +378,9 @@ export default {
     },
 
 
-    async updateAvatar() {
+    async updateAvatar(dataURL) {
       // this.loading = true;
-      const imageId = await this.ImageUploader.upload();
+      const imageId = await this.ImageUploader.upload(dataURL);
       // this.loading = false;
 
       await this.deleteAvatar();
