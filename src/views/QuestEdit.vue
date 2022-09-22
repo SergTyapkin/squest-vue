@@ -84,7 +84,7 @@
 <template>
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'Назад', description: 'К твоим квестам', to: '/quests/my'},
+        {name: 'Назад', description: 'К твоим квестам', to: base_url_path + '/quests/my'},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -102,12 +102,12 @@
           <label class="text-big">Описание</label>
           <div class="info text-small">Можно использовать Markdown-оформление, вставлять ссылки и загружать фото</div>
           <MarkdownRedactor ref="redactor" @change="changePreview" v-model="description"></MarkdownRedactor>
-          <label class="text-big">Превью</label>
+          <label class="text-big">Превью описания</label>
           <MarkdownRenderer ref="renderer"></MarkdownRenderer>
         </div>
 
         <div class="image-fields">
-          <div class="text-big">Картинка-превью</div>
+          <div class="text-big">Картинка на карточке</div>
 
           <div class="flex-container">
             <DragNDropLoader class="image-loader" @load="updatePreview"

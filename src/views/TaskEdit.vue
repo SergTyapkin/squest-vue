@@ -22,7 +22,7 @@
 <template>
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'Назад', description: `К ветке: <b>${branchTitle}</b>` /* <br> Квеста: <b>${questTitle}</b>` */, to: `/quest/branch/edit?id=${branchId}`},
+        {name: 'Назад', description: `К ветке: <b>${branchTitle}</b>` /* <br> Квеста: <b>${questTitle}</b>` */, to: base_url_path + `/quest/branch/edit?id=${branchId}`},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -35,7 +35,7 @@
         <div>
           <label class="text-big">Описание</label>
           <div class="info text-small">Можно использовать Markdown-оформление, вставлять ссылки и загружать фото</div>
-          <MarkdownRedactor ref="redactor" @change="changePreview" v-model="description"></MarkdownRedactor>
+          <MarkdownRedactor :rows="10" ref="redactor" @change="changePreview" v-model="description"></MarkdownRedactor>
           <label class="text-big">Превью</label>
           <MarkdownRenderer ref="renderer"></MarkdownRenderer>
         </div>
@@ -137,6 +137,8 @@ export default {
       branchId: '',
 
       edited: false,
+
+      base_url_path: this.$base_url_path,
     }
   },
 

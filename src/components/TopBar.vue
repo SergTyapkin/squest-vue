@@ -182,6 +182,7 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 
 <script>
 import Vue3autocounter from 'vue3-autocounter';
+import {BASE_URL_PATH} from "../constants";
 
 export default {
   components: {Vue3autocounter},
@@ -191,7 +192,7 @@ export default {
       prevProgress: 0,
       newProgress: 0,
 
-      base_url_path: this.$base_url_path
+      base_url_path: BASE_URL_PATH
     };
   },
 

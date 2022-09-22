@@ -133,7 +133,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
       <TopButtons @click="restart" class="buttons" bg clickable arrows big :buttons="[
           { name: 'Начать заново', description: 'Прогресс сохранится' },
-          { name: 'Завершить квест', to: '/quests'},
+          { name: 'Завершить квест', to: base_url_path + '/quests'},
       ]"></TopButtons>
     </div>
 
@@ -196,6 +196,8 @@ export default {
 
       timeSpent: 0,
       ratingVote: 0,
+
+      base_url_path: this.$base_url_path,
     }
   },
 

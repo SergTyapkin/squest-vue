@@ -7,7 +7,7 @@
 <template>
   <div>
     <TopButtons clickable arrows low-opacity :buttons="[
-        {name: 'Назад', description: 'В профиль', to: '/profile'},
+        {name: 'Назад', description: 'В профиль', to: base_url_path + '/profile'},
     ]"></TopButtons>
 
 
@@ -34,6 +34,8 @@ export default {
     return {
       loading: false,
       ratings: [],
+
+      base_url_path: this.$base_url_path,
     }
   },
 

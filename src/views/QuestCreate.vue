@@ -29,7 +29,7 @@
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
         {name: 'Назад', description: 'К списку квестов',
-        to: $router.options.history.state.back ? $router.options.history.state.back : '/quests'},
+        to: $router.options.history.state.back ? $router.options.history.state.back : base_url_path + '/quests'},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">

@@ -12,7 +12,7 @@ textarea
 <template>
   <div>
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'На главную', description: `Не стесняйся, проходи`, to: `/`},
+        {name: 'На главную', description: `Не стесняйся, проходи`, to: base_url_path + `/`},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -37,5 +37,11 @@ import TopButtons from "../components/TopButtons.vue";
 
 export default {
   components: { TopButtons, Form },
+
+  data() {
+    return {
+      base_url_path: this.$base_url_path,
+    }
+  }
 };
 </script>

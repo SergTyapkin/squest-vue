@@ -10,7 +10,7 @@
 <template>
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'Назад', description: `К квесту: <b>${questTitle}</b>`,to: `/quest/edit?id=${questId}`},
+        {name: 'Назад', description: `К квесту: <b>${questTitle}</b>`,to: base_url_path + `/quest/edit?id=${questId}`},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">

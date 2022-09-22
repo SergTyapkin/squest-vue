@@ -98,7 +98,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 5
   <div>
     <TopButtons clickable arrows low-opacity :buttons="[
         {name: 'Назад', description: 'К списку квестов',
-        to: $router.options.history.state.back ? $router.options.history.state.back : '/quests'},
+        to: $router.options.history.state.back ? $router.options.history.state.back : base_url_path + '/quests'},
     ]"></TopButtons>
 
     <div class="quest-preview">
@@ -170,10 +170,14 @@ export default {
       rating: '-',
       time: '-',
       played: 0,
+
+      base_url_path: this.$base_url_path,
     }
   },
 
   async mounted() {
+    console.log(this.$router.options.history.state);
+
     if (this.id === undefined && this.uid === undefined) {
       this.$popups.error("Квест не найден", "Не указаны id или uid квеста");
       this.$router.push('/quests')

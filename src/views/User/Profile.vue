@@ -256,9 +256,9 @@ export default {
         this.user = this.$user;
 
         this.buttons = [
-          {name: 'В игру', to: '/play'},
-          {name: 'Мои квесты', to: '/quests/my'},
-          {name: 'Рейтинги', to: '/ratings'},
+          {name: 'В игру', to: this.base_url_path + '/play'},
+          {name: 'Мои квесты', to: this.base_url_path + '/quests/my'},
+          {name: 'Рейтинги', to: this.base_url_path + '/ratings'},
         ];
         return;
       }
@@ -266,14 +266,14 @@ export default {
       await this.getAnotherUser();
       this.username = this.user.username;
       const prevPage = this.$router.options.history.state.back;
-      if (prevPage && prevPage !== '/ratings') {
+      if (prevPage && prevPage !== this.base_url_path + '/ratings') {
         this.buttons = [
           {name: 'Назад', to: prevPage},
-          {name: 'Рейтинги', to: '/ratings'},
+          {name: 'Рейтинги', to: this.base_url_path + '/ratings'},
         ];
       } else {
         this.buttons = [
-          {name: 'Рейтинги', to: '/ratings'},
+          {name: 'Рейтинги', to: this.base_url_path + '/ratings'},
         ];
       }
     },
