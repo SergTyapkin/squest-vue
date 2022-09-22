@@ -25,6 +25,7 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
     color textColor1
     @media ({mobile})
       padding 10px
+      min-height 60px
     > .text-small,
     > .text-big,
     > .text-big-x,

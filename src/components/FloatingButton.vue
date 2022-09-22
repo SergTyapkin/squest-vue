@@ -5,6 +5,7 @@ float-button-height = 50px
 image-width = 30px
 padding = 5px
 .float-button
+  z-index 10
   cursor pointer
   overflow hidden
   position fixed

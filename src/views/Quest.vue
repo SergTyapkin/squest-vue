@@ -176,8 +176,6 @@ export default {
   },
 
   async mounted() {
-    console.log(this.$router.options.history.state);
-
     if (this.id === undefined && this.uid === undefined) {
       this.$popups.error("Квест не найден", "Не указаны id или uid квеста");
       this.$router.push('/quests')

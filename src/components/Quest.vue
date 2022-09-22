@@ -129,10 +129,24 @@ plate-max-width = 400px
 .author-fields:hover
   span
     color textColor1
+
+
+.quest-preview.placeholder
+  > *
+    opacity 0
+  background linear-gradient(-60deg, #26123188 20%, #45274888 50%, #26123188 80%)
+  animation placeholder-bg infinite 3s cubic-bezier(0.34, 0.66, 0.67, 0.4)
+  pointer-events none
+
+@keyframes placeholder-bg
+  from
+    background-position-x 0px
+  to
+    background-position-x 400px
 </style>
 
 <template>
-  <router-link class="quest-preview" :to="base_url_path + `/quest?id=${id}`" :style="`height: ${rootHeight}px`">
+  <router-link class="quest-preview" :to="base_url_path + `/quest?id=${id}`" :class="{placeholder: isPlaceholder}">
     <img class="preview-image" :src="previewurl" alt="preview" v-if="previewurl">
 
     <div class="preview-image default text-big-xx" v-else>SQ</div>
@@ -146,9 +160,9 @@ plate-max-width = 400px
         <div class="text-container">
           <div class="title"
                :class="{
-                  'text-big-x': title.length < 20,
-                  'text-big': title.length >= 20 && title.length < 40,
-                  'text-middle': title.length >= 40
+                  'text-big-x': title?.length < 20,
+                  'text-big': title?.length >= 20 && title?.length < 40,
+                  'text-middle': title?.length >= 40
                 }"
           >
             <span>{{title}}</span>
@@ -193,24 +207,26 @@ export default {
   components: {CircleLoading, ArrowListElement},
 
   props: {
-    id: String,
+    id: Number,
     title: String,
     description: String,
-    rating: Number,
-    time: Number,
     previewurl: String,
-    author: String,
+    author: Number,
     authorname: String,
     islinkactive: Boolean,
     ispublished: Boolean,
-    canedit: Boolean
+    canedit: Boolean,
+
+    isPlaceholder: {
+      type: Boolean,
+      default: false,
+    },
   },
 
   data() {
     return {
       branchesOpened: false,
       branchesGotten: false,
-      timeUnits: 'мин',
 
       loading: false,
       branches: [],
@@ -219,14 +235,13 @@ export default {
       rating: '-',
       played: 0,
 
-      rootHeight: null,
-
       base_url_path: this.$base_url_path,
     }
   },
 
   mounted() {
-    this.getQuestStats();
+    if (!this.isPlaceholder)
+      this.getQuestStats();
   },
 
   methods: {
@@ -251,7 +266,6 @@ export default {
 
     closeBranches() {
       this.branchesOpened = false;
-      this.rootHeight = null;
     },
 
     async getQuestStats() {

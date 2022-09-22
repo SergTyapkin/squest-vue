@@ -165,12 +165,12 @@ export default {
 
   data() {
     return {
-      closed: this.$props.closed,
+      data_closed: this.$props.closed,
     }
   },
 
   mounted() {
-    if (!this.closed) {
+    if (!this.data_closed) {
       this.$refs?.arrow?.setDirection(this.$refs.arrow.directions.bottom);
     }
   },
@@ -181,7 +181,7 @@ export default {
       if (this.noClose)
         return;
 
-      if (this.closed) {
+      if (this.data_closed) {
         if (this.preserveClickOpen) {
           this.$emit('open');
           return;
@@ -197,12 +197,12 @@ export default {
     open() {
       openRoll(this.$refs.list);
       this.$refs?.arrow?.setDirection(this.$refs.arrow.directions.bottom);
-      this.closed = false;
+      this.data_closed = false;
     },
     close() {
       closeRoll(this.$refs.list);
       this.$refs?.arrow?.setDirection(this.$refs.arrow.directions.right);
-      this.closed = true;
+      this.data_closed = true;
     },
   },
 
