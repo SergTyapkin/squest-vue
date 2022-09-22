@@ -42,7 +42,10 @@
 import Quest from "../components/Quest.vue";
 import CircleLoading from "../components/loaders/CircleLoading.vue";
 
-const QUESTS_PLACEHOLDERS = 6;
+
+const QUEST_WIDTH = 420; //px
+const QUEST_HEIGHT = 220; //px
+const HEADER_HEIGHT = 200; //px
 
 export default {
   components: {CircleLoading, Quest},
@@ -55,7 +58,7 @@ export default {
     args: {
       type: Array,
       default: () => [],
-    }
+    },
   },
 
   data() {
@@ -66,7 +69,12 @@ export default {
   },
 
   async mounted() {
-    for (let i = QUESTS_PLACEHOLDERS; i > 0; i--) {
+    const placeholdersInRow = Math.floor(window.innerWidth / QUEST_WIDTH) || 1;
+    const placeholdersInCol = Math.ceil((window.innerHeight - HEADER_HEIGHT) / QUEST_HEIGHT);
+    const questsPlaceholdersCount = placeholdersInCol * placeholdersInRow;
+
+    console.log(questsPlaceholdersCount)
+    for (let i = questsPlaceholdersCount; i > 0; i--) {
       this.quests.push({isPlaceholder: true});
     }
 

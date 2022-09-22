@@ -136,6 +136,8 @@ plate-max-width = 400px
     opacity 0
   background linear-gradient(-60deg, #26123188 20%, #45274888 50%, #26123188 80%)
   animation placeholder-bg infinite 3s cubic-bezier(0.34, 0.66, 0.67, 0.4)
+  @media ({mobile})
+    animation none
   pointer-events none
 
 @keyframes placeholder-bg
