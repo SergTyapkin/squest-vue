@@ -18,7 +18,7 @@
 <template>
   <div>
     <label class="text-big">{{ title }} <span></span></label>
-    <div class="info text-small">{{ description }}</div>
+    <div class="info text-small" v-html="description"></div>
 
     <ul class="addable-list roll-active closed" ref="list">
       <ListItem v-for="(item, idx) in modelValue"

@@ -16,6 +16,7 @@ import Play from "/src/views/Play.vue";
 import Ratings from "/src/views/Ratings.vue";
 import Admin from "/src/views/Admin.vue";
 import FoundQR from "/src/views/FoundQR.vue";
+import RestorePassword from "./views/User/RestorePassword.vue";
 import {BASE_URL_PATH} from "./constants";
 
 
@@ -26,6 +27,7 @@ export default function createVueRouter(Store) {
         {path: BASE_URL_PATH + '/signin', component: SignIn, meta: {noLoginRequired: true}},
         {path: BASE_URL_PATH + '/signup', component: SignUp, meta: {noLoginRequired: true}},
         {path: BASE_URL_PATH + '/profile', component: Profile, meta: {loginRequired: true}},
+        {path: BASE_URL_PATH + '/password/restore', component: RestorePassword, meta: {noLoginRequired: true}},
 
         {path: BASE_URL_PATH + '/play', component: Play},
 

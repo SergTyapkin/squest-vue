@@ -16,6 +16,8 @@ export class Api extends ApiRequest {
     updateUser = (email, username, name) => this.put(`/user`, {email, username, name});
     updateUserAvatarUrl = (avatarUrl) => this.put(`/user`, {avatarUrl});
     updatePassword = (oldPassword, newPassword) => this.put(`/user/password`, {oldPassword, newPassword});
+    sendRestorePasswordEmail = (email) => this.post(`/user/password/restore`, {email});
+    restorePassword = (code, newPassword) => this.put(`/user/password/restore`, {code, newPassword});
 
     getPlay = () => this.get(`/task/play`);
     getAllQuests = () => this.get(`/quest`);

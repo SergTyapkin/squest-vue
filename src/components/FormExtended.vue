@@ -18,7 +18,9 @@
                      :type="field.type"
                      :error="errors[field.jsonName]"
                      v-model="values[field.jsonName]"
-      >{{ field.info }}
+      >
+        <router-link v-if="field.infoHref" :to="field.infoHref" class="link">{{ field.info }}</router-link>
+        <div v-else>{{ field.info }}</div>
       </FloatingInput>
     </div>
 
@@ -37,7 +39,6 @@
 import Form from "./Form.vue";
 import FloatingInput from "./FloatingInput.vue";
 import CircleLoading from './loaders/CircleLoading.vue';
-import {setTimedClass} from "../utils/utils";
 
 export default {
   components: {FloatingInput, CircleLoading, Form},
