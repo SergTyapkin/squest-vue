@@ -20,6 +20,16 @@ logo-size = 140px
           @submit="signIn"
     >Нужен аккаунт? <router-link :to="base_url_path + `/signup`" class="link">Создать</router-link>
     </Form>
+    <div class="text-middle">ИЛИ</div>
+    <Form ref="formEmailCode"
+          title="Вход по одноразовому коду" description="Можно не вспоминать пароль, а просто открыть почту"
+          :fields="[
+            { title: 'E-mail', autocomplete: 'on', jsonName: 'email', disabled: emailSent},
+            { title: 'Одноразовый код', autocomplete: 'on', jsonName: 'code', disabled: !emailSent},
+          ]"
+          :submit-text="emailSent ? 'Войти' : 'Выслать код'"
+          @submit="signInByEmailCode"
+    ></Form>
   </div>
 </template>
 
@@ -32,6 +42,8 @@ export default {
 
   data() {
     return {
+      emailSent: false,
+
       base_url_path: this.$base_url_path,
     }
   },
@@ -62,7 +74,7 @@ export default {
         this.$refs.form.loading = true;
         await this.$store.dispatch('GET_USER');
         this.$refs.form.loading = false;
-        this.$popups.success('Прекрасно входит...', 'и замечательно выходит');
+        this.$popups.success('Отличный вход!', 'Ну привет...');
         this.$refs.form.errors = {};
         this.$router.push('/profile');
         return;
@@ -76,8 +88,53 @@ export default {
         return;
       }
 
-      this.$popups.error("Не удалось войти в аккаунт", 'Произошла неизвестная ошибка!');
+      this.$popups.error("Не удалось войти в аккаунт", response.info || 'Произошла неизвестная ошибка!');
     },
+
+    async signInByEmailCode({email, code}) {
+      if (code.length === 0) {
+        this.$refs.formEmailCode.loading = true;
+        const response = await this.$api.sendSignInEmail(email);
+        this.$refs.formEmailCode.loading = false;
+
+        if (response.ok_) {
+          this.$popups.success('Письмо выслано', 'Найдите одноразовый код на вашей почте');
+          this.$refs.formEmailCode.errors = {};
+          return;
+        }
+
+        if (response.status_ === 404) {
+          this.$refs.form.errors.email = 'Email не зарегистрирован';
+          this.$refs.form.showError();
+          return;
+        }
+
+        this.$popups.error('Не удалось выслать код', response.info || 'Неизвестная ошибка');
+        return;
+      }
+
+      this.$refs.formEmailCode.loading = true;
+      const response = await this.$api.signInByEmailCode(email, code);
+      this.$refs.formEmailCode.loading = false;
+
+      if (response.ok_) {
+        this.$refs.formEmailCode.loading = true;
+        await this.$store.dispatch('GET_USER');
+        this.$refs.formEmailCode.loading = false;
+        this.$popups.success('Отличный вход!', 'Ну привет...');
+        this.$refs.formEmailCode.errors = {};
+        this.$router.push('/profile');
+        return;
+      }
+
+      if (response.status_ === 401) {
+        this.$refs.formEmailCode.errors.code = 'Неверный одноразовый код';
+        this.$refs.form.showError();
+        return;
+      }
+
+      this.$popups.error('Не удалось выслать код', response.info || 'Неизвестная ошибка');
+    }
   }
 }
 </script>

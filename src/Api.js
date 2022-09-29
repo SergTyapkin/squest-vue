@@ -18,6 +18,8 @@ export class Api extends ApiRequest {
     updatePassword = (oldPassword, newPassword) => this.put(`/user/password`, {oldPassword, newPassword});
     sendRestorePasswordEmail = (email) => this.post(`/user/password/restore`, {email});
     restorePassword = (code, newPassword) => this.put(`/user/password/restore`, {code, newPassword});
+    sendSignInEmail = (email) => this.post(`/user/auth/code`, {email});
+    signInByEmailCode = (email, code) => this.post(`/user/auth/code`, {email, code});
 
     getPlay = () => this.get(`/task/play`);
     getAllQuests = () => this.get(`/quest`);

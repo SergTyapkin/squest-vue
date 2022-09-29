@@ -73,7 +73,6 @@ export default {
     const placeholdersInCol = Math.ceil((window.innerHeight - HEADER_HEIGHT) / QUEST_HEIGHT);
     const questsPlaceholdersCount = placeholdersInCol * placeholdersInRow;
 
-    console.log(questsPlaceholdersCount)
     for (let i = questsPlaceholdersCount; i > 0; i--) {
       this.quests.push({isPlaceholder: true});
     }
