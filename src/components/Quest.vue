@@ -171,7 +171,7 @@ plate-max-width = 400px
             <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
             <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
           </div>
-          <div class="text-small description">{{description}}</div>
+          <div class="text-small description" v-if="description">{{description.replace(/([#*_]\ ?|&lt;\w*&gt;)/g, '').slice(0, 80) + '...'}}</div>
         </div>
 
         <div class="statistics text-big-xx">
@@ -279,6 +279,14 @@ export default {
         this.played = questStatistics.played;
         this.rating = questStatistics.rating.toFixed(1);
         this.time = secondsToStrTime(questStatistics.time);
+      }
+    }
+  },
+
+  watch: {
+    isPlaceholder: function (from, to) {
+      if (from === false && to === true) {
+        this.getQuestStats();
       }
     }
   }

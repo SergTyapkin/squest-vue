@@ -1,7 +1,6 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
 
-
 </style>
 
 <template>
@@ -14,6 +13,7 @@
     <div class="container">
       <ArrowListElement class="ratings" ref="ratings" title="Рейтинг" closed open-on-set-elements
                         :elements="ratings"
+                        :numbered="true"
                         @click-inside="goToProfile"
       ></ArrowListElement>
     </div>
@@ -54,11 +54,11 @@ export default {
         return;
       }
 
-      this.ratings = ratings.ratings.map((rating) => {
+      this.ratings = ratings.ratings.map((rating, idx) => {
         return {
           id: rating.id,
           title: rating.username,
-          description: rating.rating,
+          description: '★' + rating.rating,
           actionText: 'в профиль',
           arrow: true,
           noClose: true,

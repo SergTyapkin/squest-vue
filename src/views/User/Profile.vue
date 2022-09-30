@@ -41,6 +41,14 @@ hr
       height 30px
       line-height 30px
 
+  .confirm-email-input
+    margin-bottom 20px
+    color empColor2
+    font-weight bold
+  .password-form-container
+    margin-bottom 0
+  .password-form-submit-container
+    margin-top 0
 
 .logout
   width 100%
@@ -135,14 +143,14 @@ hr
                                  :compress-size="compressSize"
                 >
                   <div class="avatar-div" @click.stop="updateAvatar(undefined)">
-                    <img v-if="user.avatarurl" class="avatar" :src="user.avatarurl" alt="avatar">
+                    <img v-if="user.avatarurl" class="avatar" :src="api_url + user.avatarurl" alt="avatar">
                     <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
                   </div>
                 </DragNDropLoader>
                 <img v-if="user.avatarurl" class="delete-avatar" src="../../res/trash.svg" alt="delete" @click.stop="deleteAvatarClick">
               </div>
               <div v-else class="avatar-div">
-                <img v-if="user.avatarurl" class="avatar" :src="user.avatarurl" alt="avatar">
+                <img v-if="user.avatarurl" class="avatar" :src="api_url + user.avatarurl" alt="avatar">
                 <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
               </div>
 
@@ -173,17 +181,22 @@ hr
             Ветка: <router-link :to="base_url_path + `/quest?id=${user.chosenquestid}`">{{ user.chosenbranch }}</router-link>
           </div>
 
-          <FormExtended v-if="yours" ref="form" no-bg
-                :fields="[
-                  { title: 'ТВОЁ ИМЯ', jsonName: 'name' },
-                  { title: 'ТВОЙ E-mail', jsonName: 'email', type: 'email'},
-                ]"
-                submit-text="Изменить данные"
-                @submit="changeData"
-          ></FormExtended>
+          <div v-if="yours">
+            <FormExtended ref="form" no-bg
+                  :fields="[
+                    { title: 'ТВОЁ ИМЯ', jsonName: 'name' },
+                    { title: 'ТВОЙ E-mail', jsonName: 'email', type: 'email', info: user.isConfirmed ? '<span style=\'color: #448c30\'>E-mail подтвержден</span>' : '<b style=\'color: #ff5b5b\'>ТВОЙ EMAIL НЕ ПОДТВЕРЖДЕН. ИЗ-ЗА ЭТОГО НЕДОСТУПНЫ МНОГИЕ ФУНКЦИИ СЕРВИСА</b>'},
+                  ]"
+                  :no-submit="true"
+            ></FormExtended>
+            <input v-if="!user.isConfirmed && !loadingConfirmEmail" type="submit" value="Подтвердить E-mail" class="confirm-email-input" @click="confirmEmailSendMessage">
+            <CircleLoading v-if="loadingConfirmEmail"></CircleLoading>
+
+            <input v-if="!$refs?.form?.loading" type="submit" value="Изменить данные" @click="changeData">
+          </div>
         </div>
 
-        <div v-if="yours" ref="passwordFormContainer" class="roll-active closed">
+        <div v-if="yours" ref="passwordFormContainer" class="roll-active closed password-form-container">
           <FormExtended ref="passwordForm" no-bg no-submit
                 :fields="[
                     { title: 'Старый пароль', jsonName: 'oldPassword', type: 'password'},
@@ -194,7 +207,7 @@ hr
                 @submit="changePassword"
           ></FormExtended>
         </div>
-        <div v-if="yours" class="submit-container" @click.prevent="clickOnChangePassword">
+        <div v-if="yours" class="password-form-submit-container" @click.prevent="clickOnChangePassword">
           <input type="submit" value="Сменить пароль">
         </div>
 
@@ -237,10 +250,12 @@ export default {
 
       user: {},
       loading: false,
+      loadingConfirmEmail: false,
 
       buttons: [],
 
       base_url_path: this.$base_url_path,
+      api_url: this.$api.apiUrl,
     }
   },
 
@@ -296,7 +311,12 @@ export default {
       return ok;
     },
 
-    async changeData({name, email}) {
+    async changeData() {
+      if (!await this.$modal.confirm("Изменение данных", "Если вы изменили E-mail, он станет неподтверждённым. Придётся подтвердать заново"))
+        return;
+
+      const name = this.$refs.form.values.name;
+      const email = this.$refs.form.values.email;
       const username = this.username;
       if (!this.validate(username, name, email))
         return;
@@ -423,6 +443,26 @@ export default {
         return;
       }
       this.$popups.success('Сохранено', 'Аватарка обновлена');
+    },
+
+    async confirmEmailSendMessage() {
+      this.loadingConfirmEmail = true;
+      const response = await this.$api.confirmEmailSendMessage();
+      this.loadingConfirmEmail = false;
+
+      if (response.ok_) {
+        this.$popups.success('Письмо выслано', 'Найдите ссылку для подтверждения на вашей почте');
+        this.$refs.form.errors = {};
+        return;
+      }
+
+      if (response.status_ === 404) {
+        this.$refs.form.errors.email = 'Email не зарегистрирован';
+        this.$refs.form.showError();
+        return;
+      }
+
+      this.$popups.error('Не удалось выслать код', response.info || 'Неизвестная ошибка');
     }
   },
 

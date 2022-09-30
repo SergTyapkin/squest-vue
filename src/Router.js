@@ -17,10 +17,11 @@ import Ratings from "/src/views/Ratings.vue";
 import Admin from "/src/views/Admin.vue";
 import FoundQR from "/src/views/FoundQR.vue";
 import RestorePassword from "./views/User/RestorePassword.vue";
+import ConfirmEmail from "./views/User/ConfirmEmail.vue";
 import {BASE_URL_PATH} from "./constants";
 
 
-export default function createVueRouter(Store) {
+export default function createVueRouter(Store, App) {
     const routes = [
         {path: BASE_URL_PATH + '/', component: About},
 
@@ -28,13 +29,14 @@ export default function createVueRouter(Store) {
         {path: BASE_URL_PATH + '/signup', component: SignUp, meta: {noLoginRequired: true}},
         {path: BASE_URL_PATH + '/profile', component: Profile, meta: {loginRequired: true}},
         {path: BASE_URL_PATH + '/password/restore', component: RestorePassword, meta: {noLoginRequired: true}},
+        {path: BASE_URL_PATH + '/email/confirm', component: ConfirmEmail},
 
         {path: BASE_URL_PATH + '/play', component: Play},
 
         {path: BASE_URL_PATH + '/quests', component: Quests},
         {path: BASE_URL_PATH + '/quests/my', component: MyQuests, meta: {loginRequired: true}},
 
-        {path: BASE_URL_PATH + '/quest/create', component: QuestCreate, meta: {loginRequired: true}},
+        {path: BASE_URL_PATH + '/quest/create', component: QuestCreate, meta: {loginRequired: true, emailConfirmRequired: true}},
 
         {path: BASE_URL_PATH + '/quest', component: Quest},
         {path: BASE_URL_PATH + '/quest/edit', component: QuestEdit, meta: {loginRequired: true}},
@@ -81,6 +83,7 @@ export default function createVueRouter(Store) {
             }
         }
 
+        // Login required redirects
         if (to.matched.some(record => record.meta.loginRequired)) {
             if (Store.state.user.isLogined) {
                 smartBasePartRedirect();
@@ -96,9 +99,11 @@ export default function createVueRouter(Store) {
             next(loginedRedirect);
             return;
         }
+
         smartBasePartRedirect();
         return;
     });
+
     Router.beforeResolve(async (to) => {
         if (window?.onbeforeunload) {
             if (confirm("Изменения не сохранены. Вы уверены, что хотите покинуть страницу?"))
@@ -106,8 +111,15 @@ export default function createVueRouter(Store) {
             else
                 return false;
         }
-    });
 
+        // Email Confirm required handling
+        if (to.matched.some(record => record.meta.emailConfirmRequired)) {
+            if (!Store.state.user.isConfirmed) {
+                Store.$app.$modal.alert("Действие недоступно", "Твой E-mail не подтвержден. Сперва нужно подтвердить его, сделать это можно в профиле")
+                return false;
+            }
+        }
+    });
 
     return Router;
 }

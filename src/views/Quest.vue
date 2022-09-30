@@ -1,7 +1,7 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
 
-quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.8) 0%, rgba(90, 56, 25, 0.5) 40%, transparent 80%) no-repeat
+quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 56, 25, 0.8) 70%, transparent 90%) no-repeat
 
 .quest-preview
   background linear-gradient(20deg, rgba(90, 56, 25, 0.9) 0%, rgba(55, 43, 16, 0.5) 100%) 50% 50% no-repeat

@@ -1,7 +1,5 @@
 <style lang="stylus" scoped>
-.loading
-  margin-left auto
-  margin-right auto
+
 </style>
 
 <template>
@@ -18,9 +16,9 @@
       >Неожиданно вспомнился старый пароль? <br> <router-link :to="base_url_path + `/signin`" class="link">Войти как нормальный человек</router-link>
       </Form>
 
-      <div v-else>
-        Письмо выслано на вашу почту
-      </div>
+      <Form v-else :no-submit="true" title="Письмо на твоей почте">
+        Не забудь проверить папку <b><big>спам</big></b>. <br> Перейди по ссылке из письма, и будет тебе счастье
+      </Form>
     </div>
 
     <Form v-else

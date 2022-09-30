@@ -5,12 +5,18 @@ logo-size = 140px
   .logo
     width logo-size
     margin-bottom 20px
+
+.text-centered
+  text-align center
+  margin 10px 0
+
 </style>
 
 
 <template>
   <div>
-    <Form ref="form"
+    <Form v-if="!loginByCode"
+          ref="form"
           title="Вход" description="Ну давай, вспомни пароль, войди в меня"
           :fields="[
             { title: 'ЛОГИН', autocomplete: 'on', jsonName: 'username' },
@@ -18,31 +24,47 @@ logo-size = 140px
           ]"
           submit-text="Погнали"
           @submit="signIn"
-    >Нужен аккаунт? <router-link :to="base_url_path + `/signup`" class="link">Создать</router-link>
+    >
+      Нужен аккаунт? <router-link :to="base_url_path + `/signup`" class="link">Создать</router-link>
+
+      <div class="text-small text-centered">или</div>
+      <div class="button" @click="loginByCode = true">Войти по коду</div>
     </Form>
-    <div class="text-middle">ИЛИ</div>
-    <Form ref="formEmailCode"
-          title="Вход по одноразовому коду" description="Можно не вспоминать пароль, а просто открыть почту"
+
+    <Form v-else
+          ref="formEmail"
+          title="Вход по коду" description="Можно не вспоминать пароль, а просто открыть почту"
           :fields="[
-            { title: 'E-mail', autocomplete: 'on', jsonName: 'email', disabled: emailSent},
-            { title: 'Одноразовый код', autocomplete: 'on', jsonName: 'code', disabled: !emailSent},
+            { title: 'E-mail', autocomplete: 'on', jsonName: 'email'},
           ]"
-          :submit-text="emailSent ? 'Войти' : 'Выслать код'"
-          @submit="signInByEmailCode"
-    ></Form>
+          submit-text="Выслать код"
+          @submit="signInByEmailCodeSendEmail"
+    >
+      <Form :no-bg="true"
+            ref="formCode"
+            :fields="[
+            { title: 'Одноразовый код', jsonName: 'code'},
+          ]"
+            submit-text="Войти"
+            @submit="signInByEmailCode"
+      ></Form>
+      <div class="text-small text-centered">или</div>
+      <div class="button" @click="loginByCode = false">Войти по паролю</div>
+    </Form>
   </div>
 </template>
 
 
 <script>
 import Form from "../../components/FormExtended.vue";
+import FloatingInput from "../../components/FloatingInput.vue";
 
 export default {
-  components: {Form},
+  components: {FloatingInput, Form},
 
   data() {
     return {
-      emailSent: false,
+      loginByCode: false,
 
       base_url_path: this.$base_url_path,
     }
@@ -57,6 +79,14 @@ export default {
       }
       if (password.length === 0) {
         this.$refs.form.errors.password = 'Пароль не может быть пустым';
+        ok = false;
+      }
+      return ok;
+    },
+    validateEmail(email) {
+      let ok = true;
+      if (email.length === 0) {
+        this.$refs.formEmail.errors.email = 'E-mail не может быть пустым';
         ok = false;
       }
       return ok;
@@ -91,45 +121,57 @@ export default {
       this.$popups.error("Не удалось войти в аккаунт", response.info || 'Произошла неизвестная ошибка!');
     },
 
-    async signInByEmailCode({email, code}) {
-      if (code.length === 0) {
-        this.$refs.formEmailCode.loading = true;
-        const response = await this.$api.sendSignInEmail(email);
-        this.$refs.formEmailCode.loading = false;
+    async signInByEmailCodeSendEmail({email}) {
+      if (!this.validateEmail(email))
+        return;
 
-        if (response.ok_) {
-          this.$popups.success('Письмо выслано', 'Найдите одноразовый код на вашей почте');
-          this.$refs.formEmailCode.errors = {};
-          return;
-        }
+      this.$refs.formEmail.loading = true;
+      const response = await this.$api.sendSignInEmail(email);
+      this.$refs.formEmail.loading = false;
 
-        if (response.status_ === 404) {
-          this.$refs.form.errors.email = 'Email не зарегистрирован';
-          this.$refs.form.showError();
-          return;
-        }
-
-        this.$popups.error('Не удалось выслать код', response.info || 'Неизвестная ошибка');
+      if (response.ok_) {
+        this.$popups.success('Письмо выслано', 'Найдите одноразовый код на вашей почте');
+        this.$refs.formEmail.errors = {};
         return;
       }
 
-      this.$refs.formEmailCode.loading = true;
+      if (response.status_ === 404) {
+        this.$refs.formEmail.errors.email = 'E-mail не зарегистрирован';
+        this.$refs.formEmail.showError();
+        return;
+      }
+
+      if (response.status_ === 403) {
+        this.$refs.formEmail.errors.email = 'E-mail не подтвержден в аккаунте';
+        this.$refs.formEmail.showError();
+        return;
+      }
+
+      this.$popups.error('Не удалось выслать код', response.info || 'Неизвестная ошибка');
+    },
+
+    async signInByEmailCode({code}) {
+      const email = this.$refs.formEmail.values.email
+      if (!this.validateEmail(email))
+        return;
+
+      this.$refs.formCode.loading = true;
       const response = await this.$api.signInByEmailCode(email, code);
-      this.$refs.formEmailCode.loading = false;
+      this.$refs.formCode.loading = false;
 
       if (response.ok_) {
-        this.$refs.formEmailCode.loading = true;
+        this.$refs.formCode.loading = true;
         await this.$store.dispatch('GET_USER');
-        this.$refs.formEmailCode.loading = false;
+        this.$refs.formCode.loading = false;
         this.$popups.success('Отличный вход!', 'Ну привет...');
-        this.$refs.formEmailCode.errors = {};
+        this.$refs.formCode.errors = {};
         this.$router.push('/profile');
         return;
       }
 
       if (response.status_ === 401) {
-        this.$refs.formEmailCode.errors.code = 'Неверный одноразовый код';
-        this.$refs.form.showError();
+        this.$refs.formCode.errors.code = 'Неверный одноразовый код';
+        this.$refs.formCode.showError();
         return;
       }
 

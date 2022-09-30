@@ -27,6 +27,11 @@ li
       margin-right 10px
     .main-info
       max-width 70%
+      .title-container
+        .number
+          margin-right 10px
+          color empColor4
+        //.title
       .info
         overflow hidden
         text-overflow ellipsis
@@ -84,7 +89,10 @@ li.bg
       <img v-if="islinkactive" src="../res/link.svg" alt="link active">
 
       <div class="main-info">
-        <div class="title">{{ title }}</div>
+        <div class="title-container">
+          <span class="number text-middle" v-if="number">{{ number }}</span>
+          <span class="title">{{ title }}</span>
+        </div>
         <div class="text-small info">{{ description }}</div>
       </div>
       <span class="text-small choose">
@@ -93,7 +101,7 @@ li.bg
     </div>
 
     <ul class="roll-active" :class="{closed: closed}" ref="list">
-      <ArrowListElement @click="$emit('click-inside', element)" v-for="element in elements" v-bind="element" inside :arrow="element.arrow || false" closed :noClose="element.noClose"></ArrowListElement>
+      <ArrowListElement @click="$emit('click-inside', element)" v-for="(element, idx) in elements" v-bind="element" inside :arrow="element.arrow || false" closed :noClose="element.noClose" :number="numbered ? '#' + (idx + 1) : null"></ArrowListElement>
     </ul>
   </li>
 </template>
@@ -161,6 +169,14 @@ export default {
       type: Boolean,
       default: false
     },
+    numbered: {
+      type: Boolean,
+      default: false
+    },
+    number: {
+      type: String,
+      default: null,
+    }
   },
 
   data() {

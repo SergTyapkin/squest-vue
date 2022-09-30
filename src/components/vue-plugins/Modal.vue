@@ -67,10 +67,10 @@
 
       <div class="submit-container submit-buttons">
         <div class="form-group">
-          <button @click="__resolve()" class="btn submit" v-if="type !== 'confirm'" ref="buttonOk">Ок</button>
+          <input type="submit" @click="__resolve()" v-if="type !== 'confirm'" ref="buttonOk" value="Ок">
           <div v-else class="confirm-buttons">
-            <input type="submit" @click="__resolve(true)" class="confirm-button btn submit" ref="buttonYes" value="Да"/>
-            <input type="submit" @click="__resolve(false)" class="confirm-button btn btn-danger" value="Нет"/>
+            <input type="submit" @click="__resolve(true)" class="confirm-button" ref="buttonYes" value="Да"/>
+            <input type="submit" @click="__resolve(false)" class="confirm-button btn-danger" value="Нет"/>
           </div>
         </div>
       </div>

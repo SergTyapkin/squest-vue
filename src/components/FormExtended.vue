@@ -19,15 +19,15 @@
                      :error="errors[field.jsonName]"
                      v-model="values[field.jsonName]"
       >
-        <router-link v-if="field.infoHref" :to="field.infoHref" class="link">{{ field.info }}</router-link>
-        <div v-else>{{ field.info }}</div>
+        <router-link v-if="field.infoHref" :to="field.infoHref" class="link" v-html="field.info"></router-link>
+        <div v-else v-html="field.info"></div>
       </FloatingInput>
     </div>
 
     <div class="submit-container" v-if="!noSubmit">
       <input v-if="!loading" type="submit" :value="submitText">
-      <CircleLoading v-else></CircleLoading>
     </div>
+    <CircleLoading v-if="loading"></CircleLoading>
 
     <div class="text-small info">
       <slot></slot>

@@ -82,8 +82,8 @@ export default {
 
       if (response.status_ === 409) {
         this.$refs.form.info = 'Логин или e-mail уже заняты';
-        this.$refs.form.errors.username = 'Такой логин уже занят';
-        this.$refs.form.errors.email = 'Или E-mail уже занят... Мы точно не знаем)';
+        this.$refs.form.errors.username = 'Такой логин или E-mail уже занят';
+        this.$refs.form.errors.email = 'Такой логин или E-mail уже занят';
         this.$refs.form.showError();
         return;
       }
