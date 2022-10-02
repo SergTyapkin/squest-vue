@@ -2,7 +2,7 @@ import Model from "./model";
 
 export default class User extends Model {
   default = {
-    id: '?',
+    id: null,
     isLogined: false,
     isGotten: false,
     isAdmin: false,
@@ -14,13 +14,13 @@ export default class User extends Model {
     password: "",
     rating: 0,
     position: 0,
-    chosenquestid: '?',
+    chosenquestid: null,
     chosenquest: '',
-    chosenbranchid: '?',
+    chosenbranchid: null,
     chosenbranch: '',
     progress: 0,
     progressMax: 0,
-    avatarurl: '',
+    avatarimageid: null,
     createdquests: 0,
     completedbranches: 0,
   }

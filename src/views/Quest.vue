@@ -191,7 +191,7 @@ export default {
   async mounted() {
     if (this.id === undefined && this.uid === undefined) {
       this.$popups.error("Квест не найден", "Не указаны id или uid квеста");
-      this.$router.push('/quests')
+      this.$router.push('/quests');
       return;
     }
 
@@ -237,13 +237,13 @@ export default {
       if (!questInfo.ok_) {
         if (questInfo.status_ === 404) {
           this.$popups.error("Ошибка", "Квест не найден");
-          this.$router.push('/quests')
+          this.$router.push('/quests');
           return;
         }
 
         if (questInfo.status_ === 403) {
           this.$popups.error("Ошибка", "Доступ к квесту запрещён");
-          this.$router.push('/quests')
+          this.$router.push('/quests');
           return;
         }
         this.$popups.error("Ошибка", "Не удалось получить информацио о квесте");

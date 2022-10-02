@@ -19,7 +19,7 @@ const Store = new Vuex.Store({
       const p = await this.$app.$api.getPlay();
       if (u.ok_)
         state.commit('SET_USER', {
-          avatarurl: u.avatarurl,
+          avatarimageid: u.avatarimageid,
           chosenbranchid: u.chosenbranchid,
           chosenbranch: u.chosenbranch,
           chosenquestid: u.chosenquestid,

@@ -143,14 +143,14 @@ hr
                                  :compress-size="compressSize"
                 >
                   <div class="avatar-div" @click.stop="updateAvatar(undefined)">
-                    <img v-if="user.avatarurl" class="avatar" :src="api_url + user.avatarurl" alt="avatar">
+                    <img v-if="user.avatarimageid" class="avatar" :src="api_url + '/image/' + user.avatarimageid" alt="avatar">
                     <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
                   </div>
                 </DragNDropLoader>
-                <img v-if="user.avatarurl" class="delete-avatar" src="../../res/trash.svg" alt="delete" @click.stop="deleteAvatarClick">
+                <img v-if="user.avatarimageid" class="delete-avatar" src="../../res/trash.svg" alt="delete" @click.stop="deleteAvatarClick">
               </div>
               <div v-else class="avatar-div">
-                <img v-if="user.avatarurl" class="avatar" :src="api_url + user.avatarurl" alt="avatar">
+                <img v-if="user.avatarimageid" class="avatar" :src="api_url + '/image/' + user.avatarimageid" alt="avatar">
                 <img v-else class="avatar" src="../../res/favicon.ico" alt="avatar">
               </div>
 
@@ -241,7 +241,7 @@ export default {
       cropSize: IMAGE_PROFILE_MAX_RES,
       compressSize: IMAGE_MAX_RES,
 
-      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage, this.cropSize, this.compressSize),
+      ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage, IMAGE_PROFILE_MAX_RES, IMAGE_MAX_RES),
 
       username: '',
 
@@ -403,9 +403,9 @@ export default {
       const imageId = await this.ImageUploader.upload(dataURL);
       // this.loading = false;
 
-      await this.deleteAvatar();
+      const res = await this.deleteAvatar();
 
-      this.user.avatarurl = this.$api.apiUrl + `/image/` + imageId;
+      this.user.avatarimageid = imageId;
       await this.saveAvatar();
     },
     async deleteAvatarClick() {
@@ -414,18 +414,15 @@ export default {
 
       await this.deleteAvatar();
 
-      this.user.avatarurl = '';
+      this.user.avatarImageId = null;
       await this.saveAvatar();
     },
     async deleteAvatar() {
-      if (!this.user.avatarurl)
+      if (!this.user.avatarimageid)
         return;
 
-      let imageId = this.user.avatarurl.split('/');
-      imageId = imageId[imageId.length - 1];
-
       this.loading = true;
-      const res = await this.$api.deleteImage(imageId);
+      const res = await this.$api.deleteImage(this.user.avatarimageid);
       this.loading = false;
 
       if (!res.ok_) {
@@ -435,7 +432,7 @@ export default {
     },
     async saveAvatar() {
       this.loading = true;
-      const res = await this.$api.updateUserAvatarUrl(this.user.avatarurl);
+      const res = await this.$api.updateUserAvatarImageId(this.user.avatarimageid);
       this.loading = false;
 
       if (!res.ok_) {
