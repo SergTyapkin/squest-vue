@@ -137,6 +137,16 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
                       :elements="branches"
                       @click-inside="selectBranch"
     ></ArrowListElement>
+    <ArrowListElement ref="usersFinished" title="Прошли"
+                      closed
+                      :elements="usersFinished"
+                      @click-inside="(user) => $router.push(`/profile?id=${user.id}`)"
+    ></ArrowListElement>
+    <ArrowListElement ref="usersProgresses" title="Проходят"
+                      closed
+                      :elements="usersProgresses"
+                      @click-inside="(user) => $router.push(`/profile?id=${user.id}`)"
+    ></ArrowListElement>
   </div>
 </template>
 
@@ -171,6 +181,9 @@ export default {
       time: '-',
       played: 0,
 
+      usersFinished: [],
+      usersProgresses: [],
+
       base_url_path: this.$base_url_path,
     }
   },
@@ -185,6 +198,30 @@ export default {
     await this.getQuestInfo();
     this.$refs.renderer.update(this.description);
     this.getBranches();
+    this.getUsersList(this.$api.getQuestUsersFinished, (list) => {
+      this.usersFinished = list.map(user => {
+        return {
+          id: user.id,
+          title: user.username,
+          description: secondsToStrTime(user.time) + ' | ' + user.branches,
+          actionText: 'в профиль',
+          arrow: true,
+          noClose: true,
+        }
+      });
+    });
+    this.getUsersList(this.$api.getQuestUsersProgresses, (list) => {
+      this.usersProgresses = list.map(user => {
+        return {
+          id: user.id,
+          title: user.username,
+          description: '★' + user.progress + ' | ' + '⏱' + secondsToStrTime(user.time) + ' | ' + user.branchtitle,
+          actionText: 'в профиль',
+          arrow: true,
+          noClose: true,
+        }
+      });
+    });
   },
 
   methods: {
@@ -273,6 +310,19 @@ export default {
       }
 
       this.$popups.error("Ошибка", "Не удалось выбрать ветку");
+    },
+
+    async getUsersList(apiFunction, callback) {
+      this.loading = true;
+      const users = await apiFunction(this.id);
+      this.loading = false;
+
+      if (!users.ok_) {
+        this.$popups.error("Ошибка", "Не удалось получить список пользователей");
+        return;
+      }
+
+     callback(users.players);
     }
   }
 };

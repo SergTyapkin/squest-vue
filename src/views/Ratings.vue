@@ -14,7 +14,7 @@
       <ArrowListElement class="ratings" ref="ratings" title="Рейтинг" closed open-on-set-elements
                         :elements="ratings"
                         :numbered="true"
-                        @click-inside="goToProfile"
+                        @click-inside="(user) => $router.push(`/profile?id=${user.id}`)"
       ></ArrowListElement>
     </div>
 
@@ -65,10 +65,6 @@ export default {
         };
       });
     },
-
-    goToProfile(user) {
-      this.$router.push(`/profile?id=${user.id}`)
-    }
   }
 };
 </script>

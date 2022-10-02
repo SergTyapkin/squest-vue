@@ -28,8 +28,12 @@
   .flex-container
     display flex
     align-items center
+    .image-loader
+      width 100%
+      max-width 400px
     .image-container
-      width 400px
+      max-width 400px
+      width 100%
       height 200px
       position relative
       border-radius 10px
@@ -148,8 +152,8 @@
                        title="Опубликован"
                        v-model="ispublished"
         >
-          Если не опубликован - это черновик. Никто кроме тебя и соавторов не сможет просматривать квест <br>
-          Но доступ к нему можно будет получить по ссылке, если включена опция ниже
+          Если не опубликован - никто кроме автора и соавторов не сможет просматривать квест в общем списке. <br>
+          Но доступ к нему для игры можно будет получить по ссылке, если включена опция ниже
         </FloatingInput>
 
         <div>
@@ -389,6 +393,11 @@ export default {
             return;
           }
         }
+      }
+
+      if (branchesToCreate.length === 0) {
+        this.branchesLoading = false;
+        return;
       }
       const created = await this.$api.createBranchesMany(this.id, branchesToCreate);
       this.branchesLoading = false;

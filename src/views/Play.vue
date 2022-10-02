@@ -227,7 +227,7 @@ export default {
           return;
 
         this.statsLoading = true;
-        const stats = await this.$api.getProgressStats(this.$user.chosenbranchid);
+        const stats = await this.$api.getMyBranchVotes(this.$user.chosenbranchid);
         this.statsLoading = false;
 
         if (!stats.ok_) {

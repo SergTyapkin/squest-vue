@@ -185,7 +185,7 @@ hr
             <FormExtended ref="form" no-bg
                   :fields="[
                     { title: 'ТВОЁ ИМЯ', jsonName: 'name' },
-                    { title: 'ТВОЙ E-mail', jsonName: 'email', type: 'email', info: user.isConfirmed ? '<span style=\'color: #448c30\'>E-mail подтвержден</span>' : '<b style=\'color: #ff5b5b\'>ТВОЙ EMAIL НЕ ПОДТВЕРЖДЕН. ИЗ-ЗА ЭТОГО НЕДОСТУПНЫ МНОГИЕ ФУНКЦИИ СЕРВИСА</b>'},
+                    { title: 'ТВОЙ E-mail', jsonName: 'email', type: 'email', info: user.isConfirmed ? `<span style='color: #448c30'>E-mail подтвержден</span>` : `<b style='color: #ff5b5b'>ТВОЙ EMAIL НЕ ПОДТВЕРЖДЕН. ИЗ-ЗА ЭТОГО НЕДОСТУПНЫ МНОГИЕ ФУНКЦИИ СЕРВИСА. ТЫ НЕ МОЖЕШЬ:</b><div style='color: #c46f6f'><div>Быть в рейтингах</div><div>Создавать квесты</div><div>Создавать команды</div><div>Оценивать квесты</div></div>`},
                   ]"
                   :no-submit="true"
             ></FormExtended>

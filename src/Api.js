@@ -27,6 +27,9 @@ export class Api extends ApiRequest {
     getAllQuests = () => this.get(`/quest`);
     getMyQuests = (userId) => this.get(`/quest`, {userId});
     getQuestInfo = (questId) => this.get(`/quest`, {questId});
+    getMyBranchVotes = (branchId) => this.get(`/quest/progress/stats`, {branchId})
+    getQuestUsersProgresses = (questId) => this.get(`/quest/users/progresses`, {questId})
+    getQuestUsersFinished = (questId) => this.get(`/quest/users/finished`, {questId})
 
     createQuest = (title, description, isPublished) => this.post(`/quest`, {title, description, isPublished});
     updateQuestInfo = (id, title, description, isPublished, isLinkActive) => this.put(`/quest`, {id, title, description, isPublished, isLinkActive});
@@ -41,7 +44,6 @@ export class Api extends ApiRequest {
     createBranchesMany = (questId, branches = [{title: '', description: ''}]) => this.post('/branch/many', {questId, branches});
     getBranchInfo = (branchId) => this.get(`/branch`, {branchId});
     deleteBranch = (id) => this.delete(`/branch`, {id});
-    getProgressStats = (branchId) => this.get(`/quest/progress/stats`, {branchId})
     voteBranchRating = (branchId, rating) => this.post(`/quest/rating`, {branchId, rating})
 
     checkAnswer = (answer) => this.post(`/task/play`, {answer});
