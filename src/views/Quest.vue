@@ -268,7 +268,7 @@ export default {
 
       if (questStatistics.ok_) {
         this.played = questStatistics.played;
-        this.rating = questStatistics.rating.toFixed(1);
+        this.rating = questStatistics.rating?.toFixed(1) || '-';
         this.time = secondsToStrTime(questStatistics.time);
       }
     },

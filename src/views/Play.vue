@@ -316,6 +316,11 @@ export default {
     },
 
     async sendVote() {
+      if (!this.$user.isConfirmed) {
+        this.$modal.alert("E-mail не подтвержден", "Из-за этого ты не можешь голосовать за рейтинг квеста. Подтвердить e-mail можно в профиле");
+        return;
+      }
+
       this.statsLoading = true;
       const res = await this.$api.voteBranchRating(this.$user.chosenbranchid, this.ratingVote);
       this.statsLoading = false;

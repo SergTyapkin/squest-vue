@@ -18,6 +18,7 @@ import Admin from "/src/views/Admin.vue";
 import FoundQR from "/src/views/FoundQR.vue";
 import RestorePassword from "./views/User/RestorePassword.vue";
 import ConfirmEmail from "./views/User/ConfirmEmail.vue";
+import UserQuests from "./views/UserQuests.vue";
 import {BASE_URL_PATH} from "./constants";
 
 
@@ -34,6 +35,7 @@ export default function createVueRouter(Store, App) {
         {path: BASE_URL_PATH + '/play', component: Play},
 
         {path: BASE_URL_PATH + '/quests', component: Quests},
+        {path: BASE_URL_PATH + '/quests/user', component: UserQuests},
         {path: BASE_URL_PATH + '/quests/my', component: MyQuests, meta: {loginRequired: true}},
 
         {path: BASE_URL_PATH + '/quest/create', component: QuestCreate, meta: {loginRequired: true, emailConfirmRequired: true}},

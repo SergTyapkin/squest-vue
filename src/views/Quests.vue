@@ -23,13 +23,12 @@
 
 
 <script>
-import TopBar from "../components/TopBar.vue";
 import TopButtons from "../components/TopButtons.vue";
 import FloatingButton from "../components/FloatingButton.vue";
 import QuestsList from "../components/QuestsList.vue";
 
 export default {
-  components: {QuestsList, FloatingButton, TopBar, TopButtons},
+  components: {QuestsList, FloatingButton, TopButtons},
 
   data() {
     return {

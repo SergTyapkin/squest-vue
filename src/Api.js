@@ -25,6 +25,7 @@ export class Api extends ApiRequest {
 
     getPlay = () => this.get(`/task/play`);
     getAllQuests = () => this.get(`/quest`);
+    getUserQuests = (userId) => this.get(`/quest`, {userId});
     getMyQuests = (userId) => this.get(`/quest`, {userId});
     getQuestInfo = (questId) => this.get(`/quest`, {questId});
     getMyBranchVotes = (branchId) => this.get(`/quest/progress/stats`, {branchId})

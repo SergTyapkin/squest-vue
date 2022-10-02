@@ -78,11 +78,10 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 <script>
 import CircleLoading from "../components/loaders/CircleLoading.vue";
 import Footer from "../components/Footer.vue";
-import TopBar from "../components/TopBar.vue";
 
 
 export default {
-  components: {TopBar, Footer, CircleLoading},
+  components: {Footer, CircleLoading},
 
   data() {
     return {

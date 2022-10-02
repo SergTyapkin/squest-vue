@@ -170,7 +170,7 @@ hr
 
           <div class="quest-statistics text-middle">
             <div class="quest">Пройдено веток: {{ user.completedbranches }}</div>
-            <router-link class="quest link" :to="base_url_path + `/quests?userId=${user.id}`">Создано квестов: {{ user.createdquests }}</router-link>
+            <router-link class="quest link" :to="base_url_path + `/quests/user?id=${user.id}`">Создано квестов: {{ user.createdquests }}</router-link>
           </div>
 
           <hr>
@@ -221,7 +221,6 @@ hr
 
 
 <script>
-import TopBar from "/src/components/TopBar.vue";
 import Form from "/src/components/Form.vue";
 import FormExtended from "/src/components/FormExtended.vue";
 import FloatingInput from "../../components/FloatingInput.vue";
@@ -234,7 +233,7 @@ import ImageUploader from "../../utils/imageUploader";
 import DragNDropLoader from "../../components/DragNDropLoader.vue";
 
 export default {
-  components: {DragNDropLoader, CircleLoading, TopButtons, FloatingInput, TopBar, FormExtended, Form},
+  components: {DragNDropLoader, CircleLoading, TopButtons, FloatingInput, FormExtended, Form},
 
   data() {
     return {
