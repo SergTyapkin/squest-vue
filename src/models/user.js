@@ -21,8 +21,8 @@ export default class User extends Model {
     progress: 0,
     progressMax: 0,
     avatarimageid: null,
-    createdquests: 0,
-    completedbranches: 0,
+    createdquests: [],
+    completedbranches: [],
   }
 
   set(data) {

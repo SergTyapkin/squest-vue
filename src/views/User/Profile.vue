@@ -169,8 +169,17 @@ hr
           <hr>
 
           <div class="quest-statistics text-middle">
-            <div class="quest">Пройдено веток: {{ user.completedbranches }}</div>
-            <router-link class="quest link" :to="base_url_path + `/quests/user?id=${user.id}`">Создано квестов: {{ user.createdquests }}</router-link>
+            <ArrowListElement :title="`Пройдено веток: ${completedBranches.length}`"
+                              closed
+                              :elements="completedBranches"
+                              @click-inside="(branchInfo) => $router.push(`/quest?id=${branchInfo.id}`)"
+            ></ArrowListElement>
+            <ArrowListElement v-if="createdQuests.length"
+                              :title="`Создано квестов: ${createdQuests.length}`"
+                              closed
+                              :elements="createdQuests"
+                              @click-inside="(quest) => $router.push(`/quest?id=${quest.id}`)"
+            ></ArrowListElement>
           </div>
 
           <hr>
@@ -231,9 +240,10 @@ import {nextTick} from "vue";
 import {BASE_URL_PATH, IMAGE_MAX_RES, IMAGE_PROFILE_MAX_RES} from "../../constants";
 import ImageUploader from "../../utils/imageUploader";
 import DragNDropLoader from "../../components/DragNDropLoader.vue";
+import ArrowListElement from "../../components/ArrowListElement.vue";
 
 export default {
-  components: {DragNDropLoader, CircleLoading, TopButtons, FloatingInput, FormExtended, Form},
+  components: {ArrowListElement, DragNDropLoader, CircleLoading, TopButtons, FloatingInput, FormExtended, Form},
 
   data() {
     return {
@@ -248,6 +258,8 @@ export default {
       yours: this.$route.query.id === undefined,
 
       user: {},
+      completedBranches: [],
+      createdQuests: [],
       loading: false,
       loadingConfirmEmail: false,
 
@@ -274,6 +286,7 @@ export default {
           {name: 'Мои квесты', to: this.base_url_path + '/quests/my'},
           {name: 'Рейтинги', to: this.base_url_path + '/ratings'},
         ];
+        this.addTitlesToArrowListings();
         return;
       }
 
@@ -290,8 +303,27 @@ export default {
           {name: 'Рейтинги', to: this.base_url_path + '/ratings'},
         ];
       }
+      this.addTitlesToArrowListings();
     },
 
+    addTitlesToArrowListings() {
+      this.completedBranches = this.user.completedbranches.map((branchInfo) => {
+        return {
+          title: branchInfo.questtitle + ' | ' + branchInfo.branchtitle,
+          id: branchInfo.questid,
+          arrow: true,
+          noClose: true,
+        };
+      });
+      this.createdQuests = this.user.createdquests.map((quest) => {
+        return {
+          title: quest.title,
+          id: quest.id,
+          arrow: true,
+          noClose: true,
+        };
+      });
+    },
 
     validate(username, name, email) {
       let ok = true;
