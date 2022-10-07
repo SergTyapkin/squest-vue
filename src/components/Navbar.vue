@@ -150,8 +150,8 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
   <div class="navbar absolute-wrapper">
     <div class="progressbar" :style="`--progress: ${newProgress / 100}`"></div>
 
-    <router-link class="center progress" :to="base_url_path + `/play`">
-      <div v-if="$store.state.user.isLogined" class="progress-container">
+    <router-link v-if="$store.state.user.isLogined && ($store.state.user.chosenquestid !== null) && ($store.state.user.chosenbranchid !== null)" class="center progress" :to="base_url_path + `/play`">
+      <div class="progress-container">
         <vue3autocounter
             ref='counter'
             :startAmount='prevProgress'
@@ -166,8 +166,10 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
         ></vue3autocounter>
         <span class="text-small info">Прогресс прохождения</span>
       </div>
-      <span v-else>SQ</span>
     </router-link>
+    <div class="center progress" v-else>
+      <span>SQ</span>
+    </div>
 
     <router-link :to="base_url_path + `/quests`" class="left side-item opacity-in delayedBig">Квесты</router-link>
     <router-link :to="base_url_path + `/profile`" class="right side-item opacity-in delayedBig">

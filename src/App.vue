@@ -17,7 +17,7 @@ top-bar-height = 70px
 </style>
 
 <template>
-  <TopBar></TopBar>
+  <Navbar></Navbar>
 
   <div class="wrapper">
     <CircleLoading v-if="!$store.state.user.isGotten" class="loading"></CircleLoading>
@@ -149,12 +149,12 @@ import {getCurrentInstance} from "vue";
 import Modal from "/src/components/vue-plugins/Modal.vue";
 import Popups from "/src/components/vue-plugins/Popups.vue";
 import CircleLoading from "/src/components/loaders/CircleLoading.vue";
-import TopBar from "./components/TopBar.vue";
+import Navbar from "./components/Navbar.vue";
 import {API_URL, BASE_URL_PATH} from "./constants";
 
 
 export default {
-  components: {TopBar, CircleLoading, Modal, Popups},
+  components: {Navbar, CircleLoading, Modal, Popups},
 
   data() {
     return {
