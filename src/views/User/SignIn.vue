@@ -9,7 +9,6 @@ logo-size = 140px
 .text-centered
   text-align center
   margin 10px 0
-
 </style>
 
 
@@ -19,7 +18,7 @@ logo-size = 140px
           ref="form"
           title="Вход" description="Ну давай, вспомни пароль, войди в меня"
           :fields="[
-            { title: 'ЛОГИН', autocomplete: 'on', jsonName: 'username' },
+            { title: 'ЛОГИН или E-MAIL', autocomplete: 'on', jsonName: 'username' },
             { title: 'ПАРОЛЬ', autocomplete: 'on', jsonName: 'password', type: 'password', info: 'Забыл пароль? - пей таблетки', infoHref: base_url_path + `/password/restore`},
           ]"
           submit-text="Погнали"
@@ -104,7 +103,7 @@ export default {
         this.$refs.form.loading = true;
         await this.$store.dispatch('GET_USER');
         this.$refs.form.loading = false;
-        this.$popups.success('Отличный вход!', 'Ну привет...');
+        // this.$popups.success('Отличный вход!', 'Ну привет...');
         this.$refs.form.errors = {};
         this.$router.push('/profile');
         return;

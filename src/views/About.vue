@@ -44,15 +44,19 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
   <div class="flex-root">
 
     <div class="about-page app-flex-filler">
-      <div class="side-item left" >
+      <div class="side-item left">
         <div class="text-big-xx">КУДА ТЫ ПОПАЛ?</div>
         <div class="text-small"><span class="text-big">Здесь</span> ты сможешь найти <span class="text-big">онлайн-квест</span> по душе, созданный нашими професси<i>онал</i>ами.</div>
       </div>
       <div class="side-item right">
+        <div class="text-big-xx">А МОЖНО СДЕЛАТЬ СВОЙ КВЕСТ?</div>
+        <div class="text-small"><span class="text-big">Конечно!</span> Здесь есть очень удобное <span class="text-big">создание квестов</span> с широкими возможностями настройки веток и ответов на задания - ответом даже может быть любой <span class="text-big">QR-код</span></div>
+      </div>
+      <div class="side-item left">
         <div class="text-big-xx">ЭТО ХОТЬ БЕСПЛАТНО?</div>
         <div class="text-small">Всё <span class="text-big">бесплатно</span> <s>пока что</s>.</div>
       </div>
-      <div class="side-item left">
+      <div class="side-item right">
         <div class="text-big-xx">КАК ПОЛЬЗОВАТЬСЯ?</div>
         <div class="text-big">Смотри, всё просто:
           <ul>
@@ -62,7 +66,7 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
           </ul>
         </div>
       </div>
-      <div class="side-item right">
+      <div class="side-item left">
         <div class="text-big-xx">У МЕНЯ ОСТАЛИСЬ ВОПРОСЫ</div>
         <div class="text-small">Там снизу есть <span class="text-big">контакты</span> - пиши, не стестняйся.</div>
       </div>

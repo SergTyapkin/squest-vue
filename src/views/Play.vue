@@ -8,7 +8,10 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   margin-top 20px
   padding 20px
 
+.move-buttons
+  margin-bottom 0
 .top-buttons
+  margin-top 0
   margin-bottom 0
 .description
   padding 20px
@@ -102,6 +105,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
 <template>
   <div class="flex-root">
+    <TopButtons class="move-buttons" bg clickable arrows @click="changeProgress" :buttons="setProgressButtonsList"></TopButtons>
     <TopButtons class="top-buttons" bg :buttons="[
         {name: taskTitle, description: `Квест: ${questTitle} <br> Ветка: ${branchTitle}`},
     ]"></TopButtons>
@@ -190,12 +194,15 @@ export default {
 
       isEnd: false,
       isQrAnswer: false,
+      isCanEdit: false,
 
       loading: false,
       statsLoading: false,
 
       timeSpent: 0,
       ratingVote: 0,
+
+      setProgressButtonsList: [],
 
       base_url_path: this.$base_url_path,
     }
@@ -222,6 +229,18 @@ export default {
         this.taskQuestion = res.question;
         this.isQrAnswer = res.isqranswer;
         this.isEnd = res.question === undefined;
+        this.isCanEdit = res.canedit;
+
+        this.setProgressButtonsList = [];
+        if (this.isCanEdit) {
+          let firstText = 'Предыдущее';
+          if (this.$user.progress < 1)
+            firstText = '///';
+          this.setProgressButtonsList.push({description: firstText});
+
+          if (this.$user.progress < this.$user.progressMax)
+            this.setProgressButtonsList.push({description: 'Следующее'});
+        }
 
         if (!this.isEnd)
           return;
@@ -330,6 +349,25 @@ export default {
         return;
       }
       this.$popups.success('Спасибо!', 'Вас голос очень важен для нас');
+    },
+
+    async changeProgress(buttonIdx) {
+      let addition = -1;
+      if (buttonIdx.idx === 1)
+        addition = +1;
+      const targetProgress = this.$user.progress + addition;
+      if (targetProgress < 0 || targetProgress > this.$user.progressMax)
+        return;
+
+      this.statsLoading = true;
+      const res = await this.$api.setBranchProgress(this.$user.chosenbranchid, targetProgress);
+      this.statsLoading = false;
+
+      if (!res.ok_) {
+        this.$popups.error('Ошибка', 'Не получилось перейти на другое задание');
+        return;
+      }
+      this.update();
     }
   }
 }

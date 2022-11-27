@@ -109,9 +109,6 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
   .navbar linkbutton
     font-size 20px
 
-  .progressbar
-    transition background-size 0.3s ease !important
-
 
 .opacity-in
   opacity 0
@@ -201,6 +198,10 @@ export default {
   methods: {
     updateProgress() {
       this.prevProgress = this.newProgress;
+      if (this.$store.state.user.progressMax === 0) {
+        this.newProgress = 0;
+        return;
+      }
       this.newProgress = this.$store.state.user.progress / this.$store.state.user.progressMax * 100;
     }
   },
