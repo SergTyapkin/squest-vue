@@ -485,6 +485,8 @@ export default {
       // this.loading = true;
       const imageId = await this.ImageUploader.upload(dataURL);
       // this.loading = false;
+      if (imageId === undefined)
+        return;
 
       await this.deletePreview();
 

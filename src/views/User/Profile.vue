@@ -433,6 +433,8 @@ export default {
       // this.loading = true;
       const imageId = await this.ImageUploader.upload(dataURL);
       // this.loading = false;
+      if (imageId === undefined)
+        return;
 
       const res = await this.deleteAvatar();
 
@@ -445,7 +447,7 @@ export default {
 
       await this.deleteAvatar();
 
-      this.user.avatarImageId = null;
+      this.user.avatarimageid = null;
       await this.saveAvatar();
     },
     async deleteAvatar() {

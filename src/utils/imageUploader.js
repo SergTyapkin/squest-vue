@@ -19,13 +19,18 @@ export default class ImageUploader {
             dataURL = await getImageAsDataURL(this.cropSize, this.compressSize, undefined, Infinity);
         } catch (err) {
             this.popups.error("Ошибка загрузки изображения", err.toString());
+            throw err;
         }
         return dataURL;
     }
 
     async upload(dataURL) {
         if (dataURL === undefined)
-            dataURL = await this.getUserImage();
+            try {
+                dataURL = await this.getUserImage();
+            } catch {
+                return;
+            }
 
         const response = await this.apiUpload(dataURL);
         if (!response.ok_) {
