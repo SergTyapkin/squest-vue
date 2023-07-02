@@ -64,7 +64,7 @@ plate-max-width = 400px
       overflow hidden
       .title
         img
-          width 30px
+          width 25px
 
       .description
         overflow hidden
@@ -72,7 +72,8 @@ plate-max-width = 400px
 
     .statistics
       display flex
-      margin-bottom 5px
+      margin-top 5px
+      margin-bottom 3px
       .rating
       .time
         display flex
@@ -80,7 +81,8 @@ plate-max-width = 400px
         font-size 15px
         margin-right 20px
         img
-          width 40px
+          width 30px
+          margin-right 5px
       .rating
         font-size 25px
       .rating.good
