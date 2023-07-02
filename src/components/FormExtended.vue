@@ -1,5 +1,6 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
+@require '../styles/fonts.styl'
 
 </style>
 

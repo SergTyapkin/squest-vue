@@ -1,5 +1,6 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
+@require '../styles/fonts.styl'
 
 footer
   flex 0 0 auto
@@ -24,8 +25,8 @@ footer
     padding 10px 15px
 
     .title
-      font-size 14px
-      font-family Arial, monospace
+      font-small()
+      line-height 0.8
       color textColor1
     img
       width 30px
@@ -33,8 +34,7 @@ footer
       margin-right 5px
       transition transform 0.2s ease
     .description
-      font-size 12px
-      font-family Arial, monospace
+      font-small-extra()
       color textColor4
       transition color 0.2s ease
   a:hover

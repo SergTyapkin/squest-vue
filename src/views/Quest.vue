@@ -1,7 +1,8 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
+@require '../styles/fonts.styl'
 
-quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 56, 25, 0.8) 70%, transparent 90%) no-repeat
+quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 56, 25, 0.8) 40%, transparent 90%) no-repeat
 
 .quest-preview
   background linear-gradient(20deg, rgba(90, 56, 25, 0.9) 0%, rgba(55, 43, 16, 0.5) 100%) 50% 50% no-repeat
@@ -17,6 +18,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
     object-fit cover
     width 100%
     height 100%
+    filter brightness(0.5)
   .preview-image.default
     text-align right
     padding-right 20px
@@ -38,6 +40,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
     position relative
 
     .title
+      font-large()
       img
         width 30px
 
@@ -48,12 +51,12 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
       .time
         display flex
         align-items center
-        font-size 17px
+        font-medium()
         margin-right 20px
         img
           width 45px
       .rating
-        font-size 30px
+        font-medium()
       .rating.good
         color #a9ff5b
       .rating.bad
@@ -63,6 +66,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
       margin-bottom 30px
 
     .description
+      font-medium-small()
       background none
       padding 0
 

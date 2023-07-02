@@ -1,5 +1,6 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
+@require '../styles/fonts.styl'
 
 input-box-shadow = 0 0 15px 0 rgb(24, 19, 3) inset, 0 0 10px 0 rgba(162, 116, 14, 0.7)
 input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
@@ -7,7 +8,10 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
 .floating-input-fields
   position relative
+  font-medium()
   input:not([type=checkbox]) + label
+    font-medium-large()
+    font-special()
     position absolute
     top 22px
     left 8px
@@ -20,6 +24,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     left 4px
     font-size 14px
   input
+    font-medium-small()
     margin-top 10px
     text-align center
   input:not([type=checkbox]).left
@@ -34,16 +39,17 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     border-color error-color
     border-right none
   .error-text
+    font-small()
     position absolute
-    top -6px
-    left 80px
+    top -10px
+    right 0
 
 .floating-input-fields
   > div
     margin 20px 0
     transition all 0.3s ease
     > label
-      font-family Arial, monospace
+      font-small()
     > textarea,
     > input[type=text]
     > input[type=password],

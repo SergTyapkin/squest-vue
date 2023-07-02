@@ -1,5 +1,6 @@
 <style lang="stylus">
   @require '../../styles/constants.styl'
+  @require '../../styles/fonts.styl'
 
   indent = 15px
   innerPadding = 10px
@@ -22,7 +23,7 @@
     right indent
     width messageWidth
     z-index 1000
-    font-family Arial
+    font-medium-small()
     .popup-message
       box-sizing content-box
       overflow hidden

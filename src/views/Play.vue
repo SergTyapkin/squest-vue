@@ -1,5 +1,6 @@
 <style lang="stylus" scoped>
 @import "../styles/constants.styl"
+@import "../styles/fonts.styl"
 
 input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
 
@@ -14,10 +15,10 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   margin-top 0
   margin-bottom 0
 .description
-  padding 20px
-  font-size 16px
+  font-medium-small()
+  line-height 1.05
   color textColor2
-  font-family Arial
+  padding 20px
   border-bottom empColor6 1px solid
 .restart-button
   > *
@@ -173,7 +174,7 @@ import QRScanner from "../components/QRScanner.vue";
 import TopButtons from "../components/TopButtons.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import Form from "../components/FormExtended.vue";
-import {secondsToStrTime, secondsToValPrefix} from "../utils/utils";
+import {secondsToStrTime} from "../utils/utils";
 
 
 export default {

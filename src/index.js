@@ -6,10 +6,10 @@ import createVueRouter from './Router.js'
 import Api from "./Api";
 
 import './styles/buttons.styl';
-
 import './styles/global.styl';
 import './styles/show-hide.styl';
 import './styles/scrollbars.styl';
+import './styles/fontsLoader.styl';
 import {API_URL} from "./constants";
 
 const Router = createVueRouter(Store);

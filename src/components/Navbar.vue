@@ -1,18 +1,12 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
+@require '../styles/fonts.styl'
 
-counter-font = GothicE
-
-side-items-font-size = 16px
 side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218, 165, 32, 0) 100%) 0 100% no-repeat"
-
-@font-face
-  font-family counter-font
-  src url(../res/fonts/GothicE.ttf)
+side-items-img-size = 30px
 
 .navbar
-  font-family monospace
-  font-size side-items-font-size
+  font-small-extra()
 
   width 80%
   height 60px
@@ -49,8 +43,8 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
       pointer-events none
       padding 0 5px
     img
-      width side-items-font-size
-      height side-items-font-size
+      width side-items-img-size
+      height side-items-img-size
   .side-item.left
     background side-item-gradient % 90deg
     background-size 100% 1px
@@ -68,10 +62,9 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
   // background-size 100% 1px
 
   .progress
+    font-counter()
     display block
     margin-top -5px
-    font-size 30px
-    font-family counter-font
     position absolute
     left 50%
     top 50%
@@ -103,11 +96,6 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
     //box-shadow rgba(231, 190, 28, 0.7) 0 0 5px 0
     border mix(empColor5, transparent, 30%) 1px solid
     transition background-position-x ease 3s
-
-
-@media ({mobile})
-  .navbar linkbutton
-    font-size 20px
 
 
 .opacity-in

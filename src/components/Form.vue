@@ -1,5 +1,6 @@
 <style lang="stylus">
 @require '../styles/constants.styl'
+@require '../styles/fonts.styl'
 
 input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
 //form-bg = linear-gradient(20deg, bgColor0 0%, empColor6 50%, empColor4 110%) 50% 50% no-repeat
@@ -9,12 +10,12 @@ textarea
 input
 .input-like
   all unset
+  font-small()
+  font-special()
   width 100%
   color textColor1
   box-sizing border-box
-  font-family Arial
   padding 10px
-  font-size 1rem
   transition all 0.2s ease
 textarea
   background colorShadowDark
@@ -66,7 +67,7 @@ input:focus
       margin 20px 0
       transition all 0.3s ease
       > label
-        font-family Arial, monospace
+        font-medium-small()
       > textarea,
       > input[type=text]
       > input[type=password],

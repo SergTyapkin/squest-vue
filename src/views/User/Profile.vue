@@ -1,5 +1,6 @@
 <style lang="stylus" scoped>
 @require '../../styles/constants.styl'
+@require '../../styles/fonts.styl'
 
 hr
   margin 0
@@ -18,7 +19,11 @@ hr
     .rating
     .position
       flex 1
-      font-size 30px
+      font-large()
+      font-weight bold
+      .info
+        font-weight normal
+        font-special()
     //  .info
     //    overflow hidden
     //    max-height 0

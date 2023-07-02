@@ -1,4 +1,5 @@
 @require 'constants.styl'
+@require 'fonts.styl'
 
 bg-color = linear-gradient(-20deg, empColor1 0%, empColor6 20%, bgColor1 70%, bgColor0 100%)
 link-decoration-color = #d2825c
@@ -60,41 +61,35 @@ hr
 
 
 .text-big-xx
-    text-shadow textLightingHigh2
-    font-size 40px
-    font-family Arial, monospace
+    font-large()
+    font-special()
     color textColor1
+    text-shadow textLightingHigh2
     @media({mobile})
         text-shadow textLightingNormal1
 
 .text-big-x
-    text-shadow textLightingNormal1
-    font-size 30px
-    font-family Roboto, monospace
+    font-medium-large()
+    font-special()
     color textColor1
+    text-shadow textLightingNormal1
     @media({mobile})
         text-shadow textLightingNormal1
 
 .text-big
-    font-size 20px
-    font-family Roboto, monospace
+    font-medium()
     color textColor2
 
 .text-middle
-    font-size 18px
-    font-family Roboto, monospace
+    font-medium-small()
     color textColor2
 
 .text-small
-    text-shadow none
-    font-size 15px
-    font-family Arial, monospace
+    font-small()
     color textColor3
 
 .text-small-x
-    text-shadow none
-    font-size 13px
-    font-family Arial, monospace
+    font-small-extra()
     color textColor4
 
 
