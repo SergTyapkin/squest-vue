@@ -12,10 +12,12 @@ import './styles/scrollbars.styl';
 import './styles/fontsLoader.styl';
 import {API_URL} from "./constants";
 
-const Router = createVueRouter(Store);
 const app = createApp(App)
   .use(Api, API_URL)
-  .use(Router)
-  .use(Store)
-  .mount('#app');
+  .use(Store);
 Store.$app = app;
+
+const Router = createVueRouter(Store, app);
+app.use(Router)
+
+app.mount('#app');

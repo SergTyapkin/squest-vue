@@ -4,6 +4,7 @@ import ApiRequest from "./utils/requests";
 export default {
     install: (app, baseUrlPath) => {
         app.config.globalProperties.$api = new Api(baseUrlPath);
+        app.$api = app.config.globalProperties.$api;
     }
 }
 

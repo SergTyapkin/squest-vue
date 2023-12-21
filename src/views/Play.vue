@@ -102,10 +102,13 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     color: #d62a9d;
   }
 }
+
+.flex-root.fast-mode
+
 </style>
 
 <template>
-  <div class="flex-root">
+  <div class="flex-root" :class="{'fast-mode': mode === QuestModes.fastChoice}">
     <TopButtons class="move-buttons" bg clickable arrows @click="changeProgress" :buttons="setProgressButtonsList"></TopButtons>
     <TopButtons class="top-buttons" bg :buttons="[
         {name: taskTitle, description: `Квест: ${questTitle} <br> Ветка: ${branchTitle}`},
@@ -175,6 +178,7 @@ import TopButtons from "../components/TopButtons.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import Form from "../components/FormExtended.vue";
 import {secondsToStrTime} from "../utils/utils";
+import {QuestModes} from "~/constants";
 
 
 export default {
@@ -182,6 +186,8 @@ export default {
 
   data() {
     return {
+      mode: this.$route.query.mode,
+
       questTitle: '',
       branchTitle: '',
       taskTitle: '',
@@ -206,6 +212,8 @@ export default {
       setProgressButtonsList: [],
 
       base_url_path: this.$base_url_path,
+
+      QuestModes: QuestModes,
     }
   },
 

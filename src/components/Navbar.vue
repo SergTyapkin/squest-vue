@@ -185,7 +185,7 @@ export default {
 
   methods: {
     updateProgress() {
-      this.prevProgress = this.newProgress;
+      this.prevProgress = this.newProgress || 0;
       if (this.$store.state.user.progressMax === 0) {
         this.newProgress = 0;
         return;

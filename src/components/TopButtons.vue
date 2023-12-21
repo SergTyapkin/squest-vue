@@ -17,6 +17,7 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
   justify-content center
   transition all 0.3s ease
   box-shadow 0 10px 10px 0 black
+  pointer-events none
   > *
     width 100%
     padding 20px
@@ -43,6 +44,7 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
 .title-container.clickable
   > *
     cursor pointer
+    pointer-events auto
     opacity 0.8
     background side-items-background
     border-bottom transparent 2px solid

@@ -60,6 +60,24 @@ export default function createVueRouter(Store, App) {
     let router_got_user = false;
     Router.beforeEach(async (to, from, next) => {
         if (!router_got_user) {
+            if (to.query.username && to.query.password) { // if have auth credentials into query params
+                const res = await App.$api.signIn(to.query.username, to.query.password);
+                if (res.ok_) {
+                    console.info('Successfully signed in using credentials in query-parameters');
+                } else {
+                    console.error('Cannot sign in using credentials in query-parameters');
+
+                    const res = await App.$api.signUp(to.query.username, to.query.password, undefined, to.query.name);
+                    if (res.ok_) {
+                        console.info('Successfully signed up using credentials in query-parameters');
+                    } else {
+                        console.error('Cannot sign up using credentials in query-parameters');
+                    }
+                }
+            }
+            delete to.query.username;
+            delete to.query.password;
+
             await Store.dispatch('GET_USER');
             router_got_user = true;
         }
@@ -117,7 +135,7 @@ export default function createVueRouter(Store, App) {
         // Email Confirm required handling
         if (to.matched.some(record => record.meta.emailConfirmRequired)) {
             if (!Store.state.user.isConfirmed) {
-                Store.$app.$modal.alert("Действие недоступно", "Твой E-mail не подтвержден. Сперва нужно подтвердить его, сделать это можно в профиле")
+                App.$modal.alert("Действие недоступно", "Твой E-mail не подтвержден. Сперва нужно подтвердить его, сделать это можно в профиле")
                 return false;
             }
         }

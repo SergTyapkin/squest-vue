@@ -160,6 +160,7 @@ import TopButtons from "../components/TopButtons.vue";
 import CircleLoading from "../components/loaders/CircleLoading.vue";
 import {secondsToStrTime} from "../utils/utils";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
+import {QuestModes} from "~/constants";
 
 export default {
   components: {MarkdownRenderer, CircleLoading, TopButtons, ArrowListElement},
@@ -169,6 +170,8 @@ export default {
       branches: [],
       id: this.$route.query.id,
       uid: this.$route.query.uid,
+      mode: this.$route.query.mode,
+      branchid: this.$route.query.branchid,
 
       loading: false,
       branchesLoading: false,
@@ -196,6 +199,12 @@ export default {
     if (this.id === undefined && this.uid === undefined) {
       this.$popups.error("Квест не найден", "Не указаны id или uid квеста");
       this.$router.push('/quests');
+      return;
+    }
+    if (this.branchid !== undefined) {
+      await this.getQuestInfo();
+      await this.getBranches();
+      this.selectBranch(this.branches[0]);
       return;
     }
 
@@ -296,7 +305,7 @@ export default {
     },
 
     async selectBranch(branch) {
-      if (!await this.$modal.confirm("Выбираем ветку?", branch.title))
+      if (this.mode !== QuestModes.fastChoice && !await this.$modal.confirm("Выбираем ветку?", branch.title))
           return;
 
       this.loading = true;
@@ -304,7 +313,7 @@ export default {
       this.loading = false;
       if (res.ok_) {
         this.$store.dispatch('GET_USER');
-        this.$router.push('/play');
+        this.$router.push(`/play?mode=${this.mode}`);
         return;
       }
       if (res.status_ === 401) {
