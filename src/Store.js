@@ -16,7 +16,6 @@ const Store = new Vuex.Store({
     },
     SET_THEME(state, theme) {
       state.theme = theme || Themes.default;
-      console.log(state.theme)
       localStorage.setItem('theme', String(state.theme));
     },
   },
@@ -57,7 +56,6 @@ const Store = new Vuex.Store({
     },
     async LOAD_THEME(state) {
       let theme = localStorage.getItem('theme');
-      console.log(theme, isNaN(theme))
       if (isNaN(theme))
         theme = null
       else

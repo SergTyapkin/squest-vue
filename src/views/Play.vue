@@ -35,7 +35,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   max-width 460px
   border-radius 7px
   transition all 0.3s ease
-  input
+  .button-submit
     all unset
     color textColor1
     box-sizing border-box
@@ -54,8 +54,8 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     text-align center
     border-color empColor3
     cursor pointer
-  input:hover
-    box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 15px rgb(255, 235, 164)
+    &:hover
+      box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 15px rgb(255, 235, 164)
 
 .congratulations
   text-align center
@@ -221,37 +221,28 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
         border-color colorError
 
   .qr-form
-    background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgb(88, 58, 24) 50%, rgba(84, 67, 24, 0) 100%) 50% 50% no-repeat
-    box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.7), 0 0 15px 0 rgba(34, 28, 4, 0.4) inset
-    padding 40px 30px
-    margin-top 100px
-    margin-left auto
-    margin-right auto
-    width 100%
-    max-width 460px
-    border-radius 7px
-    transition all 0.3s ease
-    input
-      all unset
-      color textColor1
-      box-sizing border-box
-      font-family Arial
-      padding 10px
-      font-size 1rem
-      margin-top 20px
-      border 1px solid colorShadow
-      border-bottom 1px solid border-color
-      transition all 0.2s ease
-      border-radius 3px
-      background input-bg
-      box-shadow input-box-shadow
-      background linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(90, 56, 25, 0.7) 50%, rgba(55, 43, 16, 0.4) 100%) 50% 50% no-repeat
-      width 100%
+    glass-block()
+    background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 20%) 50%, mix(black, transparent, 20%) 100%)
+    box-shadow none
+    display flex
+    flex-direction column
+    align-items center
+    .button-submit
+      font-medium()
       text-align center
-      border-color empColor3
+      padding 10px 15px
+      padding-top 5px
+      border 1px solid secColor1
+      border-top none
+      border-radius 9999px
+      text-shadow none
+      transition all 0.2s ease
       cursor pointer
-    input:hover
-      box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 15px rgb(255, 235, 164)
+      background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 50%) 50%, mix(black, transparent, 20%) 100%)
+      color textColor1
+      margin-top 20px
+      &:hover
+        filter brightness(1.2)
 </style>
 
 <template>
@@ -294,7 +285,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       ]"></TopButtons>
     </div>
 
-    <div v-else-if="$store.state.theme === Themes.flat" class="answer-block" :class="{error: isAnswerError}">
+    <div v-else-if="$store.state.theme === Themes.flat && !isQrAnswer" class="answer-block" :class="{error: isAnswerError}">
       <div class="task-question">{{ taskQuestion }}</div>
       <div class="answer-error">Ответ неверен</div>
       <input @keydown.enter="checkAnswer({answer: answer})" class="task-answer" type="text" autocomplete="off" v-model="answer" placeholder="Ответ"/>
@@ -317,7 +308,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       <div class="text-small-x">
         Как только ты отсканируешь правильный QR-код, ты пройдёшь это задание
       </div>
-      <input type="button" :value="qrScanButtonText" @click="clickOnScanButton">
+      <button class="button-submit" @click="clickOnScanButton">{{ qrScanButtonText }}</button>
     </div>
 
     <Footer></Footer>
@@ -375,13 +366,11 @@ export default {
   },
 
   mounted() {
-    console.log(this.$user.chosenmode, this.$store.state.theme);
     if (this.$user.chosenmode === QuestModes.fast) {
       this.$store.dispatch('SET_THEME', Themes.flat);
     } else if (this.$user.chosenmode === QuestModes.default) {
       this.$store.dispatch('SET_THEME', Themes.default);
     }
-    console.log(this.$user.chosenmode, this.$store.state.theme);
     this.update();
   },
 
