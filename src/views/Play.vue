@@ -133,7 +133,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     font-large()
     glass-block()
     text-align center
-    padding 0 10px 5px 10px
+    padding 0 15px 5px 15px
     border 1px solid textColor3
     border-radius 30px
     border-bottom none
@@ -142,6 +142,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     z-index 1
     background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 50%) 50%, mix(black, transparent, 20%) 100%)
     max-width 70%
+    color textColor1
   .description
   .answer-block
     font-medium-small()
@@ -182,9 +183,8 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       padding-bottom 10px
       border-color mix(secColor1, transparent, 30%)
       border-bottom-color secColor1
-      @media({desktop})
-        border-right-width 0px
-        border-left-width 0px
+      border-right-width 0px
+      border-left-width 0px
     .task-answer + .button-submit
       pointer-events none
       margin-top -70px
@@ -227,6 +227,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     display flex
     flex-direction column
     align-items center
+    margin-top 0
     .button-submit
       font-medium()
       text-align center
