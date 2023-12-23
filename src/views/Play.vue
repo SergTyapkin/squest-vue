@@ -297,11 +297,10 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     <div v-else-if="$store.state.theme === Themes.flat" class="answer-block" :class="{error: isAnswerError}">
       <div class="task-question">{{ taskQuestion }}</div>
       <div class="answer-error">Ответ неверен</div>
-      <input class="task-answer" type="text" autocomplete="off" v-model="answer" placeholder="Ответ"/>
+      <input @keydown.enter="checkAnswer({answer: answer})" class="task-answer" type="text" autocomplete="off" v-model="answer" placeholder="Ответ"/>
       <CircleLoading v-if="answerLoading"></CircleLoading>
       <button v-else @click="checkAnswer({answer: answer})" class="button-submit">Ответить</button>
     </div>
-
     <Form v-else-if="!isQrAnswer" ref="form" class="form"
           :title="taskQuestion"
           :fields="[
