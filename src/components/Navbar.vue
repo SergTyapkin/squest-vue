@@ -6,8 +6,6 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 side-items-img-size = 30px
 
 .navbar
-  font-small-extra()
-
   width 80%
   height 60px
   margin 0 auto 10px auto
@@ -20,6 +18,7 @@ side-items-img-size = 30px
   position relative
 
   .side-item
+    font-small-extra()
     letter-spacing 2px
     color textColor3
     text-transform uppercase
@@ -95,6 +94,7 @@ side-items-img-size = 30px
     background-size 200%
     //box-shadow rgba(231, 190, 28, 0.7) 0 0 5px 0
     border mix(empColor5, transparent, 30%) 1px solid
+    border-right none
     transition background-position-x ease 3s
 
 
@@ -126,9 +126,40 @@ side-items-img-size = 30px
     border-bottom-left-radius 100px 60px
     border-bottom-right-radius 100px 60px
 
-// until avatars comes
-.avatar
-  display none
+// --- Flat theme
+.flat .navbar
+.flat.navbar
+  @require '../styles/constantsFlatTheme.styl'
+  position absolute
+  background none
+  backdrop-filter blur(10px) brightness(2) saturate(.4)
+  z-index 999
+
+  width 100% !important
+  height 60px
+  margin 0
+
+  border-radius 0 !important
+  .side-item
+    display none
+
+  .progress
+    margin-top 0
+    color textColor1
+    background none
+    .progress-container
+      .info
+        color textColor3
+
+  .progressbar
+    bottom 0
+    width 100%
+    height 5px
+    background linear-gradient(90deg, empColor2 50%, transparent 53%) 0 0 no-repeat
+    background-position-x calc(100% - 100% * var(--progress))
+    background-size 200%
+    border mix(empColor5, transparent, 50%) 1px solid
+    border-right none
 </style>
 
 <template>
@@ -162,7 +193,7 @@ side-items-img-size = 30px
         <span v-if="!$store.state.user.isLogined">Войти</span>
         <span v-else>{{ $store.state.user.username }}</span>
       </span>
-      <img class="avatar" src="../res/default_avatar.png" alt="">
+<!--      <img class="avatar" src="../res/default_avatar.png" alt="">-->
     </router-link>
   </div>
 </template>
@@ -179,7 +210,7 @@ export default {
       prevProgress: 0,
       newProgress: 0,
 
-      base_url_path: BASE_URL_PATH
+      base_url_path: BASE_URL_PATH,
     };
   },
 

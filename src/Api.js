@@ -49,7 +49,7 @@ export class Api extends ApiRequest {
     voteBranchRating = (branchId, rating) => this.post(`/quest/rating`, {branchId, rating})
 
     checkAnswer = (answer) => this.post(`/task/play`, {answer});
-    chooseBranch = (questId, branchId) => this.post(`/quest/choose`, {questId, branchId});
+    chooseBranch = (questId, branchId, mode) => this.post(`/quest/choose`, {questId, branchId, mode});
     restartBranch = (branchId) => this.put(`/branch/progress/reset`, {branchId});
     setBranchProgress = (branchId, progress) => this.put(`/branch/progress/set`, {branchId, progress});
 

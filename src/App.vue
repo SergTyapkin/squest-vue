@@ -150,7 +150,7 @@ import Modal from "/src/components/vue-plugins/Modal.vue";
 import Popups from "/src/components/vue-plugins/Popups.vue";
 import CircleLoading from "/src/components/loaders/CircleLoading.vue";
 import Navbar from "./components/Navbar.vue";
-import {API_URL, BASE_URL_PATH} from "./constants";
+import {API_URL, BASE_URL_PATH, Themes} from "./constants";
 
 
 export default {
@@ -158,7 +158,9 @@ export default {
 
   data() {
     return {
-      transitionName: ""
+      transitionName: "",
+
+      Themes: Themes,
     }
   },
 
@@ -177,19 +179,29 @@ export default {
         this.transitionName = 'slide-left';
       else if (from.path === '/signup' && to.path === '/signin')
         this.transitionName = 'slide-left';
+    },
+    '$store.state.theme'(to, from) {
+      if (to === Themes.flat) {
+        document.body.classList.add('flat');
+      } else {
+        document.body.classList.remove('flat');
+      }
     }
   },
 
-  mounted() {
+  async mounted() {
     const global = getCurrentInstance().appContext.config.globalProperties;
 
     global.$modal = this.$refs.modal;
     global.$popups = this.$refs.popups;
 
     global.$user = this.$store.state.user;
+    global.$theme = this.$store.state.theme;
     global.$url = 'https://sergtyapkin.herokuapp.com/squest';
     global.$fullApiUrl = 'https://sergtyapkin.herokuapp.com/' + API_URL;
     global.$base_url_path = BASE_URL_PATH;
+
+    await this.$store.dispatch('LOAD_THEME');
   },
 };
 </script>

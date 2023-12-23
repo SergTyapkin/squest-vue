@@ -59,6 +59,19 @@ hr
             flex 1
 
 
+.flat
+    @require "constantsFlatTheme.styl"
+
+    hr-color = linear-gradient(90deg, transparent, empColor2, transparent)
+    hr
+        background hr-color
+    #app
+        .flex-root
+            min-height 100vh
+
+body.flat
+    bg-color = linear-gradient(-20deg, #0b84b8 0%, #0f3146 20%, #05151c 70%, #090e0e 100%)
+    background bg-color
 
 .text-big-xx
     font-large()

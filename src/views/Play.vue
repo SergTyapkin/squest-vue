@@ -59,6 +59,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
 .congratulations
   text-align center
+  width 100%
   .buttons
     text-align left
 
@@ -103,24 +104,171 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   }
 }
 
-.flex-root.fast-mode
+// --- Flat theme
+.task-title
+  display none
+.flat .flex-root
+  @import "../styles/constantsFlatTheme.styl"
 
+  input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
+  glass-block()
+    border-bottom empColor6 1px solid
+    backdrop-filter blur(10px) brightness(.7) saturate(.5)
+
+  background-image url("../res/tentak0_0.png")
+  background-repeat no-repeat
+  background-attachment fixed
+  background-size cover
+  background-position-x 50%
+
+  align-items center
+  .form
+    margin-top 20px
+    padding 20px
+
+  .top-buttons
+    display none
+  .task-title
+    display block
+    font-large()
+    glass-block()
+    text-align center
+    padding 0 10px 5px 10px
+    border 1px solid textColor3
+    border-radius 30px
+    border-bottom none
+    margin-top 50px
+    margin-bottom -10px
+    z-index 1
+    background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 50%) 50%, mix(black, transparent, 20%) 100%)
+    max-width 70%
+  .description
+  .answer-block
+    font-medium-small()
+    color textColor2
+    border-radius 20px
+    margin-bottom 30px
+    glass-block()
+    width 80%
+    max-width 800px
+    @media ({mobile})
+      width calc(100% - 40px)
+
+  .answer-block
+    colorError = lighten(colorNo, 30%)
+    padding 20px
+    padding-top 10px
+    border-radius 50px
+    display flex
+    align-items center
+    flex-direction column
+    .task-question
+      font-medium()
+      text-align center
+      color textColor1
+      margin-bottom 5px
+    .answer-error
+      color colorError
+      text-align left
+      width 100%
+      opacity 0
+      transition all 0.2s ease
+    .task-answer
+      text-align left
+      border-radius 9999px
+      color textColor1
+      margin-bottom 20px
+      padding 15px
+      padding-bottom 10px
+      border-color mix(secColor1, transparent, 30%)
+      border-bottom-color secColor1
+      @media({desktop})
+        border-right-width 0px
+        border-left-width 0px
+    .task-answer + .button-submit
+      pointer-events none
+      margin-top -70px
+      opacity 0
+      transform translateY(35px) scale(.9)
+    .task-answer:focus + .button-submit
+    .task-answer:not(:placeholder-shown) + .button-submit
+      margin-top 0
+      opacity 1
+      transform none
+    .task-answer:not(:placeholder-shown) + .button-submit
+      pointer-events auto
+    .button-submit
+      font-medium()
+      text-align center
+      padding 10px 15px
+      padding-top 5px
+      border 1px solid secColor1
+      border-top none
+      border-radius 9999px
+      text-shadow none
+      transition all 0.2s ease
+      cursor pointer
+      background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 50%) 50%, mix(black, transparent, 20%) 100%)
+      color textColor1
+      &:hover
+        filter brightness(1.2)
+
+    &.error
+      .answer-error
+        opacity 1
+      .task-answer
+        color colorError
+        border-color colorError
+
+  .qr-form
+    background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgb(88, 58, 24) 50%, rgba(84, 67, 24, 0) 100%) 50% 50% no-repeat
+    box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.7), 0 0 15px 0 rgba(34, 28, 4, 0.4) inset
+    padding 40px 30px
+    margin-top 100px
+    margin-left auto
+    margin-right auto
+    width 100%
+    max-width 460px
+    border-radius 7px
+    transition all 0.3s ease
+    input
+      all unset
+      color textColor1
+      box-sizing border-box
+      font-family Arial
+      padding 10px
+      font-size 1rem
+      margin-top 20px
+      border 1px solid colorShadow
+      border-bottom 1px solid border-color
+      transition all 0.2s ease
+      border-radius 3px
+      background input-bg
+      box-shadow input-box-shadow
+      background linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(90, 56, 25, 0.7) 50%, rgba(55, 43, 16, 0.4) 100%) 50% 50% no-repeat
+      width 100%
+      text-align center
+      border-color empColor3
+      cursor pointer
+    input:hover
+      box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 15px rgb(255, 235, 164)
 </style>
 
 <template>
-  <div class="flex-root" :class="{'fast-mode': mode === QuestModes.fastChoice}">
+  <div class="flex-root">
     <TopButtons class="move-buttons" bg clickable arrows @click="changeProgress" :buttons="setProgressButtonsList"></TopButtons>
     <TopButtons class="top-buttons" bg :buttons="[
         {name: taskTitle, description: `Квест: ${questTitle} <br> Ветка: ${branchTitle}`},
     ]"></TopButtons>
+    <div class="task-title">{{ taskTitle }}</div>
 
     <CircleLoading v-if="loading"></CircleLoading>
-    <MarkdownRenderer ref="markdown" class="description text-middle app-flex-filler"></MarkdownRenderer>
+    <MarkdownRenderer ref="markdown" class="description text-middle"></MarkdownRenderer>
+
+    <div class="app-flex-filler"></div>
 
     <div v-if="isEnd" class="text-big-xx congratulations">
-      <CircleLoading v-if="statsLoading" class="preview-image"></CircleLoading>
-
-      <div>Вы прошли ветку!</div>
+      <div>Вы прошли квест!</div>
 
       <div class="stats">
         <div class="text-middle stats-container">
@@ -129,7 +277,8 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
         </div>
         <div>
           <div>Оценка:</div>
-          <div class="stats-container stars" @click="sendVote">
+          <CircleLoading v-if="statsLoading" class="preview-image"></CircleLoading>
+          <div v-else class="stats-container stars" @click="sendVote">
             <img src="../res/star.svg" alt="5" :class="{checked: this.ratingVote >= 5}" @click="this.ratingVote = 5">
             <img src="../res/star.svg" alt="4" :class="{checked: this.ratingVote >= 4}" @click="this.ratingVote = 4">
             <img src="../res/star.svg" alt="3" :class="{checked: this.ratingVote >= 3}" @click="this.ratingVote = 3">
@@ -141,8 +290,16 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
       <TopButtons @click="restart" class="buttons" bg clickable arrows big :buttons="[
           { name: 'Начать заново', description: 'Прогресс сохранится' },
-          { name: 'Завершить квест', to: base_url_path + '/quests'},
+          { name: 'Завершить квест'},
       ]"></TopButtons>
+    </div>
+
+    <div v-else-if="$store.state.theme === Themes.flat" class="answer-block" :class="{error: isAnswerError}">
+      <div class="task-question">{{ taskQuestion }}</div>
+      <div class="answer-error">Ответ неверен</div>
+      <input class="task-answer" type="text" autocomplete="off" v-model="answer" placeholder="Ответ"/>
+      <CircleLoading v-if="answerLoading"></CircleLoading>
+      <button v-else @click="checkAnswer({answer: answer})" class="button-submit">Ответить</button>
     </div>
 
     <Form v-else-if="!isQrAnswer" ref="form" class="form"
@@ -178,7 +335,7 @@ import TopButtons from "../components/TopButtons.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import Form from "../components/FormExtended.vue";
 import {secondsToStrTime} from "../utils/utils";
-import {QuestModes} from "~/constants";
+import {QuestModes, Themes} from "../constants";
 
 
 export default {
@@ -186,8 +343,6 @@ export default {
 
   data() {
     return {
-      mode: this.$route.query.mode,
-
       questTitle: '',
       branchTitle: '',
       taskTitle: '',
@@ -204,7 +359,10 @@ export default {
       isCanEdit: false,
 
       loading: false,
+      answerLoading: false,
       statsLoading: false,
+
+      isAnswerError: false,
 
       timeSpent: 0,
       ratingVote: 0,
@@ -213,11 +371,18 @@ export default {
 
       base_url_path: this.$base_url_path,
 
-      QuestModes: QuestModes,
+      Themes: Themes,
     }
   },
 
   mounted() {
+    console.log(this.$user.chosenmode, this.$store.state.theme);
+    if (this.$user.chosenmode === QuestModes.fast) {
+      this.$store.dispatch('SET_THEME', Themes.flat);
+    } else if (this.$user.chosenmode === QuestModes.default) {
+      this.$store.dispatch('SET_THEME', Themes.default);
+    }
+    console.log(this.$user.chosenmode, this.$store.state.theme);
     this.update();
   },
 
@@ -295,9 +460,11 @@ export default {
 
       if (this.$refs.form)
         this.$refs.form.loading = true;
+      this.answerLoading = true;
       const res = await this.$api.checkAnswer(this.answer);
       if (this.$refs.form)
         this.$refs.form.loading = false;
+      this.answerLoading = false;
 
       if (res.ok_) {
         this.$popups.success('Правильно');
@@ -305,9 +472,13 @@ export default {
         await this.update();
         return true;
       }
-      if (res.status_ === 418 && this.$refs.form) {
-        this.$refs.form.info = 'Ответ неверный';
-        this.$refs.form.showError();
+      if (res.status_ === 418) {
+        if (this.$refs.form) {
+          this.$refs.form.info = 'Ответ неверный';
+          this.$refs.form.showError();
+        }
+        this.isAnswerError = true;
+        setTimeout(() => {this.isAnswerError = false}, 1200);
         return false;
       }
 
@@ -316,8 +487,11 @@ export default {
     },
 
     async restart(button) {
-      if (button.idx !== 0)
+      if (button.idx === 1) {
+        this.$store.dispatch('SET_THEME', Themes.default);
+        this.$router.push(this.$base_url_path + '/quests');
         return;
+      }
 
       if (await this.$modal.confirm("Точно начинаем заново?", "Рейтинг останется")) {
         this.loading = true;

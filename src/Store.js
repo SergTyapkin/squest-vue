@@ -1,9 +1,11 @@
 import Vuex from 'vuex'
 import User from "./models/user";
+import {Themes} from "~/constants";
 
 const Store = new Vuex.Store({
   state: {
     user: new User(),
+    theme: Themes.default,
   },
   mutations: {
     SET_USER(state, userData) {
@@ -11,6 +13,11 @@ const Store = new Vuex.Store({
     },
     DELETE_USER(state) {
       state.user.setDefault();
+    },
+    SET_THEME(state, theme) {
+      state.theme = theme || Themes.default;
+      console.log(state.theme)
+      localStorage.setItem('theme', String(state.theme));
     },
   },
   actions: {
@@ -24,6 +31,7 @@ const Store = new Vuex.Store({
           chosenbranch: u.chosenbranch,
           chosenquestid: u.chosenquestid,
           chosenquest: u.chosenquest,
+          chosenmode: u.chosenmode,
           email: u.email,
           id: u.id,
           isAdmin: u.isadmin,
@@ -41,8 +49,20 @@ const Store = new Vuex.Store({
       else
         state.commit('DELETE_USER');
     },
-    async DELETE_USER(state) {
+    DELETE_USER(state) {
       state.commit('DELETE_USER');
+    },
+    SET_THEME(state, theme) {
+      state.commit('SET_THEME', theme);
+    },
+    async LOAD_THEME(state) {
+      let theme = localStorage.getItem('theme');
+      console.log(theme, isNaN(theme))
+      if (isNaN(theme))
+        theme = null
+      else
+        theme = Number(theme)
+      state.commit('SET_THEME', theme);
     },
   }
 });

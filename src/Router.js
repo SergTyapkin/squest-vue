@@ -72,6 +72,7 @@ export default function createVueRouter(Store, App) {
                         console.info('Successfully signed up using credentials in query-parameters');
                     } else {
                         console.error('Cannot sign up using credentials in query-parameters');
+                        next(BASE_URL_PATH + '/');
                     }
                 }
             }
