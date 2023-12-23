@@ -468,6 +468,7 @@ export default {
       if (res.ok_) {
         this.$popups.success('Правильно');
         values.answer = '';
+        this.answer = '';
         await this.update();
         return true;
       }
