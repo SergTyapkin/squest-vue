@@ -19,12 +19,12 @@ logo-size = 140px
           title="Вход" description="Ну давай, вспомни пароль, войди в меня"
           :fields="[
             { title: 'ЛОГИН или E-MAIL', autocomplete: 'on', jsonName: 'username' },
-            { title: 'ПАРОЛЬ', autocomplete: 'on', jsonName: 'password', type: 'password', info: 'Забыл пароль? - пей таблетки', infoHref: base_url_path + `/password/restore`},
+            { title: 'ПАРОЛЬ', autocomplete: 'on', jsonName: 'password', type: 'password', info: 'Забыл пароль? - пей таблетки', infoHref: {name: 'password-restore'}},
           ]"
           submit-text="Погнали"
           @submit="signIn"
     >
-      Нужен аккаунт? <router-link :to="base_url_path + `/signup`" class="link">Создать</router-link>
+      Нужен аккаунт? <router-link :to="{name: 'signup'}" class="link">Создать</router-link>
 
       <div class="text-small text-centered">или</div>
       <div class="button" @click="loginByCode = true">Войти по коду</div>
@@ -64,8 +64,6 @@ export default {
   data() {
     return {
       loginByCode: false,
-
-      base_url_path: this.$base_url_path,
     }
   },
 
@@ -105,7 +103,7 @@ export default {
         this.$refs.form.loading = false;
         // this.$popups.success('Отличный вход!', 'Ну привет...');
         this.$refs.form.errors = {};
-        this.$router.push('/profile');
+        this.$router.push({name: 'profile'});
         return;
       }
 
@@ -164,7 +162,7 @@ export default {
         this.$refs.formCode.loading = false;
         this.$popups.success('Отличный вход!', 'Ну привет...');
         this.$refs.formCode.errors = {};
-        this.$router.push('/profile');
+        this.$router.push({name: 'profile'});
         return;
       }
 

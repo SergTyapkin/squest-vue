@@ -14,7 +14,7 @@
         <QuestsList :get-quests-foo="$api.getAllQuests"></QuestsList>
       </div>
 
-      <FloatingButton title="Создать квест" :to="base_url_path + `/quest/create`" class="float-button">
+      <FloatingButton title="Создать квест" :to="{name: 'create-quest'}" class="float-button">
         <img src="../res/plus_bold.svg" alt="">
       </FloatingButton>
     </div>
@@ -32,7 +32,6 @@ export default {
 
   data() {
     return {
-      base_url_path: this.$base_url_path,
     }
   },
 }

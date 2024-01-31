@@ -166,7 +166,7 @@ side-items-img-size = 30px
   <div class="navbar absolute-wrapper">
     <div class="progressbar" :style="`--progress: ${newProgress / 100}`"></div>
 
-    <router-link v-if="$store.state.user.isLogined && ($store.state.user.chosenquestid !== null) && ($store.state.user.chosenbranchid !== null)" class="center progress" :to="base_url_path + `/play`">
+    <router-link v-if="$store.state.user.isLogined && ($store.state.user.chosenquestid !== null) && ($store.state.user.chosenbranchid !== null)" class="center progress" :to="{name: 'play'}">
       <div class="progress-container">
         <vue3autocounter
             ref='counter'
@@ -187,8 +187,8 @@ side-items-img-size = 30px
       <span>SQ</span>
     </div>
 
-    <router-link :to="base_url_path + `/quests`" class="left side-item opacity-in delayedBig">Квесты</router-link>
-    <router-link :to="base_url_path + `/profile`" class="right side-item opacity-in delayedBig">
+    <router-link :to="{name: 'quests'}" class="left side-item opacity-in delayedBig">Квесты</router-link>
+    <router-link :to="{name: 'profile'}" class="right side-item opacity-in delayedBig">
       <span>
         <span v-if="!$store.state.user.isLogined">Войти</span>
         <span v-else>{{ $store.state.user.username }}</span>
@@ -200,7 +200,6 @@ side-items-img-size = 30px
 
 <script>
 import Vue3autocounter from 'vue3-autocounter';
-import {BASE_URL_PATH} from "../constants";
 
 export default {
   components: {Vue3autocounter},
@@ -209,8 +208,6 @@ export default {
     return {
       prevProgress: 0,
       newProgress: 0,
-
-      base_url_path: BASE_URL_PATH,
     };
   },
 

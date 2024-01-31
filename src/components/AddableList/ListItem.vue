@@ -90,7 +90,7 @@ li.last-child
     </div>
     <input type="text" :placeholder="placeholder" :value="modelValue.title" autocomplete="off" @input="updateVModel" ref="input">
 
-    <router-link :to="base_url_path + actionTo(modelValue.id)" v-if="modelValue.confirmed && actionText && modelValue.id" class="text-middle button rounded goto-button">
+    <router-link :to="actionTo(modelValue.id)" v-if="modelValue.confirmed && actionText && modelValue.id" class="text-middle button rounded goto-button">
       <span class="mobile-hide">{{ actionText }}</span> <Arrow right></Arrow>
     </router-link>
   </li>
@@ -117,7 +117,6 @@ li.last-child
 
     data() {
       return {
-        base_url_path: this.$base_url_path
       }
     },
 

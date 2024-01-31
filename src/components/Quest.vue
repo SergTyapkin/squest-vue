@@ -150,14 +150,14 @@ plate-max-width = 400px
 </style>
 
 <template>
-  <router-link class="quest-preview" :to="base_url_path + `/quest?id=${id}`" :class="{placeholder: isPlaceholder}">
+  <router-link class="quest-preview" :to="{name: 'quest', query: {id: id}}" :class="{placeholder: isPlaceholder}">
     <img class="preview-image" :src="previewurl" alt="preview" v-if="previewurl">
 
     <div class="preview-image default text-big-xx" v-else>SQ</div>
 
     <div class="container" :class="{inactive: branchesOpened}">
       <div class="main-info">
-        <router-link  :to="base_url_path + `/quest/edit?id=${id}`" v-if="canedit" class="edit">
+        <router-link  :to="{name: 'edit-quest', query: {id: id}}" v-if="canedit" class="edit">
           <img src="../res/edit.svg" alt="edit">
         </router-link>
 
@@ -184,7 +184,7 @@ plate-max-width = 400px
             <img src="../res/time.svg" alt="time">{{time}}
           </span>
         </div>
-        <router-link :to="base_url_path + `/profile?id=${author}`" class="link text-small author-fields">
+        <router-link :to="{name: 'profile', query: {id: author}}" class="link text-small author-fields">
           <img src="../res/profile.svg" alt="">
           <span>{{authorname}}</span>
         </router-link>
@@ -196,7 +196,7 @@ plate-max-width = 400px
                         preserve-click-open
                         @open="openBranches"
                         @close="closeBranches"
-                        @click-inside="$router.push(`/quest?id=${id}`)"
+                        @click-inside="$router.push({name: 'quest', query: {id: id}})"
       ></ArrowListElement>
     </div>
   </router-link>
@@ -238,8 +238,6 @@ export default {
       time: '-',
       rating: '-',
       played: 0,
-
-      base_url_path: this.$base_url_path,
     }
   },
 

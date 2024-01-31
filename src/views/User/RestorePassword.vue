@@ -13,7 +13,7 @@
             ]"
             submit-text="Выслать письмо"
             @submit="sendRestorePasswordEmail"
-      >Неожиданно вспомнился старый пароль? <br> <router-link :to="base_url_path + `/signin`" class="link">Войти как нормальный человек</router-link>
+      >Неожиданно вспомнился старый пароль? <br> <router-link :to="{name: 'signin'}" class="link">Войти как нормальный человек</router-link>
       </Form>
 
       <Form v-else :no-submit="true" title="Письмо на твоей почте">
@@ -30,7 +30,7 @@
           ]"
           submit-text="Сменить пароль"
           @submit="restorePassword"
-    >Неожиданно вспомнился старый пароль? <br> <router-link :to="base_url_path + `/signin`" class="link">Войти как нормальный человек</router-link>
+    >Неожиданно вспомнился старый пароль? <br> <router-link :to="{name: 'signin'}" class="link">Войти как нормальный человек</router-link>
     </Form>
   </div>
 </template>
@@ -46,8 +46,6 @@ export default {
     return {
       code: this.$route.query.code,
       emailSent: false,
-
-      base_url_path: this.$base_url_path,
     }
   },
 
@@ -102,7 +100,7 @@ export default {
 
       this.$popups.success('Пароль изменен!');
       this.$refs.formPassword.errors = {};
-      this.$router.push('/signin');
+      this.$router.push({name: 'signin'});
     },
   }
 }

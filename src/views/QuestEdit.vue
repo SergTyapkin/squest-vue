@@ -88,7 +88,7 @@
 <template>
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'Назад', description: 'К твоим квестам', to: base_url_path + '/quests/my'},
+        {name: 'Назад', description: 'К твоим квестам', to: {name: 'my-quests'}},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -248,15 +248,13 @@ export default {
       helper: false,
 
       edited: false,
-
-      base_url_path: this.$base_url_path,
     }
   },
 
   async mounted() {
     if (this.id === undefined) {
       this.$popups.error("Ошибка", "id квеста не задано");
-      this.$router.push('/quests/my')
+      this.$router.push({name: 'my-quests'})
       return;
     }
 
@@ -472,7 +470,7 @@ export default {
       this.$popups.success('Сохранено', 'Информация сохранена');
       window.onbeforeunload = null;
       this.edited = false;
-      this.$router.push('/quests/my');
+      this.$router.push({name: 'my-quests'});
     },
 
     onChange() {

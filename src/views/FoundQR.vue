@@ -12,7 +12,7 @@ textarea
 <template>
   <div>
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'На главную', description: `Не стесняйся, проходи`, to: base_url_path + `/`},
+        {name: 'На главную', description: `Не стесняйся, проходи`, to: {name: 'default'}},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -40,7 +40,6 @@ export default {
 
   data() {
     return {
-      base_url_path: this.$base_url_path,
     }
   }
 };

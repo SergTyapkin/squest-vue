@@ -8,7 +8,7 @@
 
 <template>
   <Form class="form" title="Ошибка 404" description="Страница не найдена" no-submit>
-    <router-link :to="base_url_path + `/profile`" class="title">На главную</router-link>
+    <router-link :to="{name: 'profile'}" class="title">На главную</router-link>
   </Form>
 </template>
 
@@ -20,7 +20,6 @@ export default {
 
   data() {
     return {
-      base_url_path: this.$base_url_path,
     }
   }
 }

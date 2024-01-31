@@ -102,7 +102,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
   <div>
     <TopButtons clickable arrows low-opacity :buttons="[
         {name: 'Назад', description: 'К списку квестов',
-        to: $router.options.history.state.back ? $router.options.history.state.back : base_url_path + '/quests'},
+        to: $router.options.history.state.back ? $router.options.history.state.back : {name: 'quests'}},
     ]"></TopButtons>
 
     <div class="quest-preview">
@@ -144,12 +144,12 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
     <ArrowListElement ref="usersFinished" title="Прошли"
                       closed
                       :elements="usersFinished"
-                      @click-inside="(user) => $router.push(`/profile?id=${user.id}`)"
+                      @click-inside="(user) => $router.push({name: 'profile', query: {id: user.id}})"
     ></ArrowListElement>
     <ArrowListElement ref="usersProgresses" title="Проходят"
                       closed
                       :elements="usersProgresses"
-                      @click-inside="(user) => $router.push(`/profile?id=${user.id}`)"
+                      @click-inside="(user) => $router.push({name: 'profile', query: {id: user.id}})"
     ></ArrowListElement>
   </div>
 </template>
@@ -190,8 +190,6 @@ export default {
 
       usersFinished: [],
       usersProgresses: [],
-
-      base_url_path: this.$base_url_path,
     }
   },
 
@@ -203,7 +201,7 @@ export default {
 
     if (this.id === undefined && this.uid === undefined) {
       this.$popups.error("Квест не найден", "Не указаны id или uid квеста");
-      this.$router.push('/quests');
+      this.$router.push({name: 'quests'});
       return;
     }
     if (this.branchid !== undefined) {
@@ -255,13 +253,13 @@ export default {
       if (!questInfo.ok_) {
         if (questInfo.status_ === 404) {
           this.$popups.error("Ошибка", "Квест не найден");
-          this.$router.push('/quests');
+          this.$router.push({name: 'quests'});
           return;
         }
 
         if (questInfo.status_ === 403) {
           this.$popups.error("Ошибка", "Доступ к квесту запрещён");
-          this.$router.push('/quests');
+          this.$router.push({name: 'quests'});
           return;
         }
         this.$popups.error("Ошибка", "Не удалось получить информацио о квесте");
@@ -318,12 +316,12 @@ export default {
       this.loading = false;
       if (res.ok_) {
         await this.$store.dispatch('GET_USER');
-        this.$router.push(`/play`);
+        this.$router.push({name: 'play'});
         return;
       }
       if (res.status_ === 401) {
         this.$popups.alert("Не авторизован", "Чтобы поиграть, сперва надо потрудиться - войти в аккаунт");
-        this.$router.push('/signin');
+        this.$router.push({name: 'signin'});
         return;
       }
 

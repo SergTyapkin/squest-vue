@@ -17,7 +17,7 @@
           ]"
           submit-text="Погнали"
           @submit="signUp"
-    >Уже есть аккаунт? <router-link :to="base_url_path + `/signin`" class="link">Войти</router-link>
+    >Уже есть аккаунт? <router-link :to="{name: 'signin'}" class="link">Войти</router-link>
     </Form>
   </div>
 </template>
@@ -31,7 +31,6 @@ export default {
 
   data() {
     return {
-      base_url_path: this.$base_url_path,
     }
   },
 
@@ -76,7 +75,7 @@ export default {
         this.$refs.form.loading = false;
         this.$popups.success('Аккаунт создан!');
         this.$refs.form.errors = {};
-        this.$router.push('/profile');
+        this.$router.push({name: 'profile'});
         return;
       }
 

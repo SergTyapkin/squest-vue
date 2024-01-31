@@ -129,7 +129,6 @@ export default {
 
   data() {
     return {
-      base_url_path: this.$base_url_path
     }
   }
 };

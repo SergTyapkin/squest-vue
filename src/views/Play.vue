@@ -360,8 +360,6 @@ export default {
 
       setProgressButtonsList: [],
 
-      base_url_path: this.$base_url_path,
-
       Themes: Themes,
     }
   },
@@ -421,7 +419,7 @@ export default {
         return;
       }
       if (res.status_ === 400) {
-        this.$router.push('/quests');
+        this.$router.push({name: 'quests'});
         return;
       }
 
@@ -479,7 +477,7 @@ export default {
     async restart(button) {
       if (button.idx === 1) {
         this.$store.dispatch('SET_THEME', Themes.default);
-        this.$router.push(this.$base_url_path + '/quests');
+        this.$router.push({name: 'quests'});
         return;
       }
 

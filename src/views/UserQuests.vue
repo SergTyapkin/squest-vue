@@ -9,7 +9,7 @@
       <div>
         <TopButtons clickable arrows low-opacity :buttons="[
           {name: 'Назад', description: 'В профиль пользователя',
-          to: base_url_path + `/profile?id=${id}`},
+          to: {name: 'profile', query: {id: id}}},
         ]"></TopButtons>
 
         <QuestsList :get-quests-foo="$api.getUserQuests" :args="id"></QuestsList>
@@ -29,8 +29,6 @@ export default {
   data() {
     return {
       id: this.$route.query.id,
-
-      base_url_path: this.$base_url_path,
     }
   },
 }

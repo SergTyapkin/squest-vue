@@ -10,7 +10,7 @@
 <template>
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'Назад', description: `К квесту: <b>${questTitle}</b>`,to: base_url_path + `/quest/edit?id=${questId}`},
+        {name: 'Назад', description: `К квесту: <b>${questTitle}</b>`,to: {name: 'edit-quest', query: {id: questId}}},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -90,15 +90,13 @@ export default {
       questId: '',
 
       edited: false,
-
-      base_url_path: this.$base_url_path,
     }
   },
 
   mounted() {
     if (this.id === undefined) {
       this.$popups.error("Ошибка", "id ветки не задано");
-      this.$router.push('/quests/my');
+      this.$router.push({name: 'my-quests'});
       return;
     }
 
@@ -221,7 +219,7 @@ export default {
       }
       this.$popups.success('Удалено', 'Ветка удалено');
       window.onbeforeunload = null;
-      this.$router.push(`/quest/edit?id=${this.questId}`);
+      this.$router.push({name: 'edit-quest', query: {id: this.questId}});
     },
 
     onChange() {

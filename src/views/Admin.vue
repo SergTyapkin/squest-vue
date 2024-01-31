@@ -12,7 +12,7 @@ textarea
 <template>
   <div>
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'В профиль', description: `Когда устранил весь кринж`, to: base_url_path + `/profile`},
+        {name: 'В профиль', description: `Когда устранил весь кринж`, to: {name: 'profile'}},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form" @submit="execute">
@@ -52,15 +52,13 @@ export default {
       result: '',
 
       loading: false,
-
-      base_url_path: this.$base_url_path,
     }
   },
 
   mounted() {
     if (!this.$user.isAdmin) {
       this.$popups.error("Ты не админ", "Не влезай, убьёт");
-      this.$router.push('/profile');
+      this.$router.push({name: 'profile'});
     }
   },
 

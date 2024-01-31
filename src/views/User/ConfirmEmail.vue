@@ -20,14 +20,12 @@ export default {
   data() {
     return {
       code: this.$route.query.code,
-
-      base_url_path: this.$base_url_path,
     }
   },
 
   async mounted() {
     await this.confirmEmail();
-    this.$router.push('/profile');
+    this.$router.push({name: 'profile'});
   },
 
   methods: {

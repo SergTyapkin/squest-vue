@@ -177,13 +177,13 @@ hr
             <ArrowListElement :title="`Пройдено веток: ${completedBranches.length}`"
                               closed
                               :elements="completedBranches"
-                              @click-inside="(branchInfo) => $router.push(`/quest?id=${branchInfo.id}`)"
+                              @click-inside="(branchInfo) => $router.push({name: 'quest', query: {id: branchInfo.id}})"
             ></ArrowListElement>
             <ArrowListElement v-if="createdQuests.length"
                               :title="`Создано квестов: ${createdQuests.length}`"
                               closed
                               :elements="createdQuests"
-                              @click-inside="(quest) => $router.push(`/quest?id=${quest.id}`)"
+                              @click-inside="(quest) => $router.push({name: 'quest', query: {id: quest.id}})"
             ></ArrowListElement>
           </div>
 
@@ -191,8 +191,8 @@ hr
 
           <div class="now-playing text-small link" v-if="user.chosenquest && user.chosenbranch">
             Сейчас играет в: <br>
-            Квест: <router-link :to="base_url_path + `/quest?id=${user.chosenquestid}`">{{ user.chosenquest }}</router-link> <br>
-            Ветка: <router-link :to="base_url_path + `/quest?id=${user.chosenquestid}`">{{ user.chosenbranch }}</router-link>
+            Квест: <router-link :to="{name: 'quest', query: {id: user.chosenquestid}}">{{ user.chosenquest }}</router-link> <br>
+            Ветка: <router-link :to="{name: 'quest', query: {id: user.chosenquestid}}">{{ user.chosenbranch }}</router-link>
           </div>
 
           <div v-if="yours">
@@ -228,7 +228,7 @@ hr
         <button v-if="yours" class="text-middle button bg outline rounded logout" @click="logOut">Выйти</button>
       </Form>
 
-      <router-link v-if="yours && user.isAdmin" :to="base_url_path + `/admin`" class="admin-button text-big-x button rounded outline">На админскую</router-link>
+      <router-link v-if="yours && user.isAdmin" :to="{name: 'admin'}" class="admin-button text-big-x button rounded outline">На админскую</router-link>
     </div>
   </div>
 </template>
@@ -242,7 +242,7 @@ import {isClosedRoll, openRoll} from "../../utils/show-hide";
 import TopButtons from "../../components/TopButtons.vue";
 import CircleLoading from "../../components/loaders/CircleLoading.vue";
 import {nextTick} from "vue";
-import {BASE_URL_PATH, IMAGE_MAX_RES, IMAGE_PROFILE_MAX_RES} from "../../constants";
+import {IMAGE_MAX_RES, IMAGE_PROFILE_MAX_RES} from "../../constants";
 import ImageUploader from "../../utils/imageUploader";
 import DragNDropLoader from "../../components/DragNDropLoader.vue";
 import ArrowListElement from "../../components/ArrowListElement.vue";
@@ -270,7 +270,6 @@ export default {
 
       buttons: [],
 
-      base_url_path: this.$base_url_path,
       api_url: this.$api.apiUrl,
     }
   },
@@ -287,9 +286,9 @@ export default {
         this.user = this.$user;
 
         this.buttons = [
-          {name: 'В игру', to: this.base_url_path + '/play'},
-          {name: 'Мои квесты', to: this.base_url_path + '/quests/my'},
-          {name: 'Рейтинги', to: this.base_url_path + '/ratings'},
+          {name: 'В игру', to: {name: 'play'}},
+          {name: 'Мои квесты', to: {name: 'my-quests'}},
+          {name: 'Рейтинги', to: {name: 'ratings'}},
         ];
         this.addTitlesToArrowListings();
         return;
@@ -298,14 +297,14 @@ export default {
       await this.getAnotherUser();
       this.username = this.user.username;
       const prevPage = this.$router.options.history.state.back;
-      if (prevPage && prevPage !== this.base_url_path + '/ratings') {
+      if (prevPage && prevPage !== {name: 'ratings'}) {
         this.buttons = [
           {name: 'Назад', to: prevPage},
-          {name: 'Рейтинги', to: this.base_url_path + '/ratings'},
+          {name: 'Рейтинги', to: {name: 'ratings'}},
         ];
       } else {
         this.buttons = [
-          {name: 'Рейтинги', to: this.base_url_path + '/ratings'},
+          {name: 'Рейтинги', to: {name: 'ratings'}},
         ];
       }
       this.addTitlesToArrowListings();
@@ -417,7 +416,7 @@ export default {
         return;
       }
       this.$user.setDefault();
-      await this.$router.push('/');
+      await this.$router.push({name: 'default'});
     },
 
     async getAnotherUser() {
@@ -504,7 +503,7 @@ export default {
   watch: {
     '$route.query.id': {
       handler: async function (to, from) {
-        if (this.$route.path !== BASE_URL_PATH + '/profile') // go to another page
+        if (this.$route.name !== 'profile') // go to another page
           return;
 
         this.id = to;

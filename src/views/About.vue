@@ -71,7 +71,7 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
         <div class="text-small">Там снизу есть <span class="text-big">контакты</span> - пиши, не стестняйся.</div>
       </div>
 
-      <router-link :to="base_url_path + `/signup`" class="register-button text-big-x button highlight rounded">Зарегистрироваться</router-link>
+      <router-link :to="{name: 'signup'}" class="register-button text-big-x button highlight rounded">Зарегистрироваться</router-link>
     </div>
 
     <Footer></Footer>
@@ -89,7 +89,6 @@ export default {
 
   data() {
     return {
-      base_url_path: this.$base_url_path,
     }
   }
 }

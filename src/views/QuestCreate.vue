@@ -29,7 +29,7 @@
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
         {name: 'Назад', description: 'К списку квестов',
-        to: $router.options.history.state.back ? $router.options.history.state.back : base_url_path + '/quests'},
+        to: $router.options.history.state.back ? $router.options.history.state.back : {name: 'quests'}},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -104,8 +104,6 @@ export default {
       ispublished: false,
 
       edited: false,
-
-      base_url_path: this.$base_url_path,
     }
   },
 
@@ -117,7 +115,7 @@ export default {
       window.onbeforeunload = null;
       this.edited = false;
 
-      this.$router.push(`/quest/edit?id=${this.id}`);
+      this.$router.push({name: 'edit-quest', query: {id: this.id}});
     },
 
     async saveQuestInfo() {

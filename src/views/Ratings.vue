@@ -6,7 +6,7 @@
 <template>
   <div>
     <TopButtons clickable arrows low-opacity :buttons="[
-        {name: 'Назад', description: 'В профиль', to: base_url_path + '/profile'},
+        {name: 'Назад', description: 'В профиль', to: {name: 'profile'}},
     ]"></TopButtons>
 
 
@@ -14,7 +14,7 @@
       <ArrowListElement class="ratings" ref="ratings" title="Рейтинг" closed open-on-set-elements
                         :elements="ratings"
                         :numbered="true"
-                        @click-inside="(user) => $router.push(`/profile?id=${user.id}`)"
+                        @click-inside="(user) => $router.push({name: 'profile', query: {id: user.id}})"
       ></ArrowListElement>
     </div>
 
@@ -34,8 +34,6 @@ export default {
     return {
       loading: false,
       ratings: [],
-
-      base_url_path: this.$base_url_path,
     }
   },
 

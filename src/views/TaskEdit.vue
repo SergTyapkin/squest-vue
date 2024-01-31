@@ -22,7 +22,7 @@
 <template>
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'Назад', description: `К ветке: <b>${branchTitle}</b>` /* <br> Квеста: <b>${questTitle}</b>` */, to: base_url_path + `/quest/branch/edit?id=${branchId}`},
+        {name: 'Назад', description: `К ветке: <b>${branchTitle}</b>` /* <br> Квеста: <b>${questTitle}</b>` */, to: {name: 'edit-branch', query: {id: branchId}}},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -137,15 +137,13 @@ export default {
       branchId: '',
 
       edited: false,
-
-      base_url_path: this.$base_url_path,
     }
   },
 
   async mounted() {
     if (this.id === undefined) {
       this.$popups.error("Ошибка", "id задания не задано");
-      this.$router.push('/quests/my');
+      this.$router.push({name: 'my-quests'});
       return;
     }
 
@@ -222,7 +220,7 @@ export default {
       }
       this.$popups.success('Удалено', 'Задание удалено');
       window.onbeforeunload = null;
-      this.$router.push(`/quest/branch/edit?id=${this.branchId}`);
+      this.$router.push({name: 'edit-branch', query: {id: this.branchId}});
     },
 
     onChange() {
