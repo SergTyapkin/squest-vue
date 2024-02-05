@@ -1,4 +1,5 @@
 <style lang="stylus" scoped>
+@require '../styles/buttons.styl'
 @require '../styles/constants.styl'
 @require '../styles/fonts.styl'
 
@@ -81,6 +82,13 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
 .main-info
   transition all 0.2s ease
   z-index -1
+  .edit
+    margin 20px auto
+    max-width 300px
+    border-radius 10px
+    img
+      margin-left 5px
+      width 30px
 .container.inactive
   .main-info
     filter blur(5px)
@@ -117,6 +125,9 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
             <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
             <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
           </div>
+          <router-link :to="{name: 'edit-quest', query: {id: id}}" v-if="author === $user.id" class="button edit">
+            Изменить <img src="../res/edit.svg" alt="edit">
+          </router-link>
           <div class="statistics text-big-xx">
             <span class="rating" :class="{good: rating >= 4.5, bad: rating < 3.5}">
               <img src="../res/star.svg" alt="star">{{rating}}

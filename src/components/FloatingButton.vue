@@ -3,7 +3,7 @@
 
 float-button-height = 50px
 image-width = 30px
-padding = 5px
+padding = 5px 10px
 .float-button
   z-index 10
   cursor pointer
@@ -28,6 +28,7 @@ padding = 5px
     justify-content flex-end
     transition all 0.2s ease
     .image
+      margin-left 10px
       transition all 0.2s ease
       width image-width
       height image-width

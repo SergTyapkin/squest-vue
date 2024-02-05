@@ -46,25 +46,21 @@ plate-max-width = 400px
     height 100%
     position relative
 
-    .edit
-      width 40px
-      position absolute
-      right 10px
-      top 10px
-      transition all 0.2s ease
-      opacity 0.8
-    .edit:hover
-      transform scale(1.1)
-      opacity 1
-
     .text-container
       max-height 75px
       height 100%
       min-height 60px
       overflow hidden
       .title
+        display flex
+        align-items center
+        justify-content space-between
+        line-height 1
+        margin-bottom 5px
         img
           width 25px
+        .quest-modifier
+          margin-left 5px
 
       .description
         overflow hidden
@@ -157,10 +153,6 @@ plate-max-width = 400px
 
     <div class="container" :class="{inactive: branchesOpened}">
       <div class="main-info">
-        <router-link  :to="{name: 'edit-quest', query: {id: id}}" v-if="canedit" class="edit">
-          <img src="../res/edit.svg" alt="edit">
-        </router-link>
-
         <div class="text-container">
           <div class="title"
                :class="{
@@ -170,10 +162,12 @@ plate-max-width = 400px
                 }"
           >
             <span>{{title}}</span>
-            <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
-            <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
+            <span>
+              <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
+              <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
+            </span>
           </div>
-          <div class="text-small description" v-if="description">{{description.replace(/([#*_]\ ?|&lt;\w*&gt;)/g, '').slice(0, 80) + '...'}}</div>
+          <div class="text-small description" v-if="description">{{description.replace(/([#*_]\ ?|&lt;\w*&gt;)/g, '').slice(0, 80) + (description.length > 80 ? '...' : '')}}</div>
         </div>
 
         <div class="statistics text-big-xx">

@@ -88,7 +88,7 @@
 <template>
   <div @input="onChange">
     <TopButtons bg clickable arrows :buttons="[
-        {name: 'Назад', description: 'К твоим квестам', to: {name: 'my-quests'}},
+        {name: 'Назад', description: 'К странице квеста', to: {name: 'quest', query: {id: id}}},
     ]"></TopButtons>
 
     <Form class="form-fullwidth" ref="form">
@@ -96,7 +96,7 @@
         <div class="text-big-xx">Изменить квест</div>
         <div class="text-middle" v-if="helper">
           Автор: <b>{{ authorName }}</b> <br>
-          Вы - соавтор квеста, некоторые возможности вам недоступны
+          Вы - соавтор квеста, некоторые возможности автора вам недоступны
         </div>
       </div>
 

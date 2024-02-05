@@ -14,7 +14,7 @@
         <QuestsList :get-quests-foo="$api.getMyQuests" :args="[$user.id]"></QuestsList>
       </div>
 
-      <FloatingButton title="Создать квест" :to="+ `/quest/create`" class="float-button">
+      <FloatingButton title="Создать квест" :to="{name: 'create-quest'}" class="float-button">
         <img src="../res/plus_bold.svg" alt="">
       </FloatingButton>
     </div>
