@@ -24,12 +24,16 @@ export default class User extends Model {
     avatarimageid: null,
     createdquests: [],
     completedbranches: [],
+    isTemporary: false,
   }
 
   set(data) {
     super.set(data);
     this.isLogined = true;
     this.isGotten = true;
+    if (data.temporaryToQuestId !== null) {
+      this.isTemporary = true;
+    }
   }
 
   setDefault() {

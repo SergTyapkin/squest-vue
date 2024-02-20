@@ -143,10 +143,18 @@ plate-max-width = 400px
     background-position-x 0px
   to
     background-position-x 400px
+
+.quest-preview:not(.many-branches)
+  .branches
+    display none
+  .text-container
+    margin-bottom 20px
+  .statistics
+    margin-bottom 25px
 </style>
 
 <template>
-  <router-link class="quest-preview" :to="{name: 'quest', query: {id: id}}" :class="{placeholder: isPlaceholder}">
+  <router-link class="quest-preview" :to="{name: 'quest', query: {id: id}}" :class="{placeholder: isPlaceholder, 'many-branches': branches.length > 1}">
     <img class="preview-image" :src="previewurl" alt="preview" v-if="previewurl">
 
     <div class="preview-image default text-big-xx" v-else>SQ</div>
@@ -184,9 +192,14 @@ plate-max-width = 400px
         </router-link>
       </div>
 
-      <CircleLoading v-if="loading"></CircleLoading>
-      <ArrowListElement class="branches" ref="branches" title="Ветки" action-text="развернуть" closed :elements="branches"
-                        open-on-set-elements
+      <CircleLoading v-if="loading" size="40px"></CircleLoading>
+      <ArrowListElement v-if="branches.length > 0"
+                        ref="branches"
+                        class="branches"
+                        title="Ветки"
+                        action-text="развернуть"
+                        closed
+                        :elements="branches"
                         preserve-click-open
                         @open="openBranches"
                         @close="closeBranches"
@@ -236,19 +249,17 @@ export default {
   },
 
   mounted() {
-    if (!this.isPlaceholder)
-      this.getQuestStats();
+    if (!this.isPlaceholder) {
+      this.init();
+    }
   },
 
   methods: {
-    async openBranches() {
-      this.branchesOpened = true;
-      if (this.branchesGotten) {
-        this.$refs.branches.open();
-        return;
-      }
-      this.branchesGotten = true;
-
+    async init() {
+      await this.getQuestStats();
+      await this.getBranches();
+    },
+    async getBranches() {
       this.loading = true;
       const branches = await this.$api.getQuestBranches(this.id);
       this.loading = false;
@@ -258,6 +269,16 @@ export default {
         return;
       }
       this.branches = branches.branches;
+      this.branchesGotten = true;
+    },
+    async openBranches() {
+      this.branchesOpened = true;
+      if (this.branchesGotten) {
+        this.$refs.branches.open();
+        return;
+      }
+
+      await this.getBranches();
     },
 
     closeBranches() {
@@ -280,7 +301,7 @@ export default {
   watch: {
     isPlaceholder: function (from, to) {
       if (from === false && to === true) {
-        this.getQuestStats();
+        this.init();
       }
     }
   }

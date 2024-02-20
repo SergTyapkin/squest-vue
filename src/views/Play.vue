@@ -280,9 +280,12 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
         </div>
       </div>
 
-      <TopButtons @click="restart" class="buttons" bg clickable arrows big :buttons="[
+      <TopButtons v-if="!$user.isTemporary" @click="restartOrFinish" class="buttons" bg clickable arrows big :buttons="[
           { name: 'Начать заново', description: 'Прогресс сохранится' },
           { name: 'Завершить квест'},
+      ]"></TopButtons>
+      <TopButtons v-else @click="finishTemporarySession" class="buttons" bg clickable arrows big no-left-arrow :buttons="[
+          { name: 'Создать полноценный аккаунт'},
       ]"></TopButtons>
     </div>
 
@@ -326,7 +329,7 @@ import TopButtons from "../components/TopButtons.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import Form from "../components/FormExtended.vue";
 import {secondsToStrTime} from "../utils/utils";
-import {QuestModes, Themes} from "../constants";
+import {Themes, QuestModes} from "../constants";
 
 
 export default {
@@ -365,11 +368,6 @@ export default {
   },
 
   mounted() {
-    if (this.$user.chosenmode === QuestModes.fast) {
-      this.$store.dispatch('SET_THEME', Themes.flat);
-    } else if (this.$user.chosenmode === QuestModes.default) {
-      this.$store.dispatch('SET_THEME', Themes.default);
-    }
     this.update();
   },
 
@@ -474,23 +472,32 @@ export default {
       return false;
     },
 
-    async restart(button) {
-      if (button.idx === 1) {
-        this.$store.dispatch('SET_THEME', Themes.default);
+    async restartOrFinish(button) {
+      if (button.idx === 1) { // finish
         this.$router.push({name: 'quests'});
+        await this.$api.chooseBranch(this.$user.chosenquestid, this.$user.chosenbranchid, QuestModes.normal);
+        this.$store.dispatch('SET_THEME', Themes.default);
         return;
       }
-
-      if (await this.$modal.confirm("Точно начинаем заново?", "Рейтинг останется")) {
-        this.loading = true;
-        const res = await this.$api.restartBranch(this.$user.chosenbranchid);
-        this.loading = false;
-        if (!res.ok_) {
-          this.$popups.error("Ошибка", "Не удалось начать заново");
-          return;
-        }
-        await this.update();
+      // restart
+      if (!await this.$modal.confirm("Точно начинаем заново?", "Рейтинг останется")) {
+        return;
       }
+      this.loading = true;
+      const res = await this.$api.restartBranch(this.$user.chosenbranchid);
+      this.loading = false;
+      if (!res.ok_) {
+        this.$popups.error("Ошибка", "Не удалось начать заново");
+        return;
+      }
+      await this.$api.chooseBranch(this.$user.chosenquestid, this.$user.chosenbranchid, QuestModes.normal);
+      this.$store.dispatch('SET_THEME', Themes.default);
+      await this.update();
+    },
+    async finishTemporarySession() {
+      await this.$api.signOut();
+      this.$store.dispatch('DELETE_USER');
+      this.$router.push({name: "default"});
     },
 
     clickOnScanButton() {

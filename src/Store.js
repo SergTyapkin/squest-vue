@@ -1,6 +1,6 @@
 import Vuex from 'vuex'
 import User from "./models/user";
-import {Themes} from "~/constants";
+import {QuestModes, Themes} from "~/constants";
 
 const Store = new Vuex.Store({
   state: {
@@ -16,14 +16,13 @@ const Store = new Vuex.Store({
     },
     SET_THEME(state, theme) {
       state.theme = theme || Themes.default;
-      localStorage.setItem('theme', String(state.theme));
     },
   },
   actions: {
     async GET_USER(state) {
       const u = await this.$app.$api.getUser();
       const p = await this.$app.$api.getPlay();
-      if (u.ok_)
+      if (u.ok_) {
         state.commit('SET_USER', {
           avatarimageid: u.avatarimageid,
           chosenbranchid: u.chosenbranchid,
@@ -44,22 +43,18 @@ const Store = new Vuex.Store({
           completedbranches: u.completedbranches,
           progress: p.progress,
           progressMax: p.length,
+          temporaryToQuestId: u.temporarytoquestid,
         });
-      else
+        state.commit('SET_THEME', u.chosenmode === QuestModes.fast ? Themes.flat : Themes.default);
+      } else {
         state.commit('DELETE_USER');
+      }
     },
     DELETE_USER(state) {
       state.commit('DELETE_USER');
+      state.commit('SET_THEME', Themes.default);
     },
     SET_THEME(state, theme) {
-      state.commit('SET_THEME', theme);
-    },
-    async LOAD_THEME(state) {
-      let theme = localStorage.getItem('theme');
-      if (isNaN(theme))
-        theme = null
-      else
-        theme = Number(theme)
       state.commit('SET_THEME', theme);
     },
   }

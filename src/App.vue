@@ -200,8 +200,6 @@ export default {
     global.$url = 'https://sergtyapkin.herokuapp.com/squest';
     global.$fullApiUrl = 'https://sergtyapkin.herokuapp.com/' + API_URL;
     global.$base_url_path = BASE_URL_PATH;
-
-    await this.$store.dispatch('LOAD_THEME');
   },
 };
 </script>

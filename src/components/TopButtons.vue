@@ -81,12 +81,12 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
   <div class="title-container text-big" :class="{bg: bg, clickable: clickable, 'low-opacity': lowOpacity}">
     <router-link :to="(button.to || '')" v-for="(button, idx) in buttons" :class="{'no-link': button.to === undefined}"
                   @click="$emit('click', Object.assign(button, {idx}))">
-      <Arrow left v-if="arrows && idx === 0" size="20px"></Arrow>
+      <Arrow left v-if="arrows && idx === 0 && !noLeftArrow" size="20px"></Arrow>
       <div>
         <div class="text-big-x lighting-text" :class="{'text-big': clickable && !big}">{{ button.name }}</div>
         <div class="text-small" v-html="button.description"></div>
       </div>
-      <Arrow right v-if="arrows && idx !== 0 && idx === buttons.length-1" size="20px"></Arrow>
+      <Arrow right v-if="arrows && (noLeftArrow || idx !== 0) && idx === buttons.length-1" size="20px"></Arrow>
     </router-link>
   </div>
 </template>
@@ -122,6 +122,10 @@ export default {
       default: false,
     },
     big: {
+      type: Boolean,
+      default: false,
+    },
+    noLeftArrow: {
       type: Boolean,
       default: false,
     }

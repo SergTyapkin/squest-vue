@@ -174,7 +174,7 @@ hr
           <hr>
 
           <div class="quest-statistics text-middle">
-            <ArrowListElement :title="`Пройдено веток: ${completedBranches.length}`"
+            <ArrowListElement :title="`Пройдено квестов: ${completedBranches.length}`"
                               closed
                               :elements="completedBranches"
                               @click-inside="(branchInfo) => $router.push({name: 'quest', query: {id: branchInfo.id}})"
@@ -313,7 +313,7 @@ export default {
     addTitlesToArrowListings() {
       this.completedBranches = this.user.completedbranches.map((branchInfo) => {
         return {
-          title: branchInfo.questtitle + ' | ' + branchInfo.branchtitle,
+          title: branchInfo.questtitle + (branchInfo.branchtitle ? ' | ' : '') + branchInfo.branchtitle,
           id: branchInfo.questid,
           arrow: true,
           noClose: true,

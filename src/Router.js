@@ -19,7 +19,8 @@ import FoundQR from "/src/views/FoundQR.vue";
 import RestorePassword from "./views/User/RestorePassword.vue";
 import ConfirmEmail from "./views/User/ConfirmEmail.vue";
 import UserQuests from "./views/UserQuests.vue";
-import {BASE_URL_PATH} from "./constants";
+import TakeQuest from "~/views/TakeQuest.vue";
+import {BASE_URL_PATH, QuestModes} from "./constants";
 
 
 export default function createVueRouter(Store, App) {
@@ -39,6 +40,7 @@ export default function createVueRouter(Store, App) {
         {path: BASE_URL_PATH + '/quests/my', name: 'my-quests', component: MyQuests, meta: {loginRequired: true}},
 
         {path: BASE_URL_PATH + '/quest/create', name: 'create-quest', component: QuestCreate, meta: {loginRequired: true, emailConfirmRequired: true}},
+        {path: BASE_URL_PATH + '/quest/take', name: 'take-quest', component: TakeQuest},
 
         {path: BASE_URL_PATH + '/quest', name: 'quest', component: Quest},
         {path: BASE_URL_PATH + '/quest/edit', name: 'edit-quest', component: QuestEdit, meta: {loginRequired: true}},
@@ -60,26 +62,12 @@ export default function createVueRouter(Store, App) {
     let router_got_user = false;
     Router.beforeEach(async (to, from, next) => {
         if (!router_got_user) {
-            if (to.query.username && to.query.password) { // if have auth credentials into query params
-                const res = await App.$api.signIn(to.query.username, to.query.password);
-                if (res.ok_) {
-                    console.info('Successfully signed in using credentials in query-parameters');
-                } else {
-                    console.error('Cannot sign in using credentials in query-parameters');
-
-                    const res = await App.$api.signUp(to.query.username, to.query.password, undefined, to.query.name);
-                    if (res.ok_) {
-                        console.info('Successfully signed up using credentials in query-parameters');
-                    } else {
-                        console.error('Cannot sign up using credentials in query-parameters');
-                        next(BASE_URL_PATH + '/');
-                    }
+            await Store.dispatch('GET_USER');
+            if (Store.state.user.chosenmode === QuestModes.fast) {
+                if (to.name !== 'take-quest') {
+                    next({name: 'play'});
                 }
             }
-            delete to.query.username;
-            delete to.query.password;
-
-            await Store.dispatch('GET_USER');
             router_got_user = true;
         }
         // window.scroll({top: 0, left: 0, behavior: 'smooth'});

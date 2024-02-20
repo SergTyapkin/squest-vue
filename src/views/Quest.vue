@@ -16,6 +16,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
   .preview-image
     position absolute
     inset 0
+    z-index -1
     object-fit cover
     width 100%
     height 100%
@@ -42,8 +43,13 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
 
     .title
       font-large()
-      img
-        width 30px
+      display flex
+      align-items center
+      justify-content space-between
+      .images-container
+        white-space nowrap
+        img
+          width 30px
 
     .statistics
       display flex
@@ -72,7 +78,6 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
       padding 0
 
     .branches
-      z-index 10
       margin-top 20px
       margin-left -20px
       margin-bottom -10px
@@ -89,6 +94,11 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
     img
       margin-left 5px
       width 30px
+  .play
+    margin 20px auto
+    max-width 300px
+    border-radius 10px
+    width 100%
 .container.inactive
   .main-info
     filter blur(5px)
@@ -122,8 +132,10 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
         <div class="main-info">
           <div class="text-big-x title">
             {{title}}
-            <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
-            <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
+            <div class="images-container">
+              <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
+              <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
+            </div>
           </div>
           <router-link :to="{name: 'edit-quest', query: {id: id}}" v-if="author === $user.id" class="button edit">
             Изменить <img src="../res/edit.svg" alt="edit">
@@ -139,19 +151,21 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
           <div class="text-small played">Прошли: {{played}}</div>
           <div class="text-small author">Автор: {{authorName}}</div>
 
-          <div class="text-small">Описание: </div>
+          <div class="text-small" v-if="description">Описание: </div>
           <MarkdownRenderer class="description" ref="renderer"></MarkdownRenderer>
+
+          <button v-if="branches.length === 1" class="button play text-big-x" @click="selectBranch(branches[0])">Играть!</button>
         </div>
       </div>
+      <ArrowListElement v-if="branches.length > 1"
+                        class="branches" ref="branches" title="Ветки"
+                        no-close
+                        :elements="branches"
+                        @click-inside="selectBranch"
+      ></ArrowListElement>
     </div>
 
     <CircleLoading v-if="branchesLoading"></CircleLoading>
-    <ArrowListElement class="branches" ref="branches" title="Ветки"
-                      closed
-                      open-on-set-elements
-                      :elements="branches"
-                      @click-inside="selectBranch"
-    ></ArrowListElement>
     <ArrowListElement ref="usersFinished" title="Прошли"
                       closed
                       :elements="usersFinished"
@@ -171,7 +185,6 @@ import TopButtons from "../components/TopButtons.vue";
 import CircleLoading from "../components/loaders/CircleLoading.vue";
 import {secondsToStrTime} from "../utils/utils";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
-import {QuestModes} from "../constants";
 
 export default {
   components: {MarkdownRenderer, CircleLoading, TopButtons, ArrowListElement},
@@ -181,8 +194,6 @@ export default {
       branches: [],
       id: this.$route.query.id,
       uid: this.$route.query.uid,
-      mode: this.$route.query.mode,
-      branchid: this.$route.query.branchid,
 
       loading: false,
       branchesLoading: false,
@@ -205,20 +216,9 @@ export default {
   },
 
   async mounted() {
-    if (isNaN(this.mode))
-      this.mode = null;
-    else
-      this.mode = Number(this.mode);
-
     if (this.id === undefined && this.uid === undefined) {
       this.$popups.error("Квест не найден", "Не указаны id или uid квеста");
       this.$router.push({name: 'quests'});
-      return;
-    }
-    if (this.branchid !== undefined) {
-      await this.getQuestInfo();
-      await this.getBranches();
-      this.selectBranch(this.branches[0]);
       return;
     }
 
@@ -230,7 +230,7 @@ export default {
         return {
           id: user.id,
           title: user.username,
-          description: secondsToStrTime(user.time) + ' | ' + user.branches,
+          description: secondsToStrTime(user.time) + (user.branches ? ' | ' : '') + user.branches,
           actionText: 'в профиль',
           arrow: true,
           noClose: true,
@@ -242,7 +242,7 @@ export default {
         return {
           id: user.id,
           title: user.username,
-          description: '★' + user.progress + ' | ' + '⏱' + secondsToStrTime(user.time) + ' | ' + user.branchtitle,
+          description: '★' + user.progress + ' | ⏱' + secondsToStrTime(user.time) + (user.branchtitle ? ' | ' : '') + user.branchtitle,
           actionText: 'в профиль',
           arrow: true,
           noClose: true,
@@ -319,11 +319,11 @@ export default {
     },
 
     async selectBranch(branch) {
-      if (this.mode !== QuestModes.fast && !await this.$modal.confirm("Выбираем ветку?", branch.title))
-          return;
+      if (!await this.$modal.confirm("Выбираем ветку?", branch.title))
+        return;
 
       this.loading = true;
-      const res = await this.$api.chooseBranch(this.id, branch.id, this.mode);
+      const res = await this.$api.chooseBranch(this.id, branch.id);
       this.loading = false;
       if (res.ok_) {
         await this.$store.dispatch('GET_USER');
@@ -349,7 +349,7 @@ export default {
         return;
       }
 
-     callback(users.players);
+      callback(users.players);
     }
   }
 };
