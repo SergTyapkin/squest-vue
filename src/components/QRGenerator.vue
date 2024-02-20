@@ -144,7 +144,10 @@ export default {
   emits: ['scan'],
 
   props: {
-    initialText: String,
+    initialText: {
+      type: String,
+      default: ''
+    },
     errorCorrection: {
       type: String,
       default: 'L',
@@ -159,7 +162,7 @@ export default {
     return {
       _qr: null,
       html: '',
-      text: this.$props.initialText,
+      text: this.$props.initialText || '',
 
       size: 0,
       errorCorrectionLevel: this.$props.errorCorrection,

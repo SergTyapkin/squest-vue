@@ -8,7 +8,7 @@
 .link-fields
   position relative
 .link-button
-  padding 4px 4px 0px 3px
+  padding 8px 8px 6px 7px
   border-radius 5px
   position absolute
   right 10px
@@ -16,6 +16,8 @@
   .link-image
     width 20px
     height 20px
+.relative-conainer
+  position relative
 .qr
   max-width 500px
   max-height 500px
@@ -169,7 +171,7 @@
           <div class="text-big roll-active closed link-fields" ref="linkFields">
             <span>Ссылка на квест:</span>
             <a target="_blank" :href="questLink" class="quest-link text-middle link">{{ questLink }}</a>
-            <span class="button rounded link-button" @click="copyLink">
+            <span class="button rounded link-button" @click="copyLink(questLink)">
                 <img src="../res/link_copy.svg" alt="copy" class="link-image">
             </span>
 
@@ -177,6 +179,36 @@
 
             <span>Ссылка в виде QR:</span>
             <QRGenerator class="qr" :text="questLink" ref="qrGenerator" no-text></QRGenerator>
+          </div>
+        </div>
+
+        <FloatingInput type="checkbox"
+                       title="Получить ссылку для единоразового прохождения"
+                       v-model="isTemporaryLinksActive"
+                       @change="isTemporaryLinksActive ? openRoll($refs.temporaryLinksFields) : closeRoll($refs.temporaryLinksFields)"
+        >
+          При использовании этой ссылки игроки будут заходить под временными аккаунтами. После прохождения квеста им будет предложено создать настоящий аккаунт. <br>
+          По одной ссылке могут зайти несколько людей - это удобно для игры команды под одним аккаунтом.
+        </FloatingInput>
+
+        <div class="text-big link-fields roll-active closed" ref="temporaryLinksFields">
+          <FloatingInput title="Название временного профиля"
+                         v-model="temporaryAccountName"
+                         @change="$refs.qrGeneratorTemporaryLinks.regenerate(temporaryQuestLink)"
+          >
+            Будет видно только вам при посмотре результатов
+          </FloatingInput>
+
+          <div class="relative-conainer">
+            <span>Ссылка для игры:</span>
+            <span class="quest-link text-middle link">{{ temporaryQuestLink }}</span>
+            <span class="button rounded link-button" @click="copyLink(temporaryQuestLink)">
+                <img src="../res/link_copy.svg" alt="copy" class="link-image">
+            </span>
+            <br>
+
+            <span>Ссылка в виде QR:</span>
+            <QRGenerator class="qr" :text="temporaryQuestLink" ref="qrGeneratorTemporaryLinks" no-text></QRGenerator>
           </div>
         </div>
       </div>
@@ -209,7 +241,7 @@ import {deepClone} from "../utils/utils";
 import ImageUploader from "../utils/imageUploader";
 import MarkdownRedactor from "../components/MarkdownRedactor.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
-import {IMAGE_MAX_RES} from "../constants";
+import {IMAGE_MAX_RES, QuestModes} from "../constants";
 import DragNDropLoader from "../components/DragNDropLoader.vue";
 
 export default {
@@ -247,7 +279,19 @@ export default {
       uid: '',
       helper: false,
 
+      isTemporaryLinksActive: false,
+      temporaryAccountName: '',
+
       edited: false,
+    }
+  },
+
+  computed: {
+    temporaryQuestLink() {
+      if (!this.temporaryAccountName) {
+        return '';
+      }
+      return this.$url + `/quest/take?uid=${this.uid}&username=${encodeURIComponent(this.temporaryAccountName)}&mode=${QuestModes.fast}`;
     }
   },
 
@@ -263,6 +307,8 @@ export default {
     this.getBranches();
     if (!this.helper)
       this.getHelpers();
+
+    this.$refs.qrGeneratorTemporaryLinks.regenerate();
   },
 
   methods: {
@@ -289,7 +335,7 @@ export default {
       this.uid = questInfo.uid;
       this.helper = Boolean(questInfo.helper);
 
-      this.questLink = this.$url + `/quest?uid=${this.uid}`;
+      this.questLink = this.$url + `/quest?uid=${encodeURIComponent(this.uid)}`;
       this.$refs.qrGenerator.regenerate(this.questLink);
       this.onChangeLink();
     },
@@ -339,10 +385,10 @@ export default {
       closeRoll(this.$refs.linkFields);
     },
 
-    async copyLink() {
-      if (this.questLink === undefined)
+    async copyLink(link) {
+      if (link === undefined)
         return;
-      await navigator.clipboard.writeText(this.questLink);
+      await navigator.clipboard.writeText(link);
       this.$popups.success('Ссылка скопирована в буфер обмена');
     },
 
@@ -526,7 +572,10 @@ export default {
         return;
       }
       this.$popups.success('Сохранено', 'Изображение квеста обновлено');
-    }
+    },
+
+    openRoll: openRoll,
+    closeRoll: closeRoll,
   }
 };
 </script>

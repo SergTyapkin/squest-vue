@@ -62,6 +62,7 @@ side-items-img-size = 30px
 
   .progress
     font-counter()
+    color textColor2
     display block
     margin-top -5px
     position absolute
