@@ -250,20 +250,23 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   <div class="flex-root">
     <TopButtons class="move-buttons" bg clickable arrows @click="changeProgress" :buttons="setProgressButtonsList"></TopButtons>
     <TopButtons class="top-buttons" bg :buttons="[
-        {name: taskTitle, description: `Квест: ${questTitle} <br> Ветка: ${branchTitle}`},
+        {name: taskTitle, description: `Квест: ${questTitle} <br> ${branchTitle ? `Ветка: ${branchTitle}` : 'В этом квесте задания можно проходить в любом порядке'}`}
     ]"></TopButtons>
+    <TopButtons v-if="isTasksNotSorted && isTaskInUnsortedModeSelected" class="top-buttons" bg arrows clickable :buttons="[
+        {name: 'К списку заданий'}
+    ]" @click="() => {isTaskInUnsortedModeSelected = false; taskTitle = ''; taskId = undefined; taskDescription = ''}"></TopButtons>
 
     <CircleLoading v-if="loading"></CircleLoading>
-    <div v-if="!isTasksNotSorted">
-      <div class="task-title">{{ taskTitle }}</div>
-      <MarkdownRenderer ref="markdown" class="description text-middle"></MarkdownRenderer>
-    </div>
-    <div v-else>
+    <div v-show="isTasksNotSorted && !isTaskInUnsortedModeSelected">
       <ArrowListElement class="branch-tasks" ref="branchTasks" title="Задания" closed open-on-set-elements
                         :elements="branchTasks"
                         no-close
                         @click-inside="onSelectTask"
       ></ArrowListElement>
+    </div>
+    <div v-show="!isTasksNotSorted || isTaskInUnsortedModeSelected">
+      <div class="task-title">{{ taskTitle }}</div>
+      <MarkdownRenderer ref="markdown" class="description text-middle"></MarkdownRenderer>
     </div>
 
     <div class="app-flex-filler"></div>
@@ -305,7 +308,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       <CircleLoading v-if="answerLoading"></CircleLoading>
       <button v-else @click="checkAnswer({answer: answer})" class="button-submit">Ответить</button>
     </div>
-    <Form v-else-if="!isQrAnswer" ref="form" class="form"
+    <Form v-else-if="!isQrAnswer && (!isTasksNotSorted || isTaskInUnsortedModeSelected)" ref="form" class="form"
           :title="taskQuestion"
           :fields="[
             { title: 'ОТВЕТ', info: 'РеГиСтР не важен', jsonName: 'answer' },
@@ -315,7 +318,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
           small-title
     ></Form>
 
-    <div v-else class="qr-form">
+    <div v-else-if="!isTasksNotSorted || isTaskInUnsortedModeSelected" class="qr-form">
       <div class="text-middle" v-if="answerLink">Отсканировано: {{answerLink}}</div>
       <QRScanner closed ref="qrScanner" @scan="checkQrAnswer"></QRScanner>
       <div class="text-small-x">
@@ -361,6 +364,7 @@ export default {
       branchTasks: [],
 
       qrScanButtonText: 'Сканировать',
+      isTaskInUnsortedModeSelected: false,
 
       isEnd: false,
       isQrAnswer: false,
@@ -392,6 +396,9 @@ export default {
       this.loading = false;
 
       if (res.ok_) {
+        this.questTitle = res.questtitle;
+        this.branchTitle = res.branchtitle;
+        this.$user.progress = res.progress;
         this.isTasksNotSorted = res.istasksnotsorted;
         if (this.isTasksNotSorted) {
           this.loading = true;
@@ -404,10 +411,6 @@ export default {
           this.branchTasks = res.tasks;
           this.isEnd = this.branchTasks.length <= 0;
         } else {
-          this.questTitle = res.questtitle;
-          this.branchTitle = res.branchtitle;
-          this.$user.progress = res.progress;
-
           this.taskId = res.id;
           this.taskTitle = res.title;
           this.taskDescription = res.description;
@@ -485,6 +488,7 @@ export default {
         this.$popups.success('Правильно');
         values.answer = '';
         this.answer = '';
+        this.isTaskInUnsortedModeSelected = false;
         await this.update();
         return true;
       }
@@ -583,6 +587,8 @@ export default {
       this.taskTitle = task.title;
       this.taskDescription = task.description;
       this.taskQuestion = task.question;
+      this.isQrAnswer = task.isqranswer;
+      this.isTaskInUnsortedModeSelected = true;
       this.$refs.markdown.update(this.taskDescription);
     }
   }

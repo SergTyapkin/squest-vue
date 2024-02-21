@@ -142,6 +142,21 @@ top-bar-height = 70px
   transform: scale(0.8);
   opacity: 0;
 }
+
+.opacity-enter-active {
+  animation: opacity .3s;
+}
+.opacity-leave-active {
+  animation: opacity .3s reverse forwards;
+}
+@keyframes opacity {
+  0% {
+    opacity: 0;
+  }
+  100% {
+    opacity: 1;
+  }
+}
 </style>
 
 <script>
