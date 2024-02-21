@@ -25,6 +25,12 @@
           <textarea class="text scrollable" rows="5" v-model="description"></textarea>
         </div>
 
+        <FloatingInput type="checkbox"
+                       title="Можно ли проходить задания не по порядку"
+                       v-model="isTasksNotSorted"
+        >
+          Пользователю будет предложен список всех заданий, из которых он сможет выбрать любое и ответить на него
+        </FloatingInput>
         <AddableList title="Задания"
                      description=""
                      add-text="Добавить задание"
@@ -35,10 +41,11 @@
                      :action-to="(taskId) => `/quest/branch/task/edit?id=${taskId}`"
                      @input="onChange"
         ></AddableList>
+        <span class="text-small-x">Последнее задание в ветке выводится игроку c заголовком и описанием, но без вопроса задания - это страница с поздравлением</span>
 
         <FloatingInput type="checkbox"
                        title="Опубликована"
-                       v-model="ispublished"
+                       v-model="isPublished"
         >
           Если ветка не опубликована - это черновик. Никто кроме тебя и соавторов не сможет просматривать её <br>
           При просмотре квестов для игры вы, как автор, будете видеть даже неопубликованные ветки, чтобы можно было поиграть и проверить ветку до её публикации
@@ -84,7 +91,8 @@ export default {
 
       title: '',
       description: '',
-      ispublished: false,
+      isPublished: false,
+      isTasksNotSorted: false,
 
       questTitle: '',
       questId: '',
@@ -116,7 +124,8 @@ export default {
       }
       this.title = branchInfo.title;
       this.description = branchInfo.description;
-      this.ispublished = branchInfo.ispublished;
+      this.isPublished = branchInfo.ispublished;
+      this.isTasksNotSorted = branchInfo.istasksnotsorted;
       this.questId = branchInfo.questid;
       this.questTitle = branchInfo.qtitle;
     },
@@ -150,7 +159,7 @@ export default {
 
     async saveBranchInfo() {
       this.$refs.form.loading = true;
-      const newBranchInfo = await this.$api.updateBranchInfo(this.id, this.title, this.description, this.ispublished);
+      const newBranchInfo = await this.$api.updateBranchInfo(this.id, this.title, this.description, this.isPublished, this.isTasksNotSorted);
       this.$refs.form.loading = false;
 
       if (newBranchInfo.ok_) {

@@ -109,7 +109,7 @@ markdown-button-svg-photo-fill = transparent
     <DragNDropLoader class="image-loader" @load="attachPhoto"
                      :crop-size="cropSize"
                      :compress-size="compressSize">
-      <textarea class="markdowned scrollable link" ref="textarea" :rows="rows" v-model="modelValue" @input="updateVModel()"></textarea>
+      <textarea class="markdowned scrollable" ref="textarea" :rows="rows" v-model="modelValue" @input="updateVModel()"></textarea>
       <div class="markdown-panel">
         <div class="_bold" @click="encaseInputText('**', '**')">B</div>
         <div class="_italic" @click="encaseInputText(' _', '_ ')">I</div>

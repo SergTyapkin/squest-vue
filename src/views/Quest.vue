@@ -88,6 +88,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
   transition all 0.2s ease
   z-index -1
   .edit
+    color textColor1
     margin 20px auto
     max-width 300px
     border-radius 10px

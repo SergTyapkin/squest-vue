@@ -116,16 +116,16 @@
           <div class="text-big">Картинка на карточке</div>
 
           <div class="flex-container">
-            <DragNDropLoader class="image-loader" @load="updatePreview"
+            <DragNDropLoader class="image-loader" @load="async (dataUrl) => await updateImage(previewUrl, dataUrl, savePreview)"
                              :crop-size="cropSize"
                              :compress-size="compressSize"
             >
-              <div class="image-container" @click="updatePreview(undefined)">
+              <div class="image-container" @click="updateImage(previewUrl, undefined, savePreview)">
                 <img v-if="previewUrl" class="preview-image" :src="previewUrl" alt="preview">
                 <div v-else class="preview-image default text-big-xx">SQ</div>
               </div>
             </DragNDropLoader>
-            <div v-if="previewUrl" class="button rounded delete-button" @click="deletePreviewClick">
+            <div v-if="previewUrl" class="button rounded delete-button" @click="onDeleteImageClick(previewUrl, savePreview)">
               <img src="../res/trash.svg" alt="delete">
             </div>
           </div>
@@ -211,6 +211,32 @@
             <QRGenerator class="qr" :text="temporaryQuestLink" ref="qrGeneratorTemporaryLinks" no-text></QRGenerator>
           </div>
         </div>
+
+        <div class="image-fields">
+          <div class="text-big">Картинка для заднего фона квеста</div>
+          <div class="text-small-x">Рекомендуется 1920х1080px, но может быть любого размера</div>
+
+          <div class="flex-container">
+            <DragNDropLoader class="image-loader" @load="async (dataUrl) => updateImage(backgroundImageUrl, dataUrl, saveBackground)"
+                             :crop-size="cropSizeBackground"
+                             :compress-size="compressSizeBackground"
+            >
+              <div class="image-container" @click="updateImage(backgroundImageUrl, undefined, saveBackground)">
+                <img v-if="backgroundImageUrl" class="preview-image" :src="backgroundImageUrl" alt="preview">
+                <div v-else class="preview-image default text-big-xx"></div>
+              </div>
+            </DragNDropLoader>
+            <div v-if="backgroundImageUrl" class="button rounded delete-button" @click="onDeleteImageClick(backgroundImageUrl, saveBackground)">
+              <img src="../res/trash.svg" alt="delete">
+            </div>
+          </div>
+        </div>
+
+        <div>
+          <div class="text-big">Пользовательский CSS для овормления квеста</div>
+          <div class="text-small">Создайте неповторимый дизайн вашего квеста, если вы знаете CSS!</div>
+          <textarea class="scrollable" ref="textarea" :rows="6" v-model="customCSS"></textarea>
+        </div>
       </div>
 
       <div class="submit-container">
@@ -241,7 +267,7 @@ import {deepClone} from "../utils/utils";
 import ImageUploader from "../utils/imageUploader";
 import MarkdownRedactor from "../components/MarkdownRedactor.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
-import {IMAGE_MAX_RES, QuestModes} from "../constants";
+import {IMAGE_MAX_RES, IMAGE_QUEST_BACKGROUND_MAX_RES, QuestModes} from "../constants";
 import DragNDropLoader from "../components/DragNDropLoader.vue";
 
 export default {
@@ -254,7 +280,9 @@ export default {
   data() {
     return {
       cropSize: null,
+      cropSizeBackground: null,
       compressSize: IMAGE_MAX_RES,
+      compressSizeBackground: IMAGE_QUEST_BACKGROUND_MAX_RES,
 
       ImageUploader: new ImageUploader(this.$popups, this.$api.uploadImage, this.cropSize, this.compressSize),
 
@@ -272,6 +300,8 @@ export default {
       title: '',
       description: '',
       previewUrl: '',
+      backgroundImageUrl: '',
+      customCSS: '',
       author: '',
       authorName: '',
       islinkactive: false,
@@ -332,6 +362,8 @@ export default {
       this.author = questInfo.author;
       this.authorName = questInfo.authorname;
       this.previewUrl = questInfo.previewurl;
+      this.backgroundImageUrl = questInfo.backgroundimageurl;
+      this.customCSS = questInfo.customcss;
       this.uid = questInfo.uid;
       this.helper = Boolean(questInfo.helper);
 
@@ -392,7 +424,6 @@ export default {
       this.$popups.success('Ссылка скопирована в буфер обмена');
     },
 
-
     async saveQuest() {
       await this.saveQuestInfo()
       await this.saveBranches();
@@ -403,7 +434,7 @@ export default {
 
     async saveQuestInfo() {
       this.$refs.form.loading = true;
-      const newQuestInfo = await this.$api.updateQuestInfo(this.id, this.title, this.description, this.ispublished, this.islinkactive);
+      const newQuestInfo = await this.$api.updateQuestInfo(this.id, this.title, this.description, this.ispublished, this.islinkactive, this.customCSS);
       this.$refs.form.loading = false;
 
       if (newQuestInfo.ok_) {
@@ -524,34 +555,34 @@ export default {
       this.edited = true;
     },
 
-
-    async updatePreview(dataURL) {
+    async updateImage(imageUrl, dataURL, callbackSavingFoo) {
       // this.loading = true;
       const imageId = await this.ImageUploader.upload(dataURL);
       // this.loading = false;
       if (imageId === undefined)
         return;
 
-      await this.deletePreview();
+      await this.deleteImage(imageUrl);
 
-      this.previewUrl = this.$api.apiUrl + `/image/` + imageId;
-      await this.savePreview();
+      callbackSavingFoo(this.$api.apiUrl + `/image/` + imageId);
     },
-    async deletePreviewClick() {
-      if (!await this.$modal.confirm('Удаляем картинку-превью квеста?', 'Восстановить не получится'))
+    async onDeleteImageClick(url, callbackSavingFoo) {
+      if (!await this.$modal.confirm('Точно удаляем картинку?', 'Восстановить не получится'))
         return;
 
-      await this.deletePreview();
+      await this.deleteImage(url);
 
-      this.previewUrl = '';
-      await this.savePreview();
+      callbackSavingFoo('');
     },
-    async deletePreview() {
-      if (!this.previewUrl)
+    getImageIdFromUrl(url) {
+      const splitted = url.split('/');
+      return splitted[splitted.length - 1];
+    },
+    async deleteImage(url) {
+      if (!url)
         return;
 
-      let imageId = this.previewUrl.split('/');
-      imageId = imageId[imageId.length - 1];
+      const imageId = this.getImageIdFromUrl(url);
 
       this.loading = true;
       const res = await this.$api.deleteImage(imageId);
@@ -562,7 +593,9 @@ export default {
         return;
       }
     },
-    async savePreview() {
+    async savePreview(value) {
+      this.previewUrl = value;
+
       this.loading = true;
       const res = await this.$api.updateQuestPreviewUrl(this.id, this.previewUrl);
       this.loading = false;
@@ -571,7 +604,20 @@ export default {
         this.$popups.error('Ошибка', 'Не удалось сохранить изображение');
         return;
       }
-      this.$popups.success('Сохранено', 'Изображение квеста обновлено');
+      this.$popups.success('Сохранено', 'Изображение квеста на карточке обновлено');
+    },
+    async saveBackground(value) {
+      this.backgroundImageUrl = value;
+
+      this.loading = true;
+      const res = await this.$api.updateQuestBackgroundImageUrl(this.id, this.backgroundImageUrl);
+      this.loading = false;
+
+      if (!res.ok_) {
+        this.$popups.error('Ошибка', 'Не удалось сохранить изображение');
+        return;
+      }
+      this.$popups.success('Сохранено', 'Фоновое изображение для квеста обновлено');
     },
 
     openRoll: openRoll,

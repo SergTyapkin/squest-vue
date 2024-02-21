@@ -35,15 +35,16 @@ export class Api extends ApiRequest {
     getQuestUsersFinished = (questId) => this.get(`/quest/users/finished`, {questId})
 
     createQuest = (title, description, isPublished) => this.post(`/quest`, {title, description, isPublished});
-    updateQuestInfo = (id, title, description, isPublished, isLinkActive) => this.put(`/quest`, {id, title, description, isPublished, isLinkActive});
+    updateQuestInfo = (id, title, description, isPublished, isLinkActive, customCSS) => this.put(`/quest`, {id, title, description, isPublished, isLinkActive, customCSS});
     updateQuestPreviewUrl = (id, previewUrl) => this.put(`/quest`, {id, previewUrl});
+    updateQuestBackgroundImageUrl = (id, backgroundImageUrl) => this.put(`/quest`, {id, backgroundImageUrl});
     getQuestInfoByUid = (questUid) => this.get(`/quest`, {questUid});
     getQuestStatistics = (questId) => this.get(`/quest/stats`, {questId});
     deleteQuest = (id) => this.delete(`/quest`, {id});
 
     getQuestBranches = (questId) => this.get(`/branch`, {questId});
     updateBranchOrderId = (id, title, orderId) => this.put('/branch', {id, title, orderId});
-    updateBranchInfo = (id, title, description, isPublished) => this.put('/branch', {id, title, description, isPublished});
+    updateBranchInfo = (id, title, description, isPublished, isTasksNotSorted) => this.put('/branch', {id, title, description, isPublished, isTasksNotSorted});
     createBranchesMany = (questId, branches = [{title: '', description: ''}]) => this.post('/branch/many', {questId, branches});
     getBranchInfo = (branchId) => this.get(`/branch`, {branchId});
     deleteBranch = (id) => this.delete(`/branch`, {id});

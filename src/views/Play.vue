@@ -252,10 +252,19 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     <TopButtons class="top-buttons" bg :buttons="[
         {name: taskTitle, description: `Квест: ${questTitle} <br> Ветка: ${branchTitle}`},
     ]"></TopButtons>
-    <div class="task-title">{{ taskTitle }}</div>
 
     <CircleLoading v-if="loading"></CircleLoading>
-    <MarkdownRenderer ref="markdown" class="description text-middle"></MarkdownRenderer>
+    <div v-if="!isTasksNotSorted">
+      <div class="task-title">{{ taskTitle }}</div>
+      <MarkdownRenderer ref="markdown" class="description text-middle"></MarkdownRenderer>
+    </div>
+    <div v-else>
+      <ArrowListElement class="branch-tasks" ref="branchTasks" title="Задания" closed open-on-set-elements
+                        :elements="branchTasks"
+                        no-close
+                        @click-inside="onSelectTask"
+      ></ArrowListElement>
+    </div>
 
     <div class="app-flex-filler"></div>
 
@@ -330,21 +339,26 @@ import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import Form from "../components/FormExtended.vue";
 import {secondsToStrTime} from "../utils/utils";
 import {Themes, QuestModes} from "../constants";
+import ArrowListElement from "~/components/ArrowListElement.vue";
 
 
 export default {
-  components: {MarkdownRenderer, TopButtons, QRScanner, FloatingInput, Footer, CircleLoading, Form},
+  components: {ArrowListElement, MarkdownRenderer, TopButtons, QRScanner, FloatingInput, Footer, CircleLoading, Form},
 
   data() {
     return {
       questTitle: '',
       branchTitle: '',
+      taskId: undefined,
       taskTitle: '',
       taskDescription: '',
       taskQuestion: '',
+      isTasksNotSorted: false,
 
       answer: '',
       answerLink: '',
+
+      branchTasks: [],
 
       qrScanButtonText: 'Сканировать',
 
@@ -378,27 +392,43 @@ export default {
       this.loading = false;
 
       if (res.ok_) {
-        this.questTitle = res.questtitle;
-        this.branchTitle = res.branchtitle;
-        this.$user.progress = res.progress;
+        this.isTasksNotSorted = res.istasksnotsorted;
+        if (this.isTasksNotSorted) {
+          this.loading = true;
+          const res = await this.$api.getBranchTasks(this.$user.chosenbranchid);
+          this.loading = false;
+          if (!res.ok_) {
+            this.$popups.error('Ошибка', 'Не удалось получить список заданий в ветке');
+            return;
+          }
+          this.branchTasks = res.tasks;
+          this.isEnd = this.branchTasks.length <= 0;
+        } else {
+          this.questTitle = res.questtitle;
+          this.branchTitle = res.branchtitle;
+          this.$user.progress = res.progress;
 
-        this.taskTitle = res.title;
-        this.taskDescription = res.description;
-        this.$refs.markdown.update(res.description);
-        this.taskQuestion = res.question;
-        this.isQrAnswer = res.isqranswer;
-        this.isEnd = res.question === undefined;
-        this.isCanEdit = res.canedit;
+          this.taskId = res.id;
+          this.taskTitle = res.title;
+          this.taskDescription = res.description;
+          this.$refs.markdown.update(res.description);
+          this.taskQuestion = res.question;
+          this.isQrAnswer = res.isqranswer;
+          this.isEnd = res.question === undefined;
+          this.isCanEdit = res.canedit;
 
-        this.setProgressButtonsList = [];
-        if (this.isCanEdit) {
-          let firstText = 'Предыдущее';
-          if (this.$user.progress < 1)
-            firstText = '///';
-          this.setProgressButtonsList.push({description: firstText});
+          this.setProgressButtonsList = [];
+          if (this.isCanEdit) {
+            let firstText = 'Предыдущее';
+            if (this.$user.progress < 1) {
+              firstText = '///';
+            }
+            this.setProgressButtonsList.push({description: firstText});
 
-          if (this.$user.progress < this.$user.progressMax)
-            this.setProgressButtonsList.push({description: 'Следующее'});
+            if (this.$user.progress < this.$user.progressMax) {
+              this.setProgressButtonsList.push({description: 'Следующее'});
+            }
+          }
         }
 
         if (!this.isEnd)
@@ -446,7 +476,7 @@ export default {
       if (this.$refs.form)
         this.$refs.form.loading = true;
       this.answerLoading = true;
-      const res = await this.$api.checkAnswer(this.answer);
+      const res = await this.$api.checkAnswer(this.answer, this.taskId);
       if (this.$refs.form)
         this.$refs.form.loading = false;
       this.answerLoading = false;
@@ -546,6 +576,14 @@ export default {
         return;
       }
       this.update();
+    },
+
+    onSelectTask(task) {
+      this.taskId = task.id;
+      this.taskTitle = task.title;
+      this.taskDescription = task.description;
+      this.taskQuestion = task.question;
+      this.$refs.markdown.update(this.taskDescription);
     }
   }
 }

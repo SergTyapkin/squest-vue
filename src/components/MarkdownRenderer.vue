@@ -56,7 +56,7 @@ img
 </style>
 
 <template>
-  <div v-html="html" className="link _markdown_renderer"></div>
+  <div v-html="html" className="_markdown_renderer"></div>
 </template>
 
 <script>
