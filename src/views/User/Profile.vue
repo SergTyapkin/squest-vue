@@ -192,7 +192,7 @@ hr
           <div class="now-playing text-small link" v-if="user.chosenquest && user.chosenbranch">
             Сейчас играет в: <br>
             Квест: <router-link :to="{name: 'quest', query: {id: user.chosenquestid}}">{{ user.chosenquest }}</router-link> <br>
-            Ветка: <router-link :to="{name: 'quest', query: {id: user.chosenquestid}}">{{ user.chosenbranch }}</router-link>
+            {{ user.chosenbranch ? 'Ветка:' : '' }} <router-link v-if="user.chosenbranch" :to="{name: 'quest', query: {id: user.chosenquestid}}">{{ user.chosenbranch }}</router-link>
           </div>
 
           <div v-if="yours">

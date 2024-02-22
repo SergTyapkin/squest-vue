@@ -252,19 +252,19 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     <TopButtons class="top-buttons" bg :buttons="[
         {name: taskTitle, description: `Квест: ${questTitle} <br> ${branchTitle ? `Ветка: ${branchTitle}` : 'В этом квесте задания можно проходить в любом порядке'}`}
     ]"></TopButtons>
-    <TopButtons v-if="isTasksNotSorted && isTaskInUnsortedModeSelected" class="top-buttons" bg arrows clickable :buttons="[
+    <TopButtons v-if="isTasksNotSorted && isTaskInUnsortedModeSelected && !isEnd" class="top-buttons" bg arrows clickable :buttons="[
         {name: 'К списку заданий'}
     ]" @click="() => {isTaskInUnsortedModeSelected = false; taskTitle = ''; taskId = undefined; taskDescription = ''}"></TopButtons>
 
     <CircleLoading v-if="loading"></CircleLoading>
-    <div v-show="isTasksNotSorted && !isTaskInUnsortedModeSelected">
+    <div v-show="isTasksNotSorted && !isTaskInUnsortedModeSelected && !isEnd">
       <ArrowListElement class="branch-tasks" ref="branchTasks" title="Задания" closed open-on-set-elements
                         :elements="branchTasks"
                         no-close
                         @click-inside="onSelectTask"
       ></ArrowListElement>
     </div>
-    <div v-show="!isTasksNotSorted || isTaskInUnsortedModeSelected">
+    <div v-show="!isTasksNotSorted || isTaskInUnsortedModeSelected || isEnd">
       <div class="task-title">{{ taskTitle }}</div>
       <MarkdownRenderer ref="markdown" class="description text-middle"></MarkdownRenderer>
     </div>
@@ -400,34 +400,35 @@ export default {
         this.branchTitle = res.branchtitle;
         this.$user.progress = res.progress;
         this.isTasksNotSorted = res.istasksnotsorted;
-        if (this.isTasksNotSorted) {
+        this.isEnd = res.question === undefined;
+        this.isCanEdit = res.canedit;
+        if (this.isTasksNotSorted && !this.isEnd) {
           this.loading = true;
-          const res = await this.$api.getBranchTasks(this.$user.chosenbranchid);
+          const res = await this.$api.getBranchTasks(this.$user.chosenbranchid, true);
           this.loading = false;
           if (!res.ok_) {
             this.$popups.error('Ошибка', 'Не удалось получить список заданий в ветке');
             return;
           }
           this.branchTasks = res.tasks;
-          this.isEnd = this.branchTasks.length <= 0;
         } else {
           this.taskId = res.id;
           this.taskTitle = res.title;
           this.taskDescription = res.description;
-          this.$refs.markdown.update(res.description);
+          this.$refs.markdown.update(res.description || '');
           this.taskQuestion = res.question;
           this.isQrAnswer = res.isqranswer;
-          this.isEnd = res.question === undefined;
-          this.isCanEdit = res.canedit;
+        }
 
-          this.setProgressButtonsList = [];
-          if (this.isCanEdit) {
-            let firstText = 'Предыдущее';
-            if (this.$user.progress < 1) {
-              firstText = '///';
+        this.setProgressButtonsList = [];
+        if (this.isCanEdit) {
+          if (this.isTasksNotSorted) {
+            if (!this.isEnd) {
+              this.setProgressButtonsList.push({description: '///'});
+              this.setProgressButtonsList.push({description: 'Пройти квест'});
             }
-            this.setProgressButtonsList.push({description: firstText});
-
+          } else {
+            this.setProgressButtonsList.push({description: this.$user.progress < 1 ? '///' : 'Предыдущее'});
             if (this.$user.progress < this.$user.progressMax) {
               this.setProgressButtonsList.push({description: 'Следующее'});
             }
@@ -489,6 +490,9 @@ export default {
         values.answer = '';
         this.answer = '';
         this.isTaskInUnsortedModeSelected = false;
+        this.taskId = '';
+        this.taskTitle = '';
+        this.taskDescription = '';
         await this.update();
         return true;
       }
@@ -564,6 +568,22 @@ export default {
     },
 
     async changeProgress(buttonIdx) {
+      if (this.isTasksNotSorted) {
+        if (buttonIdx.idx === 0) {
+          return;
+        }
+        this.statsLoading = true;
+        const res = await this.$api.setBranchFinished(this.$user.chosenbranchid);
+        this.statsLoading = false;
+        if (!res.ok_) {
+          this.$popups.error('Ошибка', 'Не получилось перейти на финиш');
+          return;
+        }
+
+        this.update();
+        return;
+      }
+
       let addition = -1;
       if (buttonIdx.idx === 1)
         addition = +1;
@@ -589,7 +609,7 @@ export default {
       this.taskQuestion = task.question;
       this.isQrAnswer = task.isqranswer;
       this.isTaskInUnsortedModeSelected = true;
-      this.$refs.markdown.update(this.taskDescription);
+      this.$refs.markdown.update(this.taskDescription || '');
     }
   }
 }

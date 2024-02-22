@@ -13,7 +13,8 @@ footer
   margin 0
   margin-top 80px
   padding 0
-  padding-bottom 10px
+  padding-top 15px
+  padding-bottom 15px
 
   background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgba(84, 67, 24, 0.6) 50%, rgba(84, 67, 24, 0) 100%) no-repeat
   border-top solid 2px
@@ -21,10 +22,13 @@ footer
   box-shadow rgba(231, 190, 28, 0.5) 0 0 8px 0
   list-style none
 
+  @media ({mobile})
+    flex-wrap wrap
+
   a
     display inline-flex
     align-items center
-    padding 10px 15px
+    padding 5px 15px
     @media ({mobile})
       padding-left 5px
       padding-right 5px
@@ -38,8 +42,6 @@ footer
       display compact
       margin-right 5px
       transition transform 0.2s ease
-      @media ({mobile})
-        margin-right 0
     .description
       font-small-extra()
       color textColor4

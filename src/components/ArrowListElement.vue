@@ -101,7 +101,7 @@ li.bg
     </div>
 
     <ul class="roll-active" :class="{closed: closed}" ref="list">
-      <ArrowListElement @click="$emit('click-inside', element)" v-for="(element, idx) in elements" v-bind="element" inside :arrow="element.arrow || false" closed :noClose="element.noClose" :number="numbered ? '#' + (idx + 1) : null"></ArrowListElement>
+      <ArrowListElement @click="$emit('click-inside', element)" v-for="(element, idx) in elements" v-bind="element" inside :arrow="element.arrow || arrowsOnElements" closed :noClose="element.noClose" :number="numbered ? '#' + (idx + 1) : null"></ArrowListElement>
     </ul>
   </li>
 </template>
@@ -141,6 +141,10 @@ export default {
     arrow: {
       type: Boolean,
       default: true
+    },
+    arrowsOnElements: {
+      type: Boolean,
+      default: false
     },
 
     noClose: {

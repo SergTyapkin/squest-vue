@@ -94,7 +94,7 @@ export default {
 
   methods: {
     update(text) {
-      if (text)
+      if (text !== undefined)
         this.text = text;
 
       const parsed = marked.parse(this.text, {breaks: true});
