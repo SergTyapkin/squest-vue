@@ -237,6 +237,12 @@
           <div class="text-small">Создайте неповторимый дизайн вашего квеста, если вы знаете CSS!</div>
           <textarea class="scrollable" ref="textarea" :rows="6" v-model="customCSS"></textarea>
         </div>
+
+        <div>
+          <FloatingInput title="Ссылка внизу страницы" v-model="bottomLink">
+            На сообщение с автором, например для получения подсказок при прохождении
+          </FloatingInput>
+        </div>
       </div>
 
       <div class="submit-container">
@@ -302,6 +308,7 @@ export default {
       previewUrl: '',
       backgroundImageUrl: '',
       customCSS: '',
+      bottomLink: '',
       author: '',
       authorName: '',
       islinkactive: false,
@@ -364,6 +371,7 @@ export default {
       this.previewUrl = questInfo.previewurl;
       this.backgroundImageUrl = questInfo.backgroundimageurl;
       this.customCSS = questInfo.customcss;
+      this.bottomLink = questInfo.bottomlink;
       this.uid = questInfo.uid;
       this.helper = Boolean(questInfo.helper);
 
@@ -434,7 +442,7 @@ export default {
 
     async saveQuestInfo() {
       this.$refs.form.loading = true;
-      const newQuestInfo = await this.$api.updateQuestInfo(this.id, this.title, this.description, this.ispublished, this.islinkactive, this.customCSS);
+      const newQuestInfo = await this.$api.updateQuestInfo(this.id, this.title, this.description, this.ispublished, this.islinkactive, this.customCSS, this.bottomLink);
       this.$refs.form.loading = false;
 
       if (newQuestInfo.ok_) {

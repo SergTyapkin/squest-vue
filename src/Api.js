@@ -35,7 +35,7 @@ export class Api extends ApiRequest {
     getQuestUsersFinished = (questId) => this.get(`/quest/users/finished`, {questId})
 
     createQuest = (title, description, isPublished) => this.post(`/quest`, {title, description, isPublished});
-    updateQuestInfo = (id, title, description, isPublished, isLinkActive, customCSS) => this.put(`/quest`, {id, title, description, isPublished, isLinkActive, customCSS});
+    updateQuestInfo = (id, title, description, isPublished, isLinkActive, customCSS, bottomLink) => this.put(`/quest`, {id, title, description, isPublished, isLinkActive, customCSS, bottomLink: bottomLink ? bottomLink : null});
     updateQuestPreviewUrl = (id, previewUrl) => this.put(`/quest`, {id, previewUrl});
     updateQuestBackgroundImageUrl = (id, backgroundImageUrl) => this.put(`/quest`, {id, backgroundImageUrl});
     getQuestInfoByUid = (questUid) => this.get(`/quest`, {questUid});

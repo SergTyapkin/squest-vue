@@ -80,29 +80,39 @@ footer
 
 <template>
   <footer class="root-footer">
-    <a v-if="$store.state.theme !== Themes.flat" class="footer-link-block" href="https://vk.com/squest_studio" target="_blank">
-      <img src="../res/vk-logo.svg" alt="vk">
+    <a v-if="links" v-for="link in links" class="footer-link-block" :href="link" target="_blank">
+      <img src="../res/link.svg" alt="vk">
       <div>
-        <div class="title">За подсказками: </div>
-        <div class="description">vk.com/squest_studio</div>
+        <div class="title">Связь с автором: </div>
+        <div class="description">Перейти по ссылке</div>
       </div>
     </a>
-    <a v-if="$store.state.theme !== Themes.flat" class="footer-link-block" href="mailto:tyapkin2002@mail.ru" target="_blank">
-      <img src="../res/email-logo.svg" alt="mail">
-      <div class="description">Tyapkin2002@mail.ru</div>
-    </a>
-    <a class="footer-link-block" href="https://t.me/tyapkin_s" target="_blank">
-      <img src="../res/telegram-logo.svg" alt="tg">
-      <div>
-        <div class="description">t.me/tyapkin_s</div>
-      </div>
-    </a>
-    <a class="footer-link-block" href="https://vk.com/tyapkin_s" target="_blank">
-      <img src="../res/vk-logo.svg" alt="tg">
-      <div>
-        <div class="description">vk.com/tyapkin_s</div>
-      </div>
-    </a>
+
+    <div v-else style="display: contents">
+      <a v-if="$store.state.theme !== Themes.flat" class="footer-link-block" href="https://vk.com/squest_studio" target="_blank">
+        <img src="../res/vk-logo.svg" alt="vk">
+        <div>
+          <div class="title">За подсказками: </div>
+          <div class="description">vk.com/squest_studio</div>
+        </div>
+      </a>
+      <a v-if="$store.state.theme !== Themes.flat" class="footer-link-block" href="mailto:tyapkin2002@mail.ru" target="_blank">
+        <img src="../res/email-logo.svg" alt="mail">
+        <div class="description">Tyapkin2002@mail.ru</div>
+      </a>
+      <a class="footer-link-block" href="https://t.me/tyapkin_s" target="_blank">
+        <img src="../res/telegram-logo.svg" alt="tg">
+        <div>
+          <div class="description">t.me/tyapkin_s</div>
+        </div>
+      </a>
+      <a class="footer-link-block" href="https://vk.com/tyapkin_s" target="_blank">
+        <img src="../res/vk-logo.svg" alt="tg">
+        <div>
+          <div class="description">vk.com/tyapkin_s</div>
+        </div>
+      </a>
+    </div>
   </footer>
 </template>
 
@@ -110,6 +120,10 @@ footer
 import {Themes} from "~/constants";
 
 export default {
+  props: {
+    links: Array,
+  },
+
   data() {
     return {
       Themes: Themes,

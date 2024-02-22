@@ -335,7 +335,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       <button class="button-submit" @click="clickOnScanButton">{{ qrScanButtonText }}</button>
     </div>
 
-    <Footer></Footer>
+    <Footer :links="bottomLink ? [bottomLink] : undefined"></Footer>
   </div>
 </template>
 
@@ -367,6 +367,7 @@ export default {
       isTasksNotSorted: false,
       backgroundImageUrl: undefined,
       customCSS: undefined,
+      bottomLink: undefined,
 
       answer: '',
       answerLink: '',
@@ -419,6 +420,7 @@ export default {
           this.addCSSToDocument(res.customcss);
         }
         this.customCSS = res.customcss;
+        this.bottomLink = res.bottomlink;
         this.$user.progress = res.progress;
         this.isTasksNotSorted = res.istasksnotsorted;
         this.isEnd = res.question === undefined;
