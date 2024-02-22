@@ -5,7 +5,7 @@
 input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
 
 
-.form
+.answer-form
   margin-top 20px
   padding 20px
 
@@ -14,7 +14,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 .top-buttons
   margin-top 0
   margin-bottom 0
-.description
+.task-description
   font-medium-small()
   line-height 1.05
   color textColor2
@@ -122,9 +122,6 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   background-position-x 50%
 
   align-items center
-  .form
-    margin-top 20px
-    padding 20px
 
   .top-buttons
     display none
@@ -143,7 +140,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 50%) 50%, mix(black, transparent, 20%) 100%)
     max-width 70%
     color textColor1
-  .description
+  .task-description
   .answer-block
     font-medium-small()
     color textColor2
@@ -260,7 +257,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     <img class="background" v-if="backgroundImageUrl" :src="backgroundImageUrl" alt="">
 
     <TopButtons class="move-buttons" bg clickable arrows @click="changeProgress" :buttons="setProgressButtonsList"></TopButtons>
-    <TopButtons class="top-buttons" bg :buttons="[
+    <TopButtons class="top-buttons quest-info-panel" bg :buttons="[
         {name: taskTitle, description: `Квест: ${questTitle} <br> ${branchTitle ? `Ветка: ${branchTitle}` : 'В этом квесте задания можно проходить в любом порядке'}`}
     ]"></TopButtons>
     <TopButtons v-if="isTasksNotSorted && isTaskInUnsortedModeSelected && !isEnd" class="top-buttons" bg arrows clickable :buttons="[
@@ -275,9 +272,9 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
                         @click-inside="onSelectTask"
       ></ArrowListElement>
     </div>
-    <div v-show="!isTasksNotSorted || isTaskInUnsortedModeSelected || isEnd">
+    <div v-show="!isTasksNotSorted || isTaskInUnsortedModeSelected || isEnd" class="task-title-description-container">
       <div class="task-title">{{ taskTitle }}</div>
-      <MarkdownRenderer ref="markdown" class="description text-middle"></MarkdownRenderer>
+      <MarkdownRenderer ref="markdown" class="task-description text-middle"></MarkdownRenderer>
     </div>
 
     <div class="app-flex-filler"></div>
@@ -303,11 +300,11 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
         </div>
       </div>
 
-      <TopButtons v-if="!$user.isTemporary" @click="restartOrFinish" class="buttons" bg clickable arrows big :buttons="[
+      <TopButtons v-if="!$user.isTemporary" @click="restartOrFinish" class="buttons finish-buttons" bg clickable arrows big :buttons="[
           { name: 'Начать заново', description: 'Прогресс сохранится' },
           { name: 'Завершить квест'},
       ]"></TopButtons>
-      <TopButtons v-else @click="finishTemporarySession" class="buttons" bg clickable arrows big no-left-arrow :buttons="[
+      <TopButtons v-else @click="finishTemporarySession" class="buttons finish-buttons" bg clickable arrows big no-left-arrow :buttons="[
           { name: 'Создать полноценный аккаунт'},
       ]"></TopButtons>
     </div>
@@ -319,7 +316,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       <CircleLoading v-if="answerLoading"></CircleLoading>
       <button v-else @click="checkAnswer({answer: answer})" class="button-submit">Ответить</button>
     </div>
-    <Form v-else-if="!isQrAnswer && (!isTasksNotSorted || isTaskInUnsortedModeSelected)" ref="form" class="form"
+    <Form v-else-if="!isQrAnswer && (!isTasksNotSorted || isTaskInUnsortedModeSelected)" ref="form" class="answer-form"
           :title="taskQuestion"
           :fields="[
             { title: 'ОТВЕТ', info: 'РеГиСтР не важен', jsonName: 'answer' },
@@ -332,7 +329,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     <div v-else-if="!isTasksNotSorted || isTaskInUnsortedModeSelected" class="qr-form">
       <div class="text-middle" v-if="answerLink">Отсканировано: {{answerLink}}</div>
       <QRScanner closed ref="qrScanner" @scan="checkQrAnswer"></QRScanner>
-      <div class="text-small-x">
+      <div class="text-small-x info">
         Как только ты отсканируешь правильный QR-код, ты пройдёшь это задание
       </div>
       <button class="button-submit" @click="clickOnScanButton">{{ qrScanButtonText }}</button>

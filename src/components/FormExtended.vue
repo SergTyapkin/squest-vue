@@ -7,8 +7,8 @@
 <template>
   <Form @submit="submit" ref="form" :class="{'no-bg': noBg}">
     <div class="info-container">
-      <div class="text-big-xx" :class="{'text-big': smallTitle}">{{ title }}</div>
-      <div class="text-small">{{ description }}</div>
+      <div class="text-big-xx title" :class="{'text-big': smallTitle}">{{ title }}</div>
+      <div class="text-small description">{{ description }}</div>
     </div>
 
     <div class="fields-container">
@@ -26,7 +26,7 @@
     </div>
 
     <div class="submit-container" v-if="!noSubmit">
-      <input v-if="!loading" type="submit" :value="submitText">
+      <input v-if="!loading" class="button-submit" type="submit" :value="submitText">
     </div>
     <CircleLoading v-if="loading"></CircleLoading>
 

@@ -181,15 +181,15 @@ side-items-img-size = 30px
             :decimals='1'
             autoinit
         ></vue3autocounter>
-        <span class="text-small info">Прогресс прохождения</span>
+        <span class="text-small info progress-info">Прогресс прохождения</span>
       </div>
     </router-link>
     <div class="center progress" v-else>
       <span>SQ</span>
     </div>
 
-    <router-link :to="{name: 'quests'}" class="left side-item opacity-in delayedBig">Квесты</router-link>
-    <router-link :to="{name: 'profile'}" class="right side-item opacity-in delayedBig">
+    <router-link :to="{name: 'quests'}" class="left side-item opacity-in delayedBig left-navbar-item">Квесты</router-link>
+    <router-link :to="{name: 'profile'}" class="right side-item opacity-in delayedBig right-navbar-item">
       <span>
         <span v-if="!$store.state.user.isLogined">Войти</span>
         <span v-else>{{ $store.state.user.username }}</span>

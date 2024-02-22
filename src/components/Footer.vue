@@ -79,25 +79,25 @@ footer
 </style>
 
 <template>
-  <footer>
-    <a v-if="$store.state.theme !== Themes.flat" href="https://vk.com/squest_studio" target="_blank">
+  <footer class="root-footer">
+    <a v-if="$store.state.theme !== Themes.flat" class="footer-link-block" href="https://vk.com/squest_studio" target="_blank">
       <img src="../res/vk-logo.svg" alt="vk">
       <div>
         <div class="title">За подсказками: </div>
         <div class="description">vk.com/squest_studio</div>
       </div>
     </a>
-    <a v-if="$store.state.theme !== Themes.flat" href="mailto:tyapkin2002@mail.ru" target="_blank">
+    <a v-if="$store.state.theme !== Themes.flat" class="footer-link-block" href="mailto:tyapkin2002@mail.ru" target="_blank">
       <img src="../res/email-logo.svg" alt="mail">
       <div class="description">Tyapkin2002@mail.ru</div>
     </a>
-    <a href="https://t.me/tyapkin_s" target="_blank">
+    <a class="footer-link-block" href="https://t.me/tyapkin_s" target="_blank">
       <img src="../res/telegram-logo.svg" alt="tg">
       <div>
         <div class="description">t.me/tyapkin_s</div>
       </div>
     </a>
-    <a href="https://vk.com/tyapkin_s" target="_blank">
+    <a class="footer-link-block" href="https://vk.com/tyapkin_s" target="_blank">
       <img src="../res/vk-logo.svg" alt="tg">
       <div>
         <div class="description">vk.com/tyapkin_s</div>
