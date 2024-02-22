@@ -244,10 +244,21 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       margin-top 20px
       &:hover
         filter brightness(1.2)
+
+.background
+  position fixed
+  inset 0
+  width 100%
+  height 100%
+  z-index -1
+  object-fit cover
+  background mix(black, transparent)
 </style>
 
 <template>
   <div class="flex-root">
+    <img class="background" v-if="backgroundImageUrl" :src="backgroundImageUrl" alt="">
+
     <TopButtons class="move-buttons" bg clickable arrows @click="changeProgress" :buttons="setProgressButtonsList"></TopButtons>
     <TopButtons class="top-buttons" bg :buttons="[
         {name: taskTitle, description: `Квест: ${questTitle} <br> ${branchTitle ? `Ветка: ${branchTitle}` : 'В этом квесте задания можно проходить в любом порядке'}`}
@@ -357,6 +368,8 @@ export default {
       taskDescription: '',
       taskQuestion: '',
       isTasksNotSorted: false,
+      backgroundImageUrl: undefined,
+      customCSS: undefined,
 
       answer: '',
       answerLink: '',
@@ -379,6 +392,8 @@ export default {
       timeSpent: 0,
       ratingVote: 0,
 
+      customCSSStyleElement: undefined,
+
       setProgressButtonsList: [],
 
       Themes: Themes,
@@ -387,6 +402,9 @@ export default {
 
   mounted() {
     this.update();
+  },
+  unmounted() {
+    this.removeCSSFromDocument();
   },
 
   methods: {
@@ -398,6 +416,12 @@ export default {
       if (res.ok_) {
         this.questTitle = res.questtitle;
         this.branchTitle = res.branchtitle;
+        this.backgroundImageUrl = res.backgroundimageurl;
+        if (res.customcss !== this.customCSS) {
+          this.removeCSSFromDocument();
+          this.addCSSToDocument(res.customcss);
+        }
+        this.customCSS = res.customcss;
         this.$user.progress = res.progress;
         this.isTasksNotSorted = res.istasksnotsorted;
         this.isEnd = res.question === undefined;
@@ -610,6 +634,24 @@ export default {
       this.isQrAnswer = task.isqranswer;
       this.isTaskInUnsortedModeSelected = true;
       this.$refs.markdown.update(this.taskDescription || '');
+    },
+
+    addCSSToDocument(stylesheetContent) {
+      const headElement = document.head || document.getElementsByTagName("head")[0];
+      const style = document.createElement("style");
+      style.type = "text/css";
+      if (style.styleSheet) {
+        style.styleSheet.cssText = stylesheetContent;
+      } else {
+        style.appendChild(document.createTextNode(stylesheetContent));
+      }
+      headElement.appendChild(style);
+      this.customCSSStyleElement = style;
+    },
+    removeCSSFromDocument() {
+      if (this.customCSSStyleElement) {
+        this.customCSSStyleElement.remove();
+      }
     }
   }
 }
