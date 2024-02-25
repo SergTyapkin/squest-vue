@@ -20,38 +20,38 @@ import RestorePassword from "./views/User/RestorePassword.vue";
 import ConfirmEmail from "./views/User/ConfirmEmail.vue";
 import UserQuests from "./views/UserQuests.vue";
 import TakeQuest from "~/views/TakeQuest.vue";
-import {BASE_URL_PATH, QuestModes} from "./constants";
+import {QuestModes} from "./constants";
 
 
 export default function createVueRouter(Store, App) {
     const routes = [
-        {path: BASE_URL_PATH + '/', name: 'default', component: About},
+        {path: '/', name: 'default', component: About},
 
-        {path: BASE_URL_PATH + '/signin', name: 'signin', component: SignIn, meta: {noLoginRequired: true}},
-        {path: BASE_URL_PATH + '/signup', name: 'signup', component: SignUp, meta: {noLoginRequired: true}},
-        {path: BASE_URL_PATH + '/profile', name: 'profile', component: Profile, meta: {loginRequired: true}},
-        {path: BASE_URL_PATH + '/password/restore', name: 'password-restore', component: RestorePassword, meta: {noLoginRequired: true}},
-        {path: BASE_URL_PATH + '/email/confirm', name: 'email-confirm', component: ConfirmEmail},
+        {path: '/signin', name: 'signin', component: SignIn, meta: {noLoginRequired: true}},
+        {path: '/signup', name: 'signup', component: SignUp, meta: {noLoginRequired: true}},
+        {path: '/profile', name: 'profile', component: Profile, meta: {loginRequired: true}},
+        {path: '/password/restore', name: 'password-restore', component: RestorePassword, meta: {noLoginRequired: true}},
+        {path: '/email/confirm', name: 'email-confirm', component: ConfirmEmail},
 
-        {path: BASE_URL_PATH + '/play', name: 'play', component: Play},
+        {path: '/play', name: 'play', component: Play},
 
-        {path: BASE_URL_PATH + '/quests', name: 'quests', component: Quests},
-        {path: BASE_URL_PATH + '/quests/user', name: 'user-quests', component: UserQuests},
-        {path: BASE_URL_PATH + '/quests/my', name: 'my-quests', component: MyQuests, meta: {loginRequired: true}},
+        {path: '/quests', name: 'quests', component: Quests},
+        {path: '/quests/user', name: 'user-quests', component: UserQuests},
+        {path: '/quests/my', name: 'my-quests', component: MyQuests, meta: {loginRequired: true}},
 
-        {path: BASE_URL_PATH + '/quest/create', name: 'create-quest', component: QuestCreate, meta: {loginRequired: true, emailConfirmRequired: true}},
-        {path: BASE_URL_PATH + '/quest/take', name: 'take-quest', component: TakeQuest},
+        {path: '/quest/create', name: 'create-quest', component: QuestCreate, meta: {loginRequired: true, emailConfirmRequired: true}},
+        {path: '/quest/take', name: 'take-quest', component: TakeQuest},
 
-        {path: BASE_URL_PATH + '/quest', name: 'quest', component: Quest},
-        {path: BASE_URL_PATH + '/quest/edit', name: 'edit-quest', component: QuestEdit, meta: {loginRequired: true}},
-        {path: BASE_URL_PATH + '/quest/branch/edit', name: 'edit-branch', component: BranchEdit, meta: {loginRequired: true}},
-        {path: BASE_URL_PATH + '/quest/branch/task/edit', name: 'edit-task', component: TaskEdit, meta: {loginRequired: true}},
+        {path: '/quest', name: 'quest', component: Quest},
+        {path: '/quest/edit', name: 'edit-quest', component: QuestEdit, meta: {loginRequired: true}},
+        {path: '/quest/branch/edit', name: 'edit-branch', component: BranchEdit, meta: {loginRequired: true}},
+        {path: '/quest/branch/task/edit', name: 'edit-task', component: TaskEdit, meta: {loginRequired: true}},
 
-        {path: BASE_URL_PATH + '/ratings', name: 'ratings', component: Ratings},
-        {path: BASE_URL_PATH + '/admin', name: 'admin', component: Admin, meta: {loginRequired: true}},
-        {path: BASE_URL_PATH + '/qr/:data', name: 'qr', component: FoundQR},
+        {path: '/ratings', name: 'ratings', component: Ratings},
+        {path: '/admin', name: 'admin', component: Admin, meta: {loginRequired: true}},
+        {path: '/qr/:data', name: 'qr', component: FoundQR},
 
-        {path: BASE_URL_PATH + '/:catchAll(.*)', name: 'page404', component: Page404}
+        {path: '/:catchAll(.*)', name: 'page404', component: Page404}
     ]
 
     const Router = createRouter({
@@ -73,23 +73,24 @@ export default function createVueRouter(Store, App) {
         // window.scroll({top: 0, left: 0, behavior: 'smooth'});
 
         const basePartRedirect = {
-            path: BASE_URL_PATH + removeBasePartOnStart(to.fullPath),
+            path: removeBasePartOnStart(to.fullPath),
             params: to.params,
             query: to.query,
         }
         const notLoginedRedirect = {
-            path: BASE_URL_PATH + '/signin',
+            path: '/signin',
         }
         const loginedRedirect = {
-            path: BASE_URL_PATH + '/profile',
+            path: '/profile',
         }
 
         function smartBasePartRedirect() {
-            if (isStartsOnBasePart(to.fullPath)) {
-                next();
-            } else {
-                next(basePartRedirect);
-            }
+            next();
+            // if (isStartsOnBasePart(to.fullPath)) {
+            //     next();
+            // } else {
+            //     next(basePartRedirect);
+            // }
         }
 
         // Login required redirects
@@ -135,8 +136,8 @@ export default function createVueRouter(Store, App) {
 
 
 function isStartsOnBasePart(string) {
-    return new RegExp(`^${BASE_URL_PATH}`, 'i').test(string);
+    return false;
 }
 function removeBasePartOnStart(string) {
-    return string.replace(new RegExp(`^${BASE_URL_PATH}`, 'i'), '');
+    return string;
 }

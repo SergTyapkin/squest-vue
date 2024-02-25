@@ -1,7 +1,4 @@
-export const BASE_URL_PATH = '/squest';
-
-export const API_URL = BASE_URL_PATH + '/api';
-
+export const API_URL = import.meta.env.VITE_API_URL;
 export const IMAGE_MAX_RES = 512;
 export const IMAGE_PROFILE_MAX_RES = 82;
 export const IMAGE_QUEST_BACKGROUND_MAX_RES = 1920;

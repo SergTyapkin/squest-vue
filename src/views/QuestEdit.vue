@@ -327,9 +327,9 @@ export default {
   computed: {
     temporaryQuestLink() {
       if (!this.temporaryAccountName) {
-        return this.$url + `/quest/take?uid=${this.uid}&mode=${QuestModes.fast}`;
+        return location.origin + `/quest/take?uid=${this.uid}&mode=${QuestModes.fast}`;
       }
-      return this.$url + `/quest/take?uid=${this.uid}&username=${encodeURIComponent(this.temporaryAccountName)}&mode=${QuestModes.fast}`;
+      return location.origin + `/quest/take?uid=${this.uid}&username=${encodeURIComponent(this.temporaryAccountName)}&mode=${QuestModes.fast}`;
     }
   },
 
@@ -376,7 +376,7 @@ export default {
       this.uid = questInfo.uid;
       this.helper = Boolean(questInfo.helper);
 
-      this.questLink = this.$url + `/quest?uid=${encodeURIComponent(this.uid)}`;
+      this.questLink = location.origin + `/quest?uid=${encodeURIComponent(this.uid)}`;
       this.$refs.qrGenerator.regenerate(this.questLink);
       this.onChangeLink();
     },

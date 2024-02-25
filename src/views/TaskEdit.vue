@@ -254,7 +254,7 @@ export default {
       this.$refs.qrScanner.stop();
 
       if (!link)
-        link = `${this.$url}/qr/${generateUid(8)}`;
+        link = `${location.origin}/qr/${generateUid(8)}`;
       else
         this.$popups.success("QR отсканирован", link);
       this.qrAnswer = link;
