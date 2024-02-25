@@ -187,8 +187,8 @@
                        v-model="isTemporaryLinksActive"
                        @change="isTemporaryLinksActive ? openRoll($refs.temporaryLinksFields) : closeRoll($refs.temporaryLinksFields)"
         >
-          При использовании этой ссылки игроки будут заходить под временными аккаунтами. После прохождения квеста им будет предложено создать настоящий аккаунт. <br>
-          По одной ссылке могут зайти несколько людей - это удобно для игры команды под одним аккаунтом.
+          Если поле заполнено: При использовании этой ссылки игроки будут заходить под временными аккаунтами. После прохождения квеста им будет предложено создать настоящий аккаунт. По одной ссылке могут зайти несколько людей - это удобно для игры команды под одним аккаунтом. <br>
+          Если не заполнено: Квест могут проходить только зарегистрированные пользователи. Во время прохождения они не могут выйти из квеста, прочий интерфейс и кнопки скрыты.
         </FloatingInput>
 
         <div class="text-big link-fields roll-active closed" ref="temporaryLinksFields">
@@ -240,7 +240,8 @@
 
         <div>
           <FloatingInput title="Ссылка внизу страницы" v-model="bottomLink">
-            На сообщение с автором, например для получения подсказок при прохождении
+            На сообщение с автором, например для получения подсказок при прохождении. <br>
+            Должна начинаться с https://
           </FloatingInput>
         </div>
       </div>
@@ -326,7 +327,7 @@ export default {
   computed: {
     temporaryQuestLink() {
       if (!this.temporaryAccountName) {
-        return '';
+        return this.$url + `/quest/take?uid=${this.uid}&mode=${QuestModes.fast}`;
       }
       return this.$url + `/quest/take?uid=${this.uid}&username=${encodeURIComponent(this.temporaryAccountName)}&mode=${QuestModes.fast}`;
     }

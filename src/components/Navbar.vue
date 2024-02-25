@@ -126,41 +126,6 @@ side-items-img-size = 30px
     width 80%
     border-bottom-left-radius 100px 60px
     border-bottom-right-radius 100px 60px
-
-// --- Flat theme
-.flat .navbar
-.flat.navbar
-  @require '../styles/constantsFlatTheme.styl'
-  position absolute
-  background none
-  backdrop-filter blur(10px) brightness(2) saturate(.4)
-  z-index 999
-
-  width 100% !important
-  height 60px
-  margin 0
-
-  border-radius 0 !important
-  .side-item
-    display none
-
-  .progress
-    margin-top 0
-    color textColor1
-    background none
-    .progress-container
-      .info
-        color textColor3
-
-  .progressbar
-    bottom 0
-    width 100%
-    height 5px
-    background linear-gradient(90deg, empColor2 50%, transparent 53%) 0 0 no-repeat
-    background-position-x calc(100% - 100% * var(--progress))
-    background-size 200%
-    border mix(empColor5, transparent, 50%) 1px solid
-    border-right none
 </style>
 
 <template>
@@ -188,8 +153,8 @@ side-items-img-size = 30px
       <span>SQ</span>
     </div>
 
-    <router-link :to="{name: 'quests'}" class="left side-item opacity-in delayedBig left-navbar-item">Квесты</router-link>
-    <router-link :to="{name: 'profile'}" class="right side-item opacity-in delayedBig right-navbar-item">
+    <router-link v-if="$store.state.theme !== Themes.flat" :to="{name: 'quests'}" class="left side-item opacity-in delayedBig left-navbar-item">Квесты</router-link>
+    <router-link v-if="$store.state.theme !== Themes.flat" :to="{name: 'profile'}" class="right side-item opacity-in delayedBig right-navbar-item">
       <span>
         <span v-if="!$store.state.user.isLogined">Войти</span>
         <span v-else>{{ $store.state.user.username }}</span>
@@ -201,6 +166,7 @@ side-items-img-size = 30px
 
 <script>
 import Vue3autocounter from 'vue3-autocounter';
+import {Themes} from "~/constants";
 
 export default {
   components: {Vue3autocounter},
@@ -209,6 +175,8 @@ export default {
     return {
       prevProgress: 0,
       newProgress: 0,
+
+      Themes: Themes,
     };
   },
 

@@ -16,7 +16,7 @@ footer
   padding-top 15px
   padding-bottom 15px
 
-  background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgba(84, 67, 24, 0.6) 50%, rgba(84, 67, 24, 0) 100%) no-repeat
+  background linear-gradient(20deg, rgb(47, 20, 23), rgb(74, 51, 23), rgb(66, 35, 16)) no-repeat
   border-top solid 2px
   border-color empColor2
   box-shadow rgba(231, 190, 28, 0.5) 0 0 8px 0
@@ -51,31 +51,6 @@ footer
       transform scale(1.1)
     .description
       color textColor2
-
-.flat
-  @import "../styles/constantsFlatTheme.styl"
-
-  footer
-    backdrop-filter blur(10px) brightness(.7) saturate(.5)
-
-    background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 20%) 50%, mix(black, transparent, 20%) 100%)
-    border-top solid 2px empColor1
-    box-shadow empColor1 0 0 8px 0
-
-    a
-      .title
-        color textColor2
-      img
-        filter hue-rotate(170deg) brightness(1.2)
-      .description
-        font-small-extra()
-        color textColor4
-        transition color 0.2s ease
-    a:hover
-      img
-        transform scale(1.1)
-      .description
-        color textColor2
 </style>
 
 <template>

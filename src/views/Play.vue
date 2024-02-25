@@ -104,143 +104,14 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   }
 }
 
-// --- Flat theme
 .task-title
+  font-large()
+  color textColor1
+  width 100%
+  text-align center
+  margin-top 20px
+  margin-bottom -10px
   display none
-.flat .flex-root
-  @import "../styles/constantsFlatTheme.styl"
-
-  input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
-  glass-block()
-    border-bottom empColor6 1px solid
-    backdrop-filter blur(10px) brightness(.7) saturate(.5)
-
-  background-image url("../res/tentak0_0.png")
-  background-repeat no-repeat
-  background-attachment fixed
-  background-size cover
-  background-position-x 50%
-
-  align-items center
-
-  .top-buttons
-    display none
-  .task-title
-    display block
-    font-large()
-    glass-block()
-    text-align center
-    padding 0 15px 5px 15px
-    border 1px solid textColor3
-    border-radius 30px
-    border-bottom none
-    margin-top 50px
-    margin-bottom -10px
-    z-index 1
-    background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 50%) 50%, mix(black, transparent, 20%) 100%)
-    max-width 70%
-    color textColor1
-  .task-description
-  .answer-block
-    font-medium-small()
-    color textColor2
-    border-radius 20px
-    margin-bottom 30px
-    glass-block()
-    width 80%
-    max-width 800px
-    @media ({mobile})
-      width calc(100% - 40px)
-
-  .answer-block
-    colorError = lighten(colorNo, 30%)
-    padding 20px
-    padding-top 10px
-    border-radius 50px
-    display flex
-    align-items center
-    flex-direction column
-    .task-question
-      font-medium()
-      text-align center
-      color textColor1
-      margin-bottom 5px
-    .answer-error
-      color colorError
-      text-align left
-      width 100%
-      opacity 0
-      transition all 0.2s ease
-    .task-answer
-      text-align left
-      border-radius 9999px
-      color textColor1
-      margin-bottom 20px
-      padding 15px
-      padding-bottom 10px
-      border-color mix(secColor1, transparent, 30%)
-      border-bottom-color secColor1
-      border-right-width 0px
-      border-left-width 0px
-    .task-answer + .button-submit
-      pointer-events none
-      margin-top -70px
-      opacity 0
-      transform translateY(35px) scale(.9)
-    .task-answer:focus + .button-submit
-    .task-answer:not(:placeholder-shown) + .button-submit
-      margin-top 0
-      opacity 1
-      transform none
-    .task-answer:not(:placeholder-shown) + .button-submit
-      pointer-events auto
-    .button-submit
-      font-medium()
-      text-align center
-      padding 10px 15px
-      padding-top 5px
-      border 1px solid secColor1
-      border-top none
-      border-radius 9999px
-      text-shadow none
-      transition all 0.2s ease
-      cursor pointer
-      background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 50%) 50%, mix(black, transparent, 20%) 100%)
-      color textColor1
-      &:hover
-        filter brightness(1.2)
-
-    &.error
-      .answer-error
-        opacity 1
-      .task-answer
-        color colorError
-        border-color colorError
-
-  .qr-form
-    glass-block()
-    background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 20%) 50%, mix(black, transparent, 20%) 100%)
-    box-shadow none
-    display flex
-    flex-direction column
-    align-items center
-    margin-top 0
-    .button-submit
-      font-medium()
-      text-align center
-      padding 10px 15px
-      padding-top 5px
-      border 1px solid secColor1
-      border-top none
-      border-radius 9999px
-      text-shadow none
-      transition all 0.2s ease
-      cursor pointer
-      background linear-gradient(7deg, transparent 10%, mix(empColor1, transparent, 50%) 50%, mix(black, transparent, 20%) 100%)
-      color textColor1
-      margin-top 20px
-      &:hover
-        filter brightness(1.2)
 
 .background
   position fixed
@@ -309,13 +180,6 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       ]"></TopButtons>
     </div>
 
-    <div v-else-if="$store.state.theme === Themes.flat && !isQrAnswer" class="answer-block" :class="{error: isAnswerError}">
-      <div class="task-question">{{ taskQuestion }}</div>
-      <div class="answer-error">Ответ неверен</div>
-      <input @keydown.enter="checkAnswer({answer: answer})" class="task-answer" type="text" autocomplete="off" v-model="answer" placeholder="Ответ"/>
-      <CircleLoading v-if="answerLoading"></CircleLoading>
-      <button v-else @click="checkAnswer({answer: answer})" class="button-submit">Ответить</button>
-    </div>
     <Form v-else-if="!isQrAnswer && (!isTasksNotSorted || isTaskInUnsortedModeSelected)" ref="form" class="answer-form"
           :title="taskQuestion"
           :fields="[
@@ -447,11 +311,15 @@ export default {
         if (this.isCanEdit) {
           if (this.isTasksNotSorted) {
             if (!this.isEnd) {
-              this.setProgressButtonsList.push({description: '///'});
+              this.setProgressButtonsList.push({name: '///', description: 'Эти кнопки есть только у автора квеста'});
               this.setProgressButtonsList.push({description: 'Пройти квест'});
             }
           } else {
-            this.setProgressButtonsList.push({description: this.$user.progress < 1 ? '///' : 'Предыдущее'});
+            if (this.$user.progress < 1) {
+              this.setProgressButtonsList.push({name: '///', description: 'Эти кнопки есть только у автора квеста'});
+            } else {
+              this.setProgressButtonsList.push({description: 'Предыдущее'});
+            }
             if (this.$user.progress < this.$user.progressMax) {
               this.setProgressButtonsList.push({description: 'Следующее'});
             }
