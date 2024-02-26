@@ -217,6 +217,8 @@ import {Themes, QuestModes} from "../constants";
 import ArrowListElement from "~/components/ArrowListElement.vue";
 
 
+const UPDATING_INTERVAL_MS = 5000;
+
 export default {
   components: {ArrowListElement, MarkdownRenderer, TopButtons, QRScanner, FloatingInput, Footer, CircleLoading, Form},
 
@@ -254,6 +256,8 @@ export default {
       timeSpent: 0,
       ratingVote: 0,
 
+      updatingInterval: undefined,
+
       customCSSStyleElement: undefined,
 
       setProgressButtonsList: [],
@@ -264,16 +268,20 @@ export default {
 
   mounted() {
     this.update();
+
+    this.updatingInterval = setInterval(this.updatingProgressCheck, UPDATING_INTERVAL_MS);
   },
   unmounted() {
     this.removeCSSFromDocument();
+
+    clearInterval(this.updatingInterval);
   },
 
   methods: {
-    async update() {
-      this.loading = true;
+    async update(withLoading=true) {
+      if (withLoading) this.loading = true;
       const res = await this.$api.getPlay();
-      this.loading = false;
+      if (withLoading) this.loading = false;
 
       if (res.ok_) {
         this.questTitle = res.questtitle;
@@ -290,9 +298,9 @@ export default {
         this.isEnd = res.question === undefined;
         this.isCanEdit = res.canedit;
         if (this.isTasksNotSorted && !this.isEnd) {
-          this.loading = true;
+          if (withLoading) this.loading = true;
           const res = await this.$api.getBranchTasks(this.$user.chosenbranchid, true);
-          this.loading = false;
+          if (withLoading) this.loading = false;
           if (!res.ok_) {
             this.$popups.error('Ошибка', 'Не удалось получить список заданий в ветке');
             return;
@@ -329,9 +337,9 @@ export default {
         if (!this.isEnd)
           return;
 
-        this.statsLoading = true;
+        if (withLoading) this.statsLoading = true;
         const stats = await this.$api.getMyBranchVotes(this.$user.chosenbranchid);
-        this.statsLoading = false;
+        if (withLoading) this.statsLoading = false;
 
         if (!stats.ok_) {
           this.$popups.error('Ошибка', 'Не удалось получить статистику прохождения');
@@ -347,6 +355,10 @@ export default {
       }
 
       this.$popups.error(`Ошибка ${res.status_}!`, res.info);
+    },
+
+    async updatingProgressCheck() {
+      this.update(false);
     },
 
     async checkQrAnswer(answer) {
