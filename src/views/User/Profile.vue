@@ -189,7 +189,7 @@ hr
 
           <hr>
 
-          <div class="now-playing text-small link" v-if="user.chosenquest && user.chosenbranch">
+          <div class="now-playing text-small" v-if="user.chosenquest !== undefined && user.chosenbranch !== undefined">
             Сейчас играет в: <br>
             Квест: <router-link :to="{name: 'quest', query: {id: user.chosenquestid}}">{{ user.chosenquest }}</router-link> <br>
             {{ user.chosenbranch ? 'Ветка:' : '' }} <router-link v-if="user.chosenbranch" :to="{name: 'quest', query: {id: user.chosenquestid}}">{{ user.chosenbranch }}</router-link>
