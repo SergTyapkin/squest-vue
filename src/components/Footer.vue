@@ -39,7 +39,7 @@ footer
       color textColor1
     img
       width 30px
-      display compact
+      height 30px
       margin-right 5px
       transition transform 0.2s ease
     .description
