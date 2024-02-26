@@ -234,7 +234,7 @@
         </div>
 
         <div>
-          <div class="text-big">Пользовательский CSS для овормления квеста</div>
+          <div class="text-big">Пользовательский CSS для оформления квеста</div>
           <div class="text-small">Создайте неповторимый дизайн вашего квеста, если вы знаете CSS!</div>
           <textarea class="scrollable" ref="textarea" :rows="6" v-model="customCSS"></textarea>
         </div>
