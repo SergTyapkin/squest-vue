@@ -32,7 +32,13 @@ export default defineConfig({
             {
                 find: '@~', // to use @~ as node_modules root like: "import Some from '@~/Some'"
                 replacement: path.resolve(__dirname, 'node_modules')
-            }
+            },
+
+            // Fix for Heroku building
+            {
+                find: /@korolion\/get-image-as-dataurl/,
+                replacement: path.resolve(__dirname, 'node_modules', '@korolion', 'get-image-as-dataurl'),
+            },
         ]
     },
     build: {
