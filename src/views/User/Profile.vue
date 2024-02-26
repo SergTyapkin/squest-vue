@@ -128,7 +128,7 @@ hr
 
 <template>
   <div>
-    <div class="profile-page">
+    <div class="profile-page" @input="edited = true">
       <TopButtons arrows clickable :buttons="buttons"></TopButtons>
 
       <Form class="profile-plate">
@@ -205,8 +205,6 @@ hr
             ></FormExtended>
             <input v-if="!user.isConfirmed && !loadingConfirmEmail" type="submit" value="Подтвердить E-mail" class="confirm-email-input" @click="confirmEmailSendMessage">
             <CircleLoading v-if="loadingConfirmEmail"></CircleLoading>
-
-            <input v-if="!$refs?.form?.loading" type="submit" value="Изменить данные" @click="changeData">
           </div>
         </div>
 
@@ -229,6 +227,10 @@ hr
       </Form>
 
       <router-link v-if="yours && user.isAdmin" :to="{name: 'admin'}" class="admin-button text-big-x button rounded outline">На админскую</router-link>
+
+      <FloatingButton v-if="edited" title="Сохранить" green @click="changeData">
+        <img src="../../res/save.svg" alt="save">
+      </FloatingButton>
     </div>
   </div>
 </template>
@@ -246,9 +248,12 @@ import {IMAGE_MAX_RES, IMAGE_PROFILE_MAX_RES} from "../../constants";
 import ImageUploader from "../../utils/imageUploader";
 import DragNDropLoader from "../../components/DragNDropLoader.vue";
 import ArrowListElement from "../../components/ArrowListElement.vue";
+import FloatingButton from "~/components/FloatingButton.vue";
 
 export default {
-  components: {ArrowListElement, DragNDropLoader, CircleLoading, TopButtons, FloatingInput, FormExtended, Form},
+  components: {
+    FloatingButton,
+    ArrowListElement, DragNDropLoader, CircleLoading, TopButtons, FloatingInput, FormExtended, Form},
 
   data() {
     return {
@@ -269,6 +274,7 @@ export default {
       loadingConfirmEmail: false,
 
       buttons: [],
+      edited: false,
 
       api_url: this.$api.apiUrl,
     }
@@ -364,6 +370,7 @@ export default {
         await this.$store.dispatch('GET_USER');
         this.$popups.success('Данные обновлены');
         this.$refs.form.errors = {};
+        this.edited = false;
         return;
       }
 

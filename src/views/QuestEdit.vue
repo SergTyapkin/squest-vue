@@ -178,7 +178,7 @@
             <br>
 
             <span>Ссылка в виде QR:</span>
-            <QRGenerator class="qr" :text="questLink" ref="qrGenerator" no-text></QRGenerator>
+            <QRGenerator class="qr" :text="questLink" ref="qrGenerator" no-text @input.stop></QRGenerator>
           </div>
         </div>
 
@@ -195,6 +195,7 @@
           <FloatingInput title="Название временного профиля"
                          v-model="temporaryAccountName"
                          @change="$refs.qrGeneratorTemporaryLinks.regenerate(temporaryQuestLink)"
+                         @input.stop
           >
             Будет видно только вам при посмотре результатов
           </FloatingInput>
@@ -208,7 +209,7 @@
             <br>
 
             <span>Ссылка в виде QR:</span>
-            <QRGenerator class="qr" :text="temporaryQuestLink" ref="qrGeneratorTemporaryLinks" no-text></QRGenerator>
+            <QRGenerator class="qr" :text="temporaryQuestLink" ref="qrGeneratorTemporaryLinks" no-text @input.stop></QRGenerator>
           </div>
         </div>
 
