@@ -89,7 +89,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
       margin-left 5px
       width 30px
   .play
-    margin 20px auto
+    margin 30px auto 0 auto
     max-width 300px
     border-radius 10px
     width 100%

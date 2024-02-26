@@ -57,8 +57,10 @@ plate-max-width = 400px
         justify-content space-between
         line-height 1
         margin-bottom 5px
-        img
-          width 25px
+        .badges-container
+          white-space nowrap
+          img
+            width 25px
         .quest-modifier
           margin-left 5px
 
@@ -170,7 +172,7 @@ plate-max-width = 400px
                 }"
           >
             <span>{{title}}</span>
-            <span>
+            <span class="badges-container">
               <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
               <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
             </span>
