@@ -317,8 +317,15 @@ export default {
     },
 
     async selectBranch(branch) {
-      if (!await this.$modal.confirm("Выбираем ветку?", branch.title))
-        return;
+      if (this.id !== this.$user.chosenquestid && branch.id !== this.$user.chosenbranchid) {
+        if (this.branches.length > 1) {
+          if (!await this.$modal.confirm(`Выбираем ветку "${branch.title}"?`, "В данный момент вы играете в другой квест. Прогресс в нем будет сохранен"))
+            return;
+        } else {
+          if (!await this.$modal.confirm(`Выбираем квест "${this.title}"?`, "В данный момент вы играете в другой квест. Прогресс в нем будет сохранен"))
+            return;
+        }
+      }
 
       this.loading = true;
       const res = await this.$api.chooseBranch(this.id, branch.id);
