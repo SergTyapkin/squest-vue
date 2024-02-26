@@ -1,4 +1,4 @@
-import {getImageAsDataURL} from "@korolion/get-image-as-dataurl";
+import getImageAsDataURL from "~/utils/getImageAsDataURL";
 
 export default class ImageUploader {
     popups = null;

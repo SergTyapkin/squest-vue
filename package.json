@@ -14,7 +14,6 @@
     "lint:fix": "eslint src --fix"
   },
   "dependencies": {
-    "@korolion/get-image-as-dataurl": "^0.4.1",
     "@vitejs/plugin-vue": "^4.2.3",
     "marked": "^4.0.12",
     "qr-scanner": "^1.4.1",
