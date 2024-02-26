@@ -19,7 +19,7 @@ hr
     .rating
     .position
       flex 1
-      font-large()
+      font-medium()
       font-weight bold
       .info
         font-weight normal

@@ -32,7 +32,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
     z-index -1
 
   .container
-    padding 10px 20px
+    padding 10px 20px 50px 20px
     background quest-background
     background-size 150%
     background-position-x 100%
@@ -77,13 +77,6 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
       background none
       padding 0
 
-    .branches
-      margin-top 20px
-      margin-left -20px
-      margin-bottom -10px
-      width calc(100% + 40px)
-
-
 .main-info
   transition all 0.2s ease
   z-index -1
@@ -100,6 +93,10 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
     max-width 300px
     border-radius 10px
     width 100%
+
+.branches
+  background #00000011
+
 .container.inactive
   .main-info
     filter blur(5px)

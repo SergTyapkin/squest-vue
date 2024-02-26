@@ -1,5 +1,6 @@
 <style lang="stylus" scoped>
 @require '../styles/constants.styl'
+@require '../styles/fonts.styl'
 
 title-background = linear-gradient(160deg, #3b2516, #1f1313) no-repeat
 
@@ -27,13 +28,16 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
     @media ({mobile})
       padding 10px
       min-height 60px
-    > .text-small,
-    > .text-big,
-    > .text-big-x,
-    > .text-middle,
+    > .text-small
+    > .text-big
+    > .text-big-x
+    > .text-middle
     > .text-small-x
       transition inherit
       transition-delay 20ms
+
+    .text-big
+      font-medium-large()
 
 .title-container.bg
   background title-background
@@ -78,12 +82,12 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
 </style>
 
 <template>
-  <div class="title-container text-big" :class="{bg: bg, clickable: clickable, 'low-opacity': lowOpacity}">
+  <div class="title-container" :class="{bg: bg, clickable: clickable, 'low-opacity': lowOpacity}">
     <router-link :to="(button.to || '')" v-for="(button, idx) in buttons" :class="{'no-link': button.to === undefined}"
                   @click="$emit('click', Object.assign(button, {idx}))">
       <Arrow left v-if="arrows && idx === 0 && !noLeftArrow" size="20px"></Arrow>
       <div>
-        <div class="text-big-x lighting-text" :class="{'text-big': clickable && !big}">{{ button.name }}</div>
+        <div class="text-big-x" :class="{'text-big': clickable && !big}">{{ button.name }}</div>
         <div class="text-small" v-html="button.description"></div>
       </div>
       <Arrow right v-if="arrows && (noLeftArrow || idx !== 0) && idx === buttons.length-1" size="20px"></Arrow>
