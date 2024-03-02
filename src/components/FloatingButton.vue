@@ -28,21 +28,24 @@ padding = 5px 10px
     justify-content flex-end
     transition all 0.2s ease
     .image
-      margin-left 10px
       transition all 0.2s ease
       width image-width
       height image-width
       opacity 0.8
     .hover-text
+      color textColor1
+      white-space nowrap
       transition all 0.2s ease
       overflow hidden
       width 0
+      padding-right 0
       pointer-events none
       opacity 0
 .float-button:hover
   box-shadow 5px 5px 8px colorShadow
   .hover-text
     width 120px
+    padding-right 10px
     opacity 1
   .image
     transform scale(1.1)

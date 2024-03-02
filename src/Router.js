@@ -21,6 +21,7 @@ import ConfirmEmail from "./views/User/ConfirmEmail.vue";
 import UserQuests from "./views/UserQuests.vue";
 import TakeQuest from "~/views/TakeQuest.vue";
 import {QuestModes} from "./constants";
+import {getCurrentInstance} from "vue";
 
 
 export default function createVueRouter(Store, App) {
@@ -125,7 +126,7 @@ export default function createVueRouter(Store, App) {
         // Email Confirm required handling
         if (to.matched.some(record => record.meta.emailConfirmRequired)) {
             if (!Store.state.user.isConfirmed) {
-                App.$modal.alert("Действие недоступно", "Твой E-mail не подтвержден. Сперва нужно подтвердить его, сделать это можно в профиле")
+                App.config.globalProperties.$modal.alert("Действие недоступно", "Твой E-mail не подтвержден. Сперва нужно подтвердить его, сделать это можно в профиле")
                 return false;
             }
         }
