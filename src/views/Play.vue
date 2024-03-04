@@ -395,6 +395,7 @@ export default {
       this.answerLoading = false;
       if (res) {
         this.$popups.success('Правильно', 'QR отсканирован');
+        this.$refs.qrScanner.stop();
         return;
       }
 
