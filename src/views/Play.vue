@@ -195,12 +195,13 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
     ></Form>
 
     <div v-else-if="!isTasksNotSorted || isTaskInUnsortedModeSelected" class="qr-form">
-      <div class="text-middle" v-if="answerLink">Отсканировано: {{answerLink}}</div>
+<!--      <div class="text-middle" v-if="answerLink">Отсканировано: {{answerLink}}</div>-->
       <QRScanner closed ref="qrScanner" @scan="checkQrAnswer"></QRScanner>
       <div class="text-small-x info">
         Как только ты отсканируешь правильный QR-код, ты пройдёшь это задание
       </div>
-      <button class="button-submit" @click="clickOnScanButton">{{ qrScanButtonText }}</button>
+      <button v-if="this.$refs.qrScanner.active" class="button-submit" @click="clickOnScanButton">Сканировать</button>
+      <button v-else class="button-submit" @click="clickOnScanButton">Выключить сканер</button>
     </div>
 
     <Footer :links="bottomLink ? [bottomLink] : undefined"></Footer>
@@ -250,7 +251,6 @@ export default {
 
       branchTasks: [],
 
-      qrScanButtonText: 'Сканировать',
       isTaskInUnsortedModeSelected: false,
 
       isEnd: false,
@@ -390,15 +390,15 @@ export default {
         return;
       this.answerLink = answer;
 
-      this.loading = true;
+      this.answerLoading = true;
       const res = await this.checkAnswer({answer: this.answerLink});
-      this.loading = false;
+      this.answerLoading = false;
       if (res) {
         this.$popups.success('Правильно', 'QR отсканирован');
         return;
       }
 
-      this.$popups.error('Неверно', 'QR не тот');
+      this.$popups.error('Неверно', 'Отсканирован неправильный QR');
     },
 
     async checkAnswer(values) {
@@ -477,12 +477,10 @@ export default {
       if (!this.$refs.qrScanner.active) {
         this.$refs.qrScanner.start();
         this.$refs.qrScanner.show();
-        this.qrScanButtonText = "Выключить сканер";
         return;
       }
       this.$refs.qrScanner.stop();
       this.$refs.qrScanner.hide();
-      this.qrScanButtonText = "Сканировать дальше";
     },
 
     async sendVote() {
