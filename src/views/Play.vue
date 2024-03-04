@@ -402,6 +402,19 @@ export default {
     },
 
     async checkAnswer(values) {
+      const showError = () => {
+        if (this.$refs.form) {
+          this.$refs.form.info = 'Ответ неверный';
+          this.$refs.form.showError();
+        }
+        this.isAnswerError = true;
+        setTimeout(() => {this.isAnswerError = false}, 1200);
+      }
+      if (this.testMode) {
+        showError();
+        return false;
+      }
+
       this.answer = values.answer.trim();
 
       if (this.$refs.form)
@@ -424,12 +437,7 @@ export default {
         return true;
       }
       if (res.status_ === 418) {
-        if (this.$refs.form) {
-          this.$refs.form.info = 'Ответ неверный';
-          this.$refs.form.showError();
-        }
-        this.isAnswerError = true;
-        setTimeout(() => {this.isAnswerError = false}, 1200);
+        showError();
         return false;
       }
 
