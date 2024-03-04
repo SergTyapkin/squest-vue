@@ -200,8 +200,12 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       <div class="text-small-x info">
         Как только ты отсканируешь правильный QR-код, ты пройдёшь это задание
       </div>
-      <button v-if="!$refs?.qrScanner?.active" class="button-submit" @click="clickOnScanButton">Сканировать</button>
-      <button v-else class="button-submit" @click="clickOnScanButton">Выключить сканер</button>
+      <button class="button-submit" @click="clickOnScanButton">
+        <transition name="opacity" mode="out-in">
+          <span v-if="!$refs?.qrScanner?.active">Сканировать</span>
+          <span v-else>Выключить сканнер</span>
+        </transition>
+      </button>
     </div>
 
     <Footer :links="bottomLink ? [bottomLink] : undefined"></Footer>

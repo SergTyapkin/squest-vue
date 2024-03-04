@@ -32,7 +32,7 @@ top-bar-height = 70px
   <Popups ref="popups"></Popups>
 </template>
 
-<style scoped>
+<style>
 .fade-enter-active,
 .fade-leave-active {
   transition: opacity 0.2s ease;
