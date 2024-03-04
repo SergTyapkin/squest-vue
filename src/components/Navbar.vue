@@ -16,6 +16,7 @@ side-items-img-size = 30px
   background linear-gradient(25deg, #070505 10%, #543616 50%, #070505 100%)
   animation open-navbar 3s ease forwards
   position relative
+  z-index 10
 
   .side-item
     font-small-extra()

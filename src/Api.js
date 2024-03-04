@@ -58,6 +58,7 @@ export class Api extends ApiRequest {
 
     getBranchTasks = (branchId, authorPlayMode) => this.get(`/task`, {branchId, authorPlayMode: authorPlayMode ? 'true' : 'false'});
     getTaskInfo = (taskId) => this.get(`/task`, {taskId});
+    getExampleTask = (questId) => this.get(`/task/example`, {questId});
     updateTaskOrderId = (id, title, orderId) => this.put('/task', {id, title, orderId});
     updateTaskInfo = (id, title, description, question, answers, isQrAnswer) => this.put('/task', {id, title, description, question, answers, isQrAnswer});
     deleteTask = (id) => this.delete('/task', {id});

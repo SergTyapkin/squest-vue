@@ -5,6 +5,9 @@
   margin-top 0
   max-width unset
 
+  position absolute // For correctly working background in page preview in css editor
+  z-index 0 // For correctly working background in page preview in css editor
+
 .link-fields
   position relative
 .link-button
@@ -25,6 +28,17 @@
   padding-right 30px
   margin-left 20px
   word-break break-all
+
+.css-editor-container
+  display flex
+  gap 30px
+  .css-editor
+    flex 0.3
+    min-width 250px
+  .play-page-preview
+    flex 1
+    position relative
+    border 1px solid empColor4
 
 .image-fields
   .flex-container
@@ -233,10 +247,21 @@
           </div>
         </div>
 
-        <div>
-          <div class="text-big">Пользовательский CSS для оформления квеста</div>
-          <div class="text-small">Создайте неповторимый дизайн вашего квеста, если вы знаете CSS!</div>
-          <textarea class="scrollable" ref="textarea" :rows="6" v-model="customCSS"></textarea>
+        <FloatingInput type="checkbox"
+                       title="Пользовательский CSS для оформления квеста"
+                       v-model="isCustomCssActive"
+                       @change="isCustomCssActive ? openRoll($refs.customCssFields) : closeRoll($refs.customCssFields)"
+        >
+          Создайте неповторимый дизайн вашего квеста, если вы знаете CSS!
+        </FloatingInput>
+        <div class="text-big roll-active closed" ref="customCssFields">
+          <div class="css-editor-container">
+            <textarea class="scrollable css-editor text-small" ref="textarea" :rows="6" v-model="customCSS"></textarea>
+            <div class="play-page-preview">
+              <Navbar></Navbar>
+              <Play test-mode :quest-id="Number(id)" :custom-c-s-s="customCSS"></Play>
+            </div>
+          </div>
         </div>
 
         <div>
@@ -277,9 +302,13 @@ import MarkdownRedactor from "../components/MarkdownRedactor.vue";
 import MarkdownRenderer from "../components/MarkdownRenderer.vue";
 import {IMAGE_MAX_RES, IMAGE_QUEST_BACKGROUND_MAX_RES, QuestModes} from "../constants";
 import DragNDropLoader from "../components/DragNDropLoader.vue";
+import Play from "~/views/Play.vue";
+import Navbar from "~/components/Navbar.vue";
 
 export default {
   components: {
+    Navbar,
+    Play,
     DragNDropLoader,
     MarkdownRenderer,
     MarkdownRedactor,
@@ -319,6 +348,7 @@ export default {
       helper: false,
 
       isTemporaryLinksActive: false,
+      isCustomCssActive: false,
       temporaryAccountName: '',
 
       edited: false,
@@ -379,6 +409,10 @@ export default {
 
       this.questLink = location.origin + `/quest?uid=${encodeURIComponent(this.uid)}`;
       this.$refs.qrGenerator.regenerate(this.questLink);
+      if (this.customCSS) {
+        this.isCustomCssActive = true;
+        openRoll(this.$refs.customCssFields);
+      }
       this.onChangeLink();
     },
 

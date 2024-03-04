@@ -5,6 +5,10 @@
 input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6) 50%, rgba(38, 30, 11, 0.4) 100%) 50% 50% no-repeat
 
 
+.flex-root
+  margin-top -70px
+  padding-top 70px
+
 .answer-form
   margin-top 20px
   padding 20px
@@ -114,7 +118,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   display none
 
 .background
-  position fixed
+  position absolute
   inset 0
   width 100%
   height 100%
@@ -222,6 +226,12 @@ const UPDATING_INTERVAL_MS = 5000;
 export default {
   components: {ArrowListElement, MarkdownRenderer, TopButtons, QRScanner, FloatingInput, Footer, CircleLoading, Form},
 
+  props: {
+    testMode: Boolean,
+    questId: Number,
+    customCSS: String,
+  },
+
   data() {
     return {
       questTitle: '',
@@ -269,7 +279,9 @@ export default {
   mounted() {
     this.update();
 
-    this.updatingInterval = setInterval(this.updatingProgressCheck, UPDATING_INTERVAL_MS);
+    if (!this.testMode) {
+      this.updatingInterval = setInterval(this.updatingProgressCheck, UPDATING_INTERVAL_MS);
+    }
   },
   unmounted() {
     this.removeCSSFromDocument();
@@ -280,7 +292,15 @@ export default {
   methods: {
     async update(withLoading=true) {
       if (withLoading) this.loading = true;
-      const res = await this.$api.getPlay();
+      let res;
+      if (this.testMode) {
+        // if (this.questId === undefined) {
+        //   throw new Error('questId не указан!');
+        // }
+        res = await this.$api.getExampleTask(this.questId);
+      } else {
+        res = await this.$api.getPlay();
+      }
       if (withLoading) this.loading = false;
 
       if (res.ok_) {
@@ -291,7 +311,11 @@ export default {
           this.removeCSSFromDocument();
           this.addCSSToDocument(res.customcss);
         }
-        this.customCSS = res.customcss;
+        if (this.testMode) {
+          this.customCSS = this.$props.customCSS;
+        } else {
+          this.customCSS = res.customcss;
+        }
         this.bottomLink = res.bottomlink;
         this.$user.progress = res.progress;
         this.isTasksNotSorted = res.istasksnotsorted;
@@ -316,7 +340,7 @@ export default {
         }
 
         this.setProgressButtonsList = [];
-        if (this.isCanEdit) {
+        if (this.isCanEdit && !this.testMode) {
           if (this.isTasksNotSorted) {
             if (!this.isEnd) {
               this.setProgressButtonsList.push({name: '///', description: 'Эти кнопки есть только у автора квеста'});
@@ -517,20 +541,38 @@ export default {
 
     addCSSToDocument(stylesheetContent) {
       const headElement = document.head || document.getElementsByTagName("head")[0];
-      const style = document.createElement("style");
-      style.type = "text/css";
-      if (style.styleSheet) {
-        style.styleSheet.cssText = stylesheetContent;
+      const styleElement = document.createElement("style");
+      styleElement.type = "text/css";
+      if (styleElement.styleSheet) {
+        styleElement.styleSheet.cssText = stylesheetContent;
       } else {
-        style.appendChild(document.createTextNode(stylesheetContent));
+        styleElement.appendChild(document.createTextNode(stylesheetContent));
       }
-      headElement.appendChild(style);
-      this.customCSSStyleElement = style;
+      headElement.appendChild(styleElement);
+      this.customCSSStyleElement = styleElement;
+    },
+    editCSSOnDocument(stylesheetContent) {
+      if (!this.customCSSStyleElement) {
+        return;
+      }
+
+      if (this.customCSSStyleElement.styleSheet) {
+        this.customCSSStyleElement.styleSheet.cssText = stylesheetContent;
+      } else {
+        this.customCSSStyleElement.innerText = stylesheetContent;
+      }
     },
     removeCSSFromDocument() {
       if (this.customCSSStyleElement) {
         this.customCSSStyleElement.remove();
       }
+    }
+  },
+
+  watch: {
+    '$props.customCSS'(to) {
+      this.customCSS = to;
+      this.editCSSOnDocument(to);
     }
   }
 }
