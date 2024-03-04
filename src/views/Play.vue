@@ -129,7 +129,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
 
 <template>
   <div class="flex-root">
-    <img class="background" v-if="backgroundImageUrl" :src="backgroundImageUrl" alt="">
+    <img class="background" v-if="backgroundImageUrl" :src="backgroundImageUrl" alt=" ">
 
     <TopButtons class="move-buttons" bg clickable arrows @click="changeProgress" :buttons="setProgressButtonsList"></TopButtons>
     <TopButtons class="top-buttons quest-info-panel" bg :buttons="[
