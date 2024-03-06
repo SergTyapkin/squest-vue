@@ -394,9 +394,7 @@ export default {
         return;
       this.answerLink = answer;
 
-      this.answerLoading = true;
       const res = await this.checkAnswer({answer: this.answerLink});
-      this.answerLoading = false;
       if (res) {
         this.$popups.success('Правильно', 'QR отсканирован');
         this.$refs.qrScanner.stop();
@@ -425,10 +423,10 @@ export default {
       if (this.$refs.form)
         this.$refs.form.loading = true;
       this.answerLoading = true;
-      const res = await this.$api.checkAnswer(this.answer, this.taskId);
+      const res = await this.$api.checkAnswer(this.answer);
+      this.answerLoading = false;
       if (this.$refs.form)
         this.$refs.form.loading = false;
-      this.answerLoading = false;
 
       if (res.ok_) {
         this.$popups.success('Правильно');

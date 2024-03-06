@@ -8,6 +8,7 @@
   },
   "scripts": {
     "dev": "vite --open",
+    "dev host": "vite --open --host",
     "preview": "vite preview --open --port 8080",
     "build": "vite build --out-dir dist",
     "lint": "eslint src",

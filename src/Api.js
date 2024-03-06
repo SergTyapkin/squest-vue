@@ -50,7 +50,7 @@ export class Api extends ApiRequest {
     deleteBranch = (id) => this.delete(`/branch`, {id});
     voteBranchRating = (branchId, rating) => this.post(`/quest/rating`, {branchId, rating})
 
-    checkAnswer = (answer, taskId) => this.post(`/task/play`, {answer, taskId});
+    checkAnswer = (answer,) => this.post(`/task/play`, {answer});
     chooseBranch = (questId, branchId, mode) => this.post(`/quest/choose`, {questId, branchId, mode});
     restartBranch = (branchId) => this.put(`/branch/progress/reset`, {branchId});
     setBranchFinished = (branchId) => this.put(`/branch/progress/setmax`, {branchId});
