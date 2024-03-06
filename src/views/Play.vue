@@ -226,7 +226,7 @@ import {Themes, QuestModes} from "../constants";
 import ArrowListElement from "~/components/ArrowListElement.vue";
 
 
-const UPDATING_INTERVAL_MS = 5000;
+const UPDATING_INTERVAL_MS = 8000;
 
 export default {
   components: {ArrowListElement, MarkdownRenderer, TopButtons, QRScanner, FloatingInput, Footer, CircleLoading, Form},
