@@ -193,37 +193,36 @@
 
             <span>Ссылка в виде QR:</span>
             <QRGenerator class="qr" :text="questLink" ref="qrGenerator" no-text @input.stop></QRGenerator>
-          </div>
-        </div>
 
-        <FloatingInput type="checkbox"
-                       title="Получить ссылку для единоразового прохождения"
-                       v-model="isTemporaryLinksActive"
-                       @change="isTemporaryLinksActive ? openRoll($refs.temporaryLinksFields) : closeRoll($refs.temporaryLinksFields)"
-        >
-          Если поле заполнено: При использовании этой ссылки игроки будут заходить под временными аккаунтами. После прохождения квеста им будет предложено создать настоящий аккаунт. По одной ссылке могут зайти несколько людей - это удобно для игры команды под одним аккаунтом. <br>
-          Если не заполнено: Квест могут проходить только зарегистрированные пользователи. Во время прохождения они не могут выйти из квеста, прочий интерфейс и кнопки скрыты.
-        </FloatingInput>
+            <FloatingInput type="checkbox"
+                           title="Получить ссылку для единоразового прохождения"
+                           v-model="isTemporaryLinksActive"
+                           @change="isTemporaryLinksActive ? openRoll($refs.temporaryLinksFields) : closeRoll($refs.temporaryLinksFields)"
+            >
+              Для корректной работы должен быть включен доступ по ссылке!
+              Если поле заполнено: При использовании этой ссылки игроки будут заходить под временными аккаунтами. После прохождения квеста им будет предложено создать настоящий аккаунт. По одной ссылке могут зайти несколько людей - это удобно для игры команды под одним аккаунтом. <br>
+              Если не заполнено: Квест могут проходить только зарегистрированные пользователи. Во время прохождения они не могут выйти из квеста, прочий интерфейс и кнопки скрыты.
+            </FloatingInput>
 
-        <div class="text-big link-fields roll-active closed" ref="temporaryLinksFields">
-          <FloatingInput title="Название временного профиля"
-                         v-model="temporaryAccountName"
-                         @change="$refs.qrGeneratorTemporaryLinks.regenerate(temporaryQuestLink)"
-                         @input.stop
-          >
-            Будет видно только вам при посмотре результатов
-          </FloatingInput>
+            <div class="text-big link-fields roll-active closed" ref="temporaryLinksFields">
+              <FloatingInput title="Название временного профиля"
+                             v-model="temporaryAccountName"
+                             @change="$refs.qrGeneratorTemporaryLinks.regenerate(temporaryQuestLink)"
+                             @input.stop
+              >
+                Будет видно только вам при посмотре результатов
+              </FloatingInput>
 
-          <div class="relative-conainer">
-            <span>Ссылка для игры:</span>
-            <span class="quest-link text-middle link">{{ temporaryQuestLink }}</span>
-            <span class="button rounded link-button" @click="copyLink(temporaryQuestLink)">
-                <img src="../res/link_copy.svg" alt="copy" class="link-image">
-            </span>
-            <br>
+              <div class="relative-conainer">
+                <span>Ссылка для игры:</span>
+                <span class="quest-link text-middle link">{{ temporaryQuestLink }}</span>
+                <span class="button rounded link-button" @click="copyLink(temporaryQuestLink)"><img src="../res/link_copy.svg" alt="copy" class="link-image"></span>
+                <br>
 
-            <span>Ссылка в виде QR:</span>
-            <QRGenerator class="qr" :text="temporaryQuestLink" ref="qrGeneratorTemporaryLinks" no-text @input.stop></QRGenerator>
+                <span>Ссылка в виде QR:</span>
+                <QRGenerator class="qr" :text="temporaryQuestLink" ref="qrGeneratorTemporaryLinks" no-text @input.stop></QRGenerator>
+              </div>
+            </div>
           </div>
         </div>
 

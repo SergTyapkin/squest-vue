@@ -38,7 +38,7 @@ export default {
   },
 
   async mounted() {
-    // Register user ot login
+    // Register user or login
     if (this.username !== undefined) {
       const res = await this.$api.signIn(this.username, this.password);
       if (res.ok_) {
@@ -46,7 +46,7 @@ export default {
       } else {
         console.info('Cannot sign in using credentials in query-parameters. Trying to sign up...');
 
-        const res = await this.$api.signUpTemporary(this.username, this.password, null, null, this.id);
+        const res = await this.$api.signUpTemporary(this.username, this.password, null, null, this.id, this.uid);
         if (res.ok_) {
           console.info('Successfully signed up using credentials in query-parameters');
           this.mode = QuestModes.fast;
