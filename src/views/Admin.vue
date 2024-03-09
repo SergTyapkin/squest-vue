@@ -34,6 +34,7 @@ textarea
         </div>
       </div>
     </Form>
+    <SaveByKeys @save="execute"></SaveByKeys>
   </div>
 </template>
 
@@ -41,10 +42,11 @@ textarea
 import Form from "../components/Form.vue";
 import TopButtons from "../components/TopButtons.vue";
 import CircleLoading from "../components/loaders/CircleLoading.vue";
+import SaveByKeys from "~/components/SaveByKeys.vue";
 
 
 export default {
-  components: { CircleLoading, TopButtons, Form },
+  components: {SaveByKeys, CircleLoading, TopButtons, Form },
 
   data() {
     return {

@@ -65,6 +65,7 @@
       <CircleLoading v-if="loading"></CircleLoading>
       <img v-else src="../res/save.svg" alt="save">
     </FloatingButton>
+    <SaveByKeys @save="saveBranch"></SaveByKeys>
   </div>
 </template>
 
@@ -76,9 +77,10 @@ import FloatingInput from "../components/FloatingInput.vue";
 import AddableList from "../components/AddableList/AddableList.vue";
 import FloatingButton from "../components/FloatingButton.vue";
 import {deepClone} from "../utils/utils";
+import SaveByKeys from "~/components/SaveByKeys.vue";
 
 export default {
-  components: {FloatingButton, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
+  components: {SaveByKeys, FloatingButton, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
 
   data() {
     return {

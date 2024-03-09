@@ -321,7 +321,7 @@ export default {
           this.branchTitle = "Название ветки квеста";
           this.backgroundImageUrl = null;
           this.customCSS = this.$props.customCSS;
-          this.$user.progress = 0.25;
+          this.$user.progress = 1;
           this.isTasksNotSorted = false;
           this.isEnd = false;
           this.isCanEdit = false;

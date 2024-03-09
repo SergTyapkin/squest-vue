@@ -94,6 +94,7 @@
     <FloatingButton v-if="edited" title="Сохранить" green @click="saveTask">
       <img src="../res/save.svg" alt="save">
     </FloatingButton>
+    <SaveByKeys @save="saveTask"></SaveByKeys>
   </div>
 </template>
 
@@ -110,10 +111,12 @@ import QRGenerator from "../components/QRGenerator.vue";
 import FloatingButton from "../components/FloatingButton.vue";
 import {closeRoll, isClosedRoll, openRoll} from "../utils/show-hide";
 import {generateUid} from "../utils/utils";
+import SaveByKeys from "~/components/SaveByKeys.vue";
 
 
 export default {
   components: {
+    SaveByKeys,
     FloatingButton,
     QRGenerator, QRScanner, MarkdownRenderer, MarkdownRedactor, AddableList, FloatingInput, Form, CircleLoading, TopButtons},
 

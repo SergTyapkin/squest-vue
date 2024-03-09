@@ -231,6 +231,7 @@ hr
       <FloatingButton v-if="edited" title="Сохранить" green @click="changeData">
         <img src="../../res/save.svg" alt="save">
       </FloatingButton>
+      <SaveByKeys @save="changeData"></SaveByKeys>
     </div>
   </div>
 </template>
@@ -249,9 +250,11 @@ import ImageUploader from "../../utils/imageUploader";
 import DragNDropLoader from "../../components/DragNDropLoader.vue";
 import ArrowListElement from "../../components/ArrowListElement.vue";
 import FloatingButton from "~/components/FloatingButton.vue";
+import SaveByKeys from "~/components/SaveByKeys.vue";
 
 export default {
   components: {
+    SaveByKeys,
     FloatingButton,
     ArrowListElement, DragNDropLoader, CircleLoading, TopButtons, FloatingInput, FormExtended, Form},
 

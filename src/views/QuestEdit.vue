@@ -37,6 +37,7 @@
     min-width 250px
   .play-page-preview
     flex 1
+    min-width 300px
     position relative
     border 1px solid empColor4
 
@@ -254,7 +255,7 @@
           Создайте неповторимый дизайн вашего квеста, если вы знаете CSS!
         </FloatingInput>
         <div class="text-big roll-active closed" ref="customCssFields">
-          <div class="css-editor-container">
+          <div class="css-editor-container scrollable">
             <textarea class="scrollable css-editor text-small" ref="textarea" :rows="6" v-model="customCSS"></textarea>
             <div class="play-page-preview">
               <Navbar></Navbar>
@@ -283,6 +284,7 @@
     <FloatingButton v-if="edited" title="Сохранить" green @click="saveQuest">
       <img src="../res/save.svg" alt="save">
     </FloatingButton>
+    <SaveByKeys @save="saveQuest"></SaveByKeys>
   </div>
 </template>
 
@@ -303,9 +305,11 @@ import {IMAGE_MAX_RES, IMAGE_QUEST_BACKGROUND_MAX_RES, QuestModes} from "../cons
 import DragNDropLoader from "../components/DragNDropLoader.vue";
 import Play from "~/views/Play.vue";
 import Navbar from "~/components/Navbar.vue";
+import SaveByKeys from "~/components/SaveByKeys.vue";
 
 export default {
   components: {
+    SaveByKeys,
     Navbar,
     Play,
     DragNDropLoader,
