@@ -44,14 +44,14 @@
           <textarea class="text scrollable" rows="5" v-model="description"></textarea>
         </div>
 
-        <AddableList title="Ветки"
-                     description="При просмотре квестов для игры вы будете видеть даже неопубликованные ветки, чтобы можно было поиграть и проверить ветку до её публикации"
-                     add-text="Добавить ветку"
-                     action-text="Перейти"
-                     v-model="branches"
-                     :can-delete="false"
-                     placeholder="Название ветки"
-        ></AddableList>
+<!--        <AddableList title="Ветки"-->
+<!--                     description="При просмотре квестов для игры вы будете видеть даже неопубликованные ветки, чтобы можно было поиграть и проверить ветку до её публикации"-->
+<!--                     add-text="Добавить ветку"-->
+<!--                     action-text="Перейти"-->
+<!--                     v-model="branches"-->
+<!--                     :can-delete="false"-->
+<!--                     placeholder="Название ветки"-->
+<!--        ></AddableList>-->
         <AddableList title="Соавторы"
                      description="Хотите делать квест вместе? Просто добавьте никнеймы соавторов ниже и они получат доступ к редактированию квеста"
                      add-text="Добавить соавтора"
@@ -110,7 +110,7 @@ export default {
   methods: {
     async saveQuest() {
       await this.saveQuestInfo()
-      await this.saveBranches();
+      // await this.saveBranches();
       await this.saveHelpers();
       window.onbeforeunload = null;
       this.edited = false;
@@ -133,24 +133,24 @@ export default {
       this.$popups.error('Ошибка', 'Не удалось сохранить информацию о квесте');
     },
 
-    async saveBranches() {
-      if (this.id === null)
-        return;
-
-      this.branchesLoading = true;
-
-      const branchesToCreate = this.branches.map((branch) => {
-        return {title: branch.title, description: ""};
-      });
-      const created = await this.$api.createBranchesMany(this.id, branchesToCreate);
-      this.branchesLoading = false;
-
-      if (!created.ok_) {
-        this.$popups.error('Ошибка', 'Не удалось создать ветки(у)');
-        this.$refs.form.showError();
-        return;
-      }
-    },
+    // async saveBranches() {
+    //   if (this.id === null)
+    //     return;
+    //
+    //   this.branchesLoading = true;
+    //
+    //   const branchesToCreate = this.branches.map((branch) => {
+    //     return {title: branch.title, description: ""};
+    //   });
+    //   const created = await this.$api.createBranchesMany(this.id, branchesToCreate);
+    //   this.branchesLoading = false;
+    //
+    //   if (!created.ok_) {
+    //     this.$popups.error('Ошибка', 'Не удалось создать ветки(у)');
+    //     this.$refs.form.showError();
+    //     return;
+    //   }
+    // },
 
     async saveHelpers() {
       if (this.id === null)
