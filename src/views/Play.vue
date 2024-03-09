@@ -307,82 +307,106 @@ export default {
       }
       if (withLoading) this.loading = false;
 
-      if (res.ok_) {
-        this.questTitle = res.questtitle;
-        this.branchTitle = res.branchtitle;
-        this.backgroundImageUrl = res.backgroundimageurl;
-        if (res.customcss !== this.customCSS) {
-          this.removeCSSFromDocument();
-          this.addCSSToDocument(res.customcss);
-        }
-        if (this.testMode) {
-          this.customCSS = this.$props.customCSS;
-        } else {
-          this.customCSS = res.customcss;
-        }
-        this.bottomLink = res.bottomlink;
-        this.$user.progress = res.progress;
-        this.isTasksNotSorted = res.istasksnotsorted;
-        this.isEnd = res.question === undefined;
-        this.isCanEdit = res.canedit;
-        if (this.isTasksNotSorted && !this.isEnd) {
-          if (withLoading) this.loading = true;
-          const res = await this.$api.getBranchTasks(this.$user.chosenbranchid, true);
-          if (withLoading) this.loading = false;
-          if (!res.ok_) {
-            this.$popups.error('Ошибка', 'Не удалось получить список заданий в ветке');
+      if (!res.ok_) {
+        if (!this.testMode) {
+          if (res.status_ === 400) {
+            this.$router.push({name: 'quests'});
             return;
           }
-          this.branchTasks = res.tasks;
-        } else {
-          this.taskId = res.id;
-          this.taskTitle = res.title;
-          this.taskDescription = res.description;
-          this.$refs.markdown.update(res.description || '');
-          this.taskQuestion = res.question;
-          this.isQrAnswer = res.isqranswer;
-        }
 
-        this.setProgressButtonsList = [];
-        if (this.isCanEdit && !this.testMode) {
-          if (this.isTasksNotSorted) {
-            if (!this.isEnd) {
-              this.setProgressButtonsList.push({name: '///', description: 'Эти кнопки есть только у автора квеста'});
-              this.setProgressButtonsList.push({description: 'Пройти квест'});
-            }
+          this.$popups.error(`Ошибка ${res.status_}!`, res.info);
+          return;
+        } else {
+          this.questTitle = "Название задания";
+          this.branchTitle = "Название ветки квеста";
+          this.backgroundImageUrl = null;
+          this.customCSS = this.$props.customCSS;
+          this.$user.progress = 0.25;
+          this.isTasksNotSorted = false;
+          this.isEnd = false;
+          this.isCanEdit = false;
+          this.taskId = null;
+          this.taskTitle = "Название задания";
+          this.taskDescription = "Какое-то достаточно длинное описание задания в квесте, которое *можно* **по-разному** `оформлять`, например ~~так~~, " +
+            "- вот так" +
+            "- и ещё вот так" +
+            "И даже | делать | таблицы" +
+            "-------| -------| -------" +
+            "    1  |    2   |   3    ";
+          this.$refs.markdown.update(res.description || '');
+          this.taskQuestion = "Вопрос к заданию";
+          this.isQrAnswer = false;
+          return;
+        }
+      }
+
+      this.questTitle = res.questtitle;
+      this.branchTitle = res.branchtitle;
+      this.backgroundImageUrl = res.backgroundimageurl;
+      if (res.customcss !== this.customCSS) {
+        this.removeCSSFromDocument();
+        this.addCSSToDocument(res.customcss);
+      }
+      if (this.testMode) {
+        this.customCSS = this.$props.customCSS;
+      } else {
+        this.customCSS = res.customcss;
+      }
+      this.bottomLink = res.bottomlink;
+      this.$user.progress = res.progress;
+      this.isTasksNotSorted = res.istasksnotsorted;
+      this.isEnd = res.question === undefined;
+      this.isCanEdit = res.canedit;
+      if (this.isTasksNotSorted && !this.isEnd) {
+        if (withLoading) this.loading = true;
+        const res = await this.$api.getBranchTasks(this.$user.chosenbranchid, true);
+        if (withLoading) this.loading = false;
+        if (!res.ok_) {
+          this.$popups.error('Ошибка', 'Не удалось получить список заданий в ветке');
+          return;
+        }
+        this.branchTasks = res.tasks;
+      } else {
+        this.taskId = res.id;
+        this.taskTitle = res.title;
+        this.taskDescription = res.description;
+        this.$refs.markdown.update(res.description || '');
+        this.taskQuestion = res.question;
+        this.isQrAnswer = res.isqranswer;
+      }
+
+      this.setProgressButtonsList = [];
+      if (this.isCanEdit && !this.testMode) {
+        if (this.isTasksNotSorted) {
+          if (!this.isEnd) {
+            this.setProgressButtonsList.push({name: '///', description: 'Эти кнопки есть только у автора квеста'});
+            this.setProgressButtonsList.push({description: 'Пройти квест'});
+          }
+        } else {
+          if (this.$user.progress < 1) {
+            this.setProgressButtonsList.push({name: '///', description: 'Эти кнопки есть только у автора квеста'});
           } else {
-            if (this.$user.progress < 1) {
-              this.setProgressButtonsList.push({name: '///', description: 'Эти кнопки есть только у автора квеста'});
-            } else {
-              this.setProgressButtonsList.push({description: 'Предыдущее'});
-            }
-            if (this.$user.progress < this.$user.progressMax) {
-              this.setProgressButtonsList.push({description: 'Следующее'});
-            }
+            this.setProgressButtonsList.push({description: 'Предыдущее'});
+          }
+          if (this.$user.progress < this.$user.progressMax) {
+            this.setProgressButtonsList.push({description: 'Следующее'});
           }
         }
-
-        if (!this.isEnd)
-          return;
-
-        if (withLoading) this.statsLoading = true;
-        const stats = await this.$api.getMyBranchVotes(this.$user.chosenbranchid);
-        if (withLoading) this.statsLoading = false;
-
-        if (!stats.ok_) {
-          this.$popups.error('Ошибка', 'Не удалось получить статистику прохождения');
-          return;
-        }
-        this.timeSpent = secondsToStrTime(stats.time);
-        this.ratingVote = stats.rating;
-        return;
-      }
-      if (res.status_ === 400) {
-        this.$router.push({name: 'quests'});
-        return;
       }
 
-      this.$popups.error(`Ошибка ${res.status_}!`, res.info);
+      if (!this.isEnd)
+        return;
+
+      if (withLoading) this.statsLoading = true;
+      const stats = await this.$api.getMyBranchVotes(this.$user.chosenbranchid);
+      if (withLoading) this.statsLoading = false;
+
+      if (!stats.ok_) {
+        this.$popups.error('Ошибка', 'Не удалось получить статистику прохождения');
+        return;
+      }
+      this.timeSpent = secondsToStrTime(stats.time);
+      this.ratingVote = stats.rating;
     },
 
     async updatingProgressCheck() {
