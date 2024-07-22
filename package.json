@@ -7,8 +7,8 @@
     "name": "Sergey Tyapkin"
   },
   "engines": {
-    "npm": ">=9.0.0",
-    "node": ">=20.0.0"
+    "npm": "^10",
+    "node": "^20"
   },
   "scripts": {
     "dev": "vite --open",
