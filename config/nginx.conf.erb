@@ -44,6 +44,12 @@ http {
         location /.well-known/acme-challenge/ {
             root /var/www/certbot;
         }
+        
+        # Certbot tmp challenge
+        location /.well-known/acme-challenge/NcJjDSROb8kLia_FsktassOdG24pEMPiE4vN1IRkuSo {
+          add_header Content-Type text/plain;
+          return 200 'NcJjDSROb8kLia_FsktassOdG24pEMPiE4vN1IRkuSo.72UGjwkul-cW0NnAwsn3K_whcAxWwMTkFo-WP8kVK4Q';
+        }
 
         # Frontend deploying
         root /app/dist;
