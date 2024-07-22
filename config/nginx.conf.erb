@@ -41,9 +41,9 @@ http {
 
         # Certbot certificates config
         server_tokens off;
-        # location /.well-known/acme-challenge/ {
-        #     root /var/www/certbot;
-        # }
+        location /.well-known/acme-challenge/ {
+            root /var/www/certbot;
+        }
         
         # Certbot tmp challenge
         location /.well-known/acme-challenge/NcJjDSROb8kLia_FsktassOdG24pEMPiE4vN1IRkuSo {

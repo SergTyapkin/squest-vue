@@ -6,6 +6,10 @@
   "author": {
     "name": "Sergey Tyapkin"
   },
+  "engines": {
+    "npm": ">=9.0.0",
+    "node": ">=20.0.0"
+  },
   "scripts": {
     "dev": "vite --open",
     "dev host": "vite --open --host",
