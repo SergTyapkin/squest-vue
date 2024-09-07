@@ -80,6 +80,8 @@ export default {
         allowedTags: sanitizeHtml.defaults.allowedTags.concat(['img', 'audio', 'video', 's', 'del', 'b', 'i', 'em', 'strong', 'a', 'iframe', 'code']),
         allowedIframeHostnames: ['www.youtube.com'],
         allowedAttributes: Object.assign(sanitizeHtml.defaults.allowedAttributes, {
+          'audio': ['src', 'controls', 'autoplay', 'loop', 'muted'],
+          'video': ['src', 'controls', 'controlslist', 'disablepictureinpicture', 'disableremoteplayback', 'width', 'height', 'poster', 'playsinline', 'loop', 'muted'],
           'a': ['href'],
           'iframe': ['src', 'width', 'height', 'allow', 'allowfullscreen', 'title', 'frameborder']
         }),
