@@ -135,7 +135,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
               <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
             </div>
           </div>
-          <router-link :to="{name: 'edit-quest', query: {id: id}}" v-if="author === $user.id" class="button edit">
+          <router-link :to="{name: 'edit-quest', query: {id: id}}" v-if="author === $user.id || isHelper" class="button edit">
             Изменить <img src="../res/edit.svg" alt="edit">
           </router-link>
           <div class="statistics text-big-xx">
@@ -201,6 +201,7 @@ export default {
       previewUrl: '',
       author: '',
       authorName: '',
+      isHelper: false,
       islinkactive: false,
       ispublished: false,
 
@@ -285,6 +286,7 @@ export default {
       this.previewUrl = questInfo.previewurl;
       this.time = questInfo.time;
       this.rating = questInfo.rating;
+      this.isHelper = questInfo.helper;
 
 
       this.loading = true;
