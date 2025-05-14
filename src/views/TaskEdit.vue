@@ -1,9 +1,9 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 .form-fullwidth
-  margin-top 0
   max-width unset
+  margin-top 0
 
 .qr-gen
   margin 10px 0
@@ -21,9 +21,14 @@
 
 <template>
   <div @input="onChange">
-    <TopButtons bg clickable arrows :buttons="[
+    <TopButtons
+      bg
+      clickable
+      arrows
+      :buttons="[
         {name: 'Назад', description: `К ветке: <b>${branchTitle}</b>` /* <br> Квеста: <b>${questTitle}</b>` */, to: {name: 'edit-branch', query: {id: branchId}}},
-    ]"></TopButtons>
+      ]"
+    />
 
     <Form class="form-fullwidth" ref="form">
       <div class="info-container">
@@ -31,51 +36,56 @@
       </div>
 
       <div class="fields-container">
-        <FloatingInput v-model="title" title="Название"></FloatingInput>
+        <FloatingInput v-model="title" title="Название" />
         <div>
           <label class="text-big">Описание</label>
           <div class="info text-small">Можно использовать Markdown-оформление, вставлять ссылки и загружать фото</div>
-          <MarkdownRedactor :rows="10" ref="redactor" @change="changePreview" v-model="description"></MarkdownRedactor>
+          <MarkdownRedactor :rows="10" ref="redactor" @change="changePreview" v-model="description" />
           <label class="text-big">Превью</label>
-          <MarkdownRenderer ref="renderer"></MarkdownRenderer>
+          <MarkdownRenderer ref="renderer" />
         </div>
 
 
-        <FloatingInput title="Вопрос"
-                       v-model="question"
-        >Последнее задание в ветке выводится игроку c заголовком и описанием, но БЕЗ ВОПРОСА - это страница с поздравлением
+        <FloatingInput
+          title="Вопрос"
+          v-model="question"
+        >
+          Последнее задание в ветке выводится игроку c заголовком и описанием, но БЕЗ ВОПРОСА - это страница с поздравлением
         </FloatingInput>
 
 
-        <FloatingInput type="checkbox"
-                       title="QR-ответ"
-                       v-model="isQrAnswer"
-                       @change="changeIsQrAnswer"
-        >Ответом можно сделать <b>ЛЮБОЙ</b> QR-код вместо текстового ответа. Даже уже существующий и не твой
+        <FloatingInput
+          type="checkbox"
+          title="QR-ответ"
+          v-model="isQrAnswer"
+          @change="changeIsQrAnswer"
+        >
+          Ответом можно сделать <b>ЛЮБОЙ</b> QR-код вместо текстового ответа. Даже уже существующий и не твой
         </FloatingInput>
 
         <div>
-          <AddableList title="Правильные ответы"
-                       description="РегИсТр ответов не играет роли. Все ответы игроков перед проверкой переводятся в нижний регистр <br>
+          <AddableList
+            title="Правильные ответы"
+            description="РегИсТр ответов не играет роли. Все ответы игроков перед проверкой переводятся в нижний регистр <br>
                                     Чтобы любой ответ, введенный игроком, считался правильным, добавьте ответ '*'"
-                       add-text="Добавить ответ"
-                       v-model="answers"
-                       can-delete
-                       placeholder="ответ"
-                       class="roll-active"
-                       ref="answers"
-                       @input="onChange"
-          ></AddableList>
+            add-text="Добавить ответ"
+            v-model="answers"
+            can-delete
+            placeholder="ответ"
+            class="roll-active"
+            ref="answers"
+            @input="onChange"
+          />
 
           <div class="roll-active closed" ref="qrFields">
-            <label class="text-big">Правильный ответ <span id="qr-answer-error"></span></label>
+            <label class="text-big">Правильный ответ <span id="qr-answer-error" /></label>
             <div class="info text-small">
               Чтобы сделать ответом ЛЮБОЙ существующий QR, Просто отсканируй его ниже. <br>
               Либо, если такого QR ещё нет - можно сгенерировать новый QR ниже. <br>
               Игроку для прохождения этапа нужно будет отсканировать его через сканер внутри сайта на странице с вопросом
             </div>
-            <QRScanner ref="qrScanner" class="roll-active closed" @scan="genQr"></QRScanner>
-            <QRGenerator ref="qrGenerator" class="roll-active qr-gen"></QRGenerator>
+            <QRScanner ref="qrScanner" class="roll-active closed" @scan="genQr" />
+            <QRGenerator ref="qrGenerator" class="roll-active qr-gen" />
 
             <div class="flex-string">
               <input type="button" value="Сканировать QR" @click="scanQr()">
@@ -94,7 +104,7 @@
     <FloatingButton v-if="edited" title="Сохранить" green @click="saveTask">
       <img src="../res/save.svg" alt="save">
     </FloatingButton>
-    <SaveByKeys @save="saveTask"></SaveByKeys>
+    <SaveByKeys @save="saveTask" />
   </div>
 </template>
 

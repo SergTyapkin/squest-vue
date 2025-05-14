@@ -2,20 +2,21 @@
 @import "../styles/constants.styl"
 
 .quest-container
-  width 100%
-  padding 20px
-  padding-bottom 40px
-  padding-top 0
   display flex
   flex-wrap wrap
   justify-content space-evenly
+  width 100%
+  padding 20px
+  padding-top 0
+  padding-bottom 40px
+
   @media ({mobile})
-    padding-left 0
-    padding-right 0
     padding-top 0
+    padding-right 0
+    padding-left 0
     > *
-      margin-left 10px
       margin-right 10px
+      margin-left 10px
     > *:first-child
       margin-top 0
 
@@ -31,9 +32,9 @@
 <template>
   <div class="root">
     <div class="quest-container">
-      <Quest v-for="quest in quests" v-bind="quest"></Quest>
+      <Quest v-for="quest in quests" v-bind="quest" />
     </div>
-    <CircleLoading v-if="loading" class="loading"></CircleLoading>
+    <CircleLoading v-if="loading" class="loading" />
   </div>
 </template>
 

@@ -1,44 +1,45 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
-@require '../styles/fonts.styl'
+@import '../styles/constants.styl'
+@import '../styles/fonts.styl'
 
 side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218, 165, 32, 0) 100%) 0 100% no-repeat"
 side-items-img-size = 30px
 
 .navbar
+  position relative
+  z-index 10
+  overflow hidden
   width 80%
   height 60px
   margin 0 auto 10px auto
-
-  border-bottom-left-radius 100px 60px
-  border-bottom-right-radius 100px 60px
-  overflow hidden
   background linear-gradient(25deg, #070505 10%, #543616 50%, #070505 100%)
+  border-bottom-right-radius 100px 60px
+  border-bottom-left-radius 100px 60px
   animation open-navbar 3s ease forwards
-  position relative
-  z-index 10
 
   .side-item
     font-small-extra()
-    letter-spacing 2px
+
     color textColor3
-    text-transform uppercase
-    transition all 0.4s ease
     text-shadow none
+    text-transform uppercase
+    letter-spacing 2px
+    transition all 0.3s ease
 
   .side-item:hover
-    letter-spacing 5px
-    color textColor2
-    padding-left 15px
     padding-right 15px
+    padding-left 15px
+    color textColor2
     text-shadow textLightingLow
-    @media({mobile})
+    letter-spacing 5px
+
+    @media ({mobile})
       text-shadow none
 
   .side-item
-    padding 5px 10px
     position absolute
     top 0
+    padding 5px 10px
     *
       pointer-events none
       padding 0 5px
@@ -46,40 +47,41 @@ side-items-img-size = 30px
       width side-items-img-size
       height side-items-img-size
   .side-item.left
+    left 0
     background side-item-gradient % 90deg
     background-size 100% 1px
-    left 0
   .side-item.right
+    right 0
     background side-item-gradient % -90deg
     background-size 100% 1px
-    right 0
 
   .bottom
-    margin-top 5px
     left 0
     width 100%
+    margin-top 5px
   // background linear-gradient(90deg,  rgba(218, 165, 32, 0) 0%, rgba(184, 134, 11, 0.3) 30%, rgba(184, 134, 11, 0.3) 70%, rgba(218, 165, 32, 0) 100%) 0 100% no-repeat
   // background-size 100% 1px
 
   .progress
     font-counter()
-    color textColor2
+
+    position absolute
+    top 50%
+    left 50%
+    transform translate(-50%, -50%)
     display block
     margin-top -5px
-    position absolute
-    left 50%
-    top 50%
-    transform translate(-50%, -50%)
-    background radial-gradient(#f54da199, transparent 70%);
+    color textColor2
+    background radial-gradient(#f54da199, transparent 70%)
     .progress-container
       display flex
-      align-items center
       flex-direction column
+      align-items center
       .info
+        overflow-y hidden
         display block
         max-height 0
         text-align center
-        overflow-y hidden
         transition all 0.3s ease
   .progress:hover
     .progress-container
@@ -94,7 +96,7 @@ side-items-img-size = 30px
     background linear-gradient(90deg, rgba(218, 165, 32, 0.7) 50%, rgba(0, 0, 0, 0.5) 53%) 0 0 no-repeat
     background-position-x calc(100% - 100% * var(--progress))
     background-size 200%
-    //box-shadow rgba(231, 190, 28, 0.7) 0 0 5px 0
+    // box-shadow rgba(231, 190, 28, 0.7) 0 0 5px 0
     border mix(empColor5, transparent, 30%) 1px solid
     border-right none
     transition background-position-x ease 3s
@@ -120,33 +122,33 @@ side-items-img-size = 30px
 @keyframes open-navbar
   from
     width 0
-    border-bottom-left-radius 200px 100px
     border-bottom-right-radius 200px 100px
+    border-bottom-left-radius 200px 100px
 
   to
     width 80%
-    border-bottom-left-radius 100px 60px
     border-bottom-right-radius 100px 60px
+    border-bottom-left-radius 100px 60px
 </style>
 
 <template>
   <div class="navbar absolute-wrapper">
-    <div class="progressbar" :style="`--progress: ${newProgress / 100}`"></div>
+    <div class="progressbar" :style="`--progress: ${newProgress / 100}`" />
 
     <router-link v-if="$store.state.user.isLogined && ($store.state.user.chosenquestid !== null) && ($store.state.user.chosenbranchid !== null)" class="center progress" :to="{name: 'play'}">
       <div class="progress-container">
-        <vue3autocounter
-            ref='counter'
-            :startAmount='prevProgress'
-            :endAmount='newProgress'
-            :duration='2'
-            prefix=''
-            suffix='%'
-            separator=''
-            decimalSeparator=','
-            :decimals='1'
-            autoinit
-        ></vue3autocounter>
+        <Vue3autocounter
+          ref="counter"
+          :start-amount="prevProgress"
+          :end-amount="newProgress"
+          :duration="2"
+          prefix=""
+          suffix="%"
+          separator=""
+          decimal-separator=","
+          :decimals="1"
+          autoinit
+        />
         <span class="text-small info progress-info">Прогресс прохождения</span>
       </div>
     </router-link>
@@ -160,7 +162,7 @@ side-items-img-size = 30px
         <span v-if="!$store.state.user.isLogined">Войти</span>
         <span v-else>{{ $store.state.user.username }}</span>
       </span>
-<!--      <img class="avatar" src="../res/default_avatar.png" alt="">-->
+      <!--      <img class="avatar" src="../res/default_avatar.png" alt="">-->
     </router-link>
   </div>
 </template>

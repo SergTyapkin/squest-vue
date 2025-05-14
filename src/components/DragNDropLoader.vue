@@ -1,17 +1,19 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 </style>
 
 <template>
-  <div class="root" :class="{'in-drag': isInDrag}"
+  <div
+    class="root"
+    :class="{'in-drag': isInDrag}"
     @dragenter="isInDrag = true"
     @dragleave="isInDrag = false"
     @dragover.prevent="isInDrag = true"
     @drop.prevent="handleDrop"
   >
-    <div></div>
-    <slot></slot>
+    <div />
+    <slot />
   </div>
 </template>
 

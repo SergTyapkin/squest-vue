@@ -1,46 +1,47 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
+
+padding = 5px 10px
 
 float-button-height = 50px
 image-width = 30px
-padding = 5px 10px
 .float-button
-  z-index 10
   cursor pointer
-  overflow hidden
   position fixed
-  bottom 30px
+  z-index 10
   right 30px
-  height float-button-height
+  bottom 30px
+  overflow hidden
   min-width float-button-height
-  border-radius (float-button-height / 2)
+  height float-button-height
   padding padding
   padding-right ((float-button-height - image-width) / 2)
   background empColor1
+  border-radius (float-button-height / 2)
   box-shadow 3px 3px 5px colorShadow
 
   .fields
-    height 100%
     display flex
-    align-items center
-    text-align center
     flex-direction row
+    align-items center
     justify-content flex-end
+    height 100%
+    text-align center
     transition all 0.2s ease
     .image
-      transition all 0.2s ease
       width image-width
       height image-width
       opacity 0.8
-    .hover-text
-      color textColor1
-      white-space nowrap
       transition all 0.2s ease
+    .hover-text
+      pointer-events none
       overflow hidden
       width 0
       padding-right 0
-      pointer-events none
+      color textColor1
+      white-space nowrap
       opacity 0
+      transition all 0.2s ease
 .float-button:hover
   box-shadow 5px 5px 8px colorShadow
   .hover-text
@@ -65,14 +66,14 @@ padding = 5px 10px
     <router-link class="fields" :to="to" v-if="to">
       <span class="hover-text">{{ title }}</span>
       <span class="image">
-        <slot></slot>
+        <slot />
       </span>
     </router-link>
 
     <div class="fields" v-else>
       <span class="hover-text">{{ title }}</span>
       <span class="image">
-        <slot></slot>
+        <slot />
       </span>
     </div>
   </div>

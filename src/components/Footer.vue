@@ -1,40 +1,32 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
-@require '../styles/fonts.styl'
+@import '../styles/constants.styl'
+@import '../styles/fonts.styl'
 
 footer
-  display flex
-  justify-content space-evenly
-  flex 0 0 auto
-
   bottom 0
+  display flex
+  flex 0 0 auto
+  justify-content space-evenly
   width 100%
-
   margin 0
   margin-top 80px
   padding 0
   padding-top 15px
   padding-bottom 15px
-
-  background linear-gradient(20deg, rgb(47, 20, 23), rgb(74, 51, 23), rgb(66, 35, 16)) no-repeat
-  border-top solid 2px
-  border-color empColor2
-  box-shadow rgba(231, 190, 28, 0.5) 0 0 8px 0
   list-style none
-
-  @media ({mobile})
-    flex-wrap wrap
+  background linear-gradient(20deg, rgb(47, 20, 23), rgb(74, 51, 23), rgb(66, 35, 16)) no-repeat
+  border-color empColor2
+  border-top solid 2px
+  box-shadow rgba(231, 190, 28, 0.5) 0 0 8px 0
 
   a
     display inline-flex
     align-items center
     padding 5px 15px
-    @media ({mobile})
-      padding-left 5px
-      padding-right 5px
 
     .title
       font-small()
+
       line-height 0.8
       color textColor1
     img
@@ -44,13 +36,21 @@ footer
       transition transform 0.2s ease
     .description
       font-small-extra()
+
       color textColor4
       transition color 0.2s ease
+
+    @media ({mobile})
+      padding-right 5px
+      padding-left 5px
   a:hover
     img
       transform scale(1.1)
     .description
       color textColor2
+
+  @media ({mobile})
+    flex-wrap wrap
 </style>
 
 <template>

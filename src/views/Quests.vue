@@ -7,11 +7,14 @@
   <div class="root">
     <div class="quests-page">
       <div>
-        <TopButtons bg :buttons="[
-          {name: 'Выбор квеста', description: 'Выбирай первый понравившийся и погнали!'},
-        ]"></TopButtons>
+        <TopButtons
+          bg
+          :buttons="[
+            {name: 'Выбор квеста', description: 'Выбирай первый понравившийся и погнали!'},
+          ]"
+        />
 
-        <QuestsList :get-quests-foo="$api.getAllQuests"></QuestsList>
+        <QuestsList :get-quests-foo="$api.getAllQuests" />
       </div>
 
       <FloatingButton title="Создать квест" :to="{name: 'create-quest'}" class="float-button">

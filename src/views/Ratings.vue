@@ -1,24 +1,34 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 </style>
 
 <template>
   <div>
-    <TopButtons clickable arrows low-opacity :buttons="[
+    <TopButtons
+      clickable
+      arrows
+      low-opacity
+      :buttons="[
         {name: 'Назад', description: 'В профиль', to: {name: 'profile'}},
-    ]"></TopButtons>
+      ]"
+    />
 
 
     <div class="container">
-      <ArrowListElement class="ratings" ref="ratings" title="Рейтинг" closed open-on-set-elements
-                        :elements="ratings"
-                        :numbered="true"
-                        @click-inside="(user) => $router.push({name: 'profile', query: {id: user.id}})"
-      ></ArrowListElement>
+      <ArrowListElement
+        class="ratings"
+        ref="ratings"
+        title="Рейтинг"
+        closed
+        open-on-set-elements
+        :elements="ratings"
+        :numbered="true"
+        @click-inside="(user) => $router.push({name: 'profile', query: {id: user.id}})"
+      />
     </div>
 
-    <CircleLoading v-if="loading" class="preview-image"></CircleLoading>
+    <CircleLoading v-if="loading" class="preview-image" />
   </div>
 </template>
 

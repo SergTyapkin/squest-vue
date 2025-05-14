@@ -1,33 +1,30 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
-@require '../styles/fonts.styl'
+@import '../styles/constants.styl'
+@import '../styles/fonts.styl'
+
+_side-items-background = "rgba(188,116,39, 0.3) 0%, rgba(31,26,9,0.2) 100%) no-repeat"
+side-items-background = title-background
+side-items-background-left = unquote("linear-gradient(160deg, " + _side-items-background)
+side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-background)
 
 title-background = linear-gradient(160deg, #3b2516, #1f1313) no-repeat
 
-_side-items-background = "rgba(188,116,39, 0.3) 0%, rgba(31,26,9,0.2) 100%) no-repeat"
-side-items-background-left = unquote("linear-gradient(160deg, " + _side-items-background)
-side-items-background = title-background
-side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-background)
-
 
 .title-container
-  margin 50px 0 20px 0
-  width 100%
+  pointer-events none
   display flex
   align-content stretch
   justify-content center
-  transition all 0.3s ease
+  width 100%
+  margin 50px 0 20px 0
   box-shadow 0 10px 10px 0 black
-  pointer-events none
+  transition all 0.3s ease
   > *
     width 100%
     padding 20px
-    transition all 0.3s ease
-    text-shadow textLightingNormal2
     color textColor1
-    @media ({mobile})
-      padding 10px
-      min-height 60px
+    text-shadow textLightingNormal2
+    transition all 0.3s ease
     > .text-small
     > .text-big
     > .text-big-x
@@ -39,6 +36,10 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
     .text-big
       font-medium-large()
 
+    @media ({mobile})
+      min-height 60px
+      padding 10px
+
 .title-container.bg
   background title-background
 
@@ -47,19 +48,19 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
     opacity 0.5
 .title-container.clickable
   > *
-    cursor pointer
     pointer-events auto
+    cursor pointer
     opacity 0.8
     background side-items-background
     border-bottom transparent 2px solid
   > *:hover
     width 150%
     color textColor1
-    letter-spacing 2px
-    transition all 0.3s ease
     text-shadow 0 0 50px #f5f0f0, 0 0 10px #eaacbf, 0 0 15px #eaa093
+    letter-spacing 2px
     opacity 1
     border-bottom empColor1 2px solid
+    transition all 0.3s ease
 
   > *
     display flex
@@ -83,14 +84,18 @@ side-items-background-right = unquote("linear-gradient(320deg, " + _side-items-b
 
 <template>
   <div class="title-container" :class="{bg: bg, clickable: clickable, 'low-opacity': lowOpacity}">
-    <router-link :to="(button.to || '')" v-for="(button, idx) in buttons" :class="{'no-link': button.to === undefined}"
-                  @click="$emit('click', Object.assign(button, {idx}))">
-      <Arrow left v-if="arrows && idx === 0 && !noLeftArrow" size="20px"></Arrow>
+    <router-link
+      :to="(button.to || '')"
+      v-for="(button, idx) in buttons"
+      :class="{'no-link': button.to === undefined}"
+      @click="$emit('click', Object.assign(button, {idx}))"
+    >
+      <Arrow left v-if="arrows && idx === 0 && !noLeftArrow" size="20px" />
       <div>
         <div class="text-big-x" :class="{'text-big': clickable && !big}">{{ button.name }}</div>
-        <div class="text-small" v-html="button.description"></div>
+        <div class="text-small" v-html="button.description" />
       </div>
-      <Arrow right v-if="arrows && (noLeftArrow || idx !== 0) && idx === buttons.length-1" size="20px"></Arrow>
+      <Arrow right v-if="arrows && (noLeftArrow || idx !== 0) && idx === buttons.length-1" size="20px" />
     </router-link>
   </div>
 </template>

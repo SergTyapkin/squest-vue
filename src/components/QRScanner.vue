@@ -1,24 +1,24 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 .root-qr-scanner
   video
     max-width 100%
   .camera-buttons-container
-    display flex
-    width 100%
-    justify-content space-between
-    gap 20px
     overflow-x auto
+    display flex
+    gap 20px
+    justify-content space-between
+    width 100%
     .camera-button
-      padding 5px
       min-width 150px
+      padding 5px
 
 </style>
 
 <template>
   <div class="root-qr-scanner roll-active" :class="{closed: closed}">
-    <video class="qr-scanner-video" ref="video"></video>
+    <video class="qr-scanner-video" ref="video" />
     <div v-if="!noCamerasSelection" class="camera-buttons-container scrollable">
       <button v-for="camera in existingCameras" class="button bg rounded text-small camera-button" @click="selectCamera(camera)">{{ camera.label ? camera.label : camera.id }}</button>
     </div>
@@ -36,8 +36,8 @@ export default {
     closed: {
       type: Boolean,
       default: false,
-      noCamerasSelection: Boolean,
     },
+    noCamerasSelection: Boolean,
   },
 
   data() {

@@ -1,57 +1,56 @@
 <style lang="stylus" scoped>
-  @require '../../styles/constants.styl'
+  @import '../../styles/constants.styl'
 
   close-btn-size = 20px
 
   .modal
     position fixed
+    z-index 999
     top 0
     left 0
     width 100%
     height 100vh
-    z-index 999
 
     .modal-background
       position fixed
-      left 0
       top 0
+      left 0
       width 100%
       height 100vh
-
-      background-color #000000AA
+      background-color #000000aa
 
     .form
       position relative
 
       .confirm-button
-        width 45%
         display inline-block
-        margin-left 2.5%
+        width 45%
         margin-right 2.5%
+        margin-left 2.5%
 
       .close-btn
+        cursor pointer
         position absolute
-        color textColor2
-        text-shadow textColor2
-        right 20px
         top 10px
+        right 20px
         width close-btn-size
         height close-btn-size
+        color textColor2
+        text-shadow textColor2
         transition all 0.2s ease
-        cursor pointer
       .close-btn:hover
+        transform scale(1.1)
         color textColor1
         text-shadow textColor1
-        transform scale(1.1)
 </style>
+
 <template>
   <div class="modal" v-show="isShowed" @keydown.enter.prevent="__resolve(true)" @keydown.esc="__resolve(false)">
-    <div class="modal-background" @click="__resolve(false)">
-    </div>
+    <div class="modal-background" @click="__resolve(false)" />
 
     <div class="form" ref="form">
       <span class="close-btn" @click="__resolve(false)">
-        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z"/></svg>
+        <svg xmlns="http://www.w3.org/2000/svg" fill="currentColor" viewBox="0 0 16 16"><path d="M1.293 1.293a1 1 0 0 1 1.414 0L8 6.586l5.293-5.293a1 1 0 1 1 1.414 1.414L9.414 8l5.293 5.293a1 1 0 0 1-1.414 1.414L8 9.414l-5.293 5.293a1 1 0 0 1-1.414-1.414L6.586 8 1.293 2.707a1 1 0 0 1 0-1.414z" /></svg>
       </span>
 
       <div class="info-container">
@@ -61,7 +60,7 @@
 
       <div class="fields-container">
         <div v-if="type === 'prompt'" class="form-group">
-          <FloatingInput type="text" v-model="text" ref="inputText" class="form-control"></FloatingInput>
+          <FloatingInput type="text" v-model="text" ref="inputText" class="form-control" />
         </div>
       </div>
 
@@ -69,8 +68,8 @@
         <div class="form-group">
           <input type="submit" @click="__resolve()" v-if="type !== 'confirm'" ref="buttonOk" value="Ок">
           <div v-else class="confirm-buttons">
-            <input type="submit" @click="__resolve(true)" class="confirm-button" ref="buttonYes" value="Да"/>
-            <input type="submit" @click="__resolve(false)" class="confirm-button btn-danger" value="Нет"/>
+            <input type="submit" @click="__resolve(true)" class="confirm-button" ref="buttonYes" value="Да">
+            <input type="submit" @click="__resolve(false)" class="confirm-button btn-danger" value="Нет">
           </div>
         </div>
       </div>

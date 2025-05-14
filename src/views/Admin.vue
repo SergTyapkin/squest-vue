@@ -1,9 +1,9 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 .form-fullwidth
-  margin-top 0
   max-width unset
+  margin-top 0
 
 textarea
   white-space pre-wrap
@@ -11,30 +11,35 @@ textarea
 
 <template>
   <div>
-    <TopButtons bg clickable arrows :buttons="[
+    <TopButtons
+      bg
+      clickable
+      arrows
+      :buttons="[
         {name: 'В профиль', description: `Когда устранил весь кринж`, to: {name: 'profile'}},
-    ]"></TopButtons>
+      ]"
+    />
 
     <Form class="form-fullwidth" ref="form" @submit="execute">
       <div class="info-container">
         <div class="text-big-xx">Админская страничка</div>
       </div>
 
-      <CircleLoading v-if="loading"></CircleLoading>
+      <CircleLoading v-if="loading" />
 
       <div class="fields-container">
         <div id="sql-fields">
           <label class="text-big">Выполнить SQL</label>
           <div class="text-small">Вот сейчас спокойно, дыши, без DROP, DELETE и TRUNCATE, пожалуйста</div>
-          <textarea rows=8 class="text-middle scrollable" v-model="sql"></textarea>
+          <textarea rows="8" class="text-middle scrollable" v-model="sql" />
 
           <label class="text-big">Результат</label>
-          <textarea rows=4 class="text-middle scrollable" :value="result" disabled></textarea>
+          <textarea rows="4" class="text-middle scrollable" :value="result" disabled />
           <input type="submit" value="Выполнить">
         </div>
       </div>
     </Form>
-    <SaveByKeys @save="execute"></SaveByKeys>
+    <SaveByKeys @save="execute" />
   </div>
 </template>
 

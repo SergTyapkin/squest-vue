@@ -20,50 +20,51 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   margin-bottom 0
 .task-description
   font-medium-small()
+
+  padding 20px
   line-height 1.05
   color textColor2
-  padding 20px
   border-bottom empColor6 1px solid
 .restart-button
   > *
     text-align left
 
 .qr-form
-  background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgb(88, 58, 24) 50%, rgba(84, 67, 24, 0) 100%) 50% 50% no-repeat
-  box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.7), 0 0 15px 0 rgba(34, 28, 4, 0.4) inset
-  padding 40px 30px
-  margin-top 100px
-  margin-left auto
-  margin-right auto
   width 100%
   max-width 460px
+  margin-top 100px
+  margin-right auto
+  margin-left auto
+  padding 40px 30px
+  background linear-gradient(20deg, rgba(84, 67, 24, 0) 0%, rgb(88, 58, 24) 50%, rgba(84, 67, 24, 0) 100%) 50% 50% no-repeat
   border-radius 7px
+  box-shadow 0 0 10px 0 rgba(162, 116, 14, 0.7), 0 0 15px 0 rgba(34, 28, 4, 0.4) inset
   transition all 0.3s ease
   .button-submit
     all unset
-    color textColor1
-    box-sizing border-box
-    font-family Arial
-    padding 10px
-    font-size 1rem
-    margin-top 20px
-    border 1px solid colorShadow
-    border-bottom 1px solid border-color
-    transition all 0.2s ease
-    border-radius 3px
-    background input-bg
-    box-shadow input-box-shadow
-    background linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(90, 56, 25, 0.7) 50%, rgba(55, 43, 16, 0.4) 100%) 50% 50% no-repeat
-    width 100%
-    text-align center
-    border-color empColor3
     cursor pointer
+    box-sizing border-box
+    width 100%
+    margin-top 20px
+    padding 10px
+    font-family Arial
+    font-size 1rem
+    color textColor1
+    text-align center
+    background input-bg
+    background linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(90, 56, 25, 0.7) 50%, rgba(55, 43, 16, 0.4) 100%) 50% 50% no-repeat
+    border 1px solid colorShadow
+    border-color empColor3
+    border-bottom 1px solid border-color
+    border-radius 3px
+    box-shadow input-box-shadow
+    transition all 0.2s ease
     &:hover
       box-shadow inset 0 0 20px rgb(195, 162, 127), 0 0 15px rgb(255, 235, 164)
 
 .congratulations
-  text-align center
   width 100%
+  text-align center
   .buttons
     text-align left
 
@@ -88,41 +89,82 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       transform scale(1.3)
 
     img:hover ~ img
-    img:hover
-    img:focus ~ img
-    img.checked
+    img:hover    .randomwwl4dce9lhhdea2s,    .random0ukq8cji9ywn0u9f    .randomjlfudnmab1e9h27f,
+    .randomx5767f94h1y2bsg9    .randomxjuvfgyd4aubumdn,    .randomujnnwiqri0sek1im
+    .randoms3jjav1r3s9il5fr,    .randomd4bqsi537n2p7c28    .randompsr5hrlatzmskojr,    .randomtjfy7uj8qqsmp7up    .random73ie9f3ipzdh84gc,
+    .randoms4t4qe29ktdjtyyf
+    .random89oln501f6z1gf11,    .randomzm7rbtmoa9zhs1zr    .random7np8msm7ta8telfz,
+    .randomqrr0illlw4ymnpe3    .randomyrx8gzfjwvfjq3g9,    .random6fxfkgx5x5xvro7o    .randomv8ftmeit6ce04s8n,
+    .random59xva6kdy3yygc7y    .randomqqibi7xq6hx4f371,    .randomt4jg3vozyaclgq1m
+    .random9ktkwqu7pko4nly7,    .random7ot3tp5ofbrl91to
+    .randome3icic938vn2dx9f,    .randomzc79h2tkbs7spo14    .randomumgs2qkw736q1huk,
+    .random3bk2aw5c2lz2vidx    .randomofmph8maybe9pmss,    .random9h66oijyj6mf4pw1
+    .randomrgw4l5gpi1zpkyqz,    .randomczw4epzpcjifx3ty
+    .randomhkuzdi6bc4p972qi,    .randomc7xd7g0a5e2hfl06    .randomtts8t641085zslr8,
+    .randomwi73jj2x1nk5iesz    .random8hg1tgi7e5gw74bi,    .random4bjyiop4vg75auqp
+    .randomdmgikl4j7tz98hm5,    .random54z6dok9loqm7dkj    .random6bo86w0rzvkpgy37,    .randomb8qs6j05qasepzzl    .randomrufu01zn33n40ucd,
+    .randomp83i54gm1ch55x4a
+    .randomn8uec9dve6hu485c,    .random52y5la0kcd1lvsgp    .randomxzkah2vxsk88s8in,
+    .randomzhc261mutn1zxbty    .randomp1hbn7t1h9vljdc8,    .randompndptukxnj4b8l0e    .random6xsmskwzxvcd0kp3,
+    .randomr4f334dr8kkgk1eq    .randoml3nwgcyjneum04ew,    .randomno4idn05xnz388fw
+    .randomkiuunhnrhz01pygd,    .random9zorfjbpjnseoo2b
+    .random96iwuiia1304alq1,    .randomeursf2ibadq19x72    .random3nvtw0d90kei1eyr,
+    .randomimoa3ybsv8mgy3l1    .randomsjzo7u03q7wafpzr,    .randomsk9ilnt3mw94u7fq
+    .randomlfhanwmtqctv9xic,    img:focus ~ img    .randomqvo2cyijxvkhdp0a,    .randomdqqp68tr99cq18qo    .random1xbqtl2d4wymsyq5,
+    .randomv963ngz4wjf3f7ut    .randomgp52iugv15bcmlbj,    .randomcu6wdey8kdn2xxrk
+    .random19xb557tp8v35cmr,    .randomp3gtpi7ko980554y    .randomi4lnksrqj692k7vg,    .random2i5z88tvebggfff9    .randomge4r7nhiiawgfkls,
+    .random6k6nybw0us64z27t
+    .randomsf2knoufqwivk99r,    .random3vm8uaj4ni3v43kq    .random6suec15gk339wl4u,
+    .randomw0sl2oqlc9lzy9xu    .randoma5c32m3ghlunv4t0,    .randomzbi7852svhww4ajp    .random3qb1wiigrrfnjm46,
+    .random27ugcseuf5bg286n    .randomgeidnozxid9t4xf1,    .randomricr3ujp1xjg25wf
+    .randomijjgs36nuqczro5f,    .randomqvqxpo5zh4iag2ce
+    .randomqdhp1fgcsuzmpltu,    .random69mwb7ljzrsosydp    .random2nwc0rf88huzoypl,
+    .randomks1u3e4r5vdhe642    .randomp6h1tsusky8nx5fu,    .randomiuc4lee0q52y9962
+    .random5ec070y4dmio9y1b,    .randomayepqjj3rdeirgrt
+    .randomngeojqudfx3hjr3v,    .randomwl4fgwrkdib5c3vt    .randomh4myk8rrrjohpvow,
+    .randomcja04wg170i69xx7    .random548g7g0fdubmagek,    .randomrlw5f2sxum3uvj3t
+    .random28u5dhufwpm68qbh,    .randomftncvwmh4x4slx4t    .randomj2qo9zpe2n4hwmkt,    .randomhktmw2a1jmjsvt4z    .randomaofkmlddctiowzdg,
+    .randomlr97iei6qrf9otwj
+    .random9jp730wbqcrfu8i6,    .randomcwpcrmh7wtwqdbkn    .randommt1iwwa1tldli868,
+    .randomfu2r1hdtsims0y4c    .randomg3miqyz4ge01yi4q,    .randompnwr8c132p20b1uv    .randomzhs9w9kmuep3wuma,
+    .random2te3mcb1kd5gz7tu    .randommgncd74w9eowzpjw,    .random0zzvqryayroxx2sn
+    .randomuu80g6vsa3e3zg7z,    .randomhuxsiad3f7ak2qzi
+    .randomgnkq60k8pinrlcds,    .randomgb7lnmkt40ezlvjp    .randomd8ge82is3gpyyatv,
+    .randomf0sft2h0xf1ws92j    .randomqnzod814491e589k,    .random453mmrndgn8wkh5b
+    .random4tq0s32i2uyekuri,    img.checked
       color #d62a9d
       filter saturate(5)
 
     img.checked + img
       animation scaleup 0.5s
 
-@keyframes scaleup {
-  from {
-    transform: scale(1.4);
-    color: #600040;
-  }
-  to {
-    transform: scale(1.3);
-    color: #d62a9d;
-  }
-}
+@keyframes scaleup
+  from
+    transform scale(1.4)
+    color #600040
+
+  to
+    transform scale(1.3)
+    color #d62a9d
+
+
 
 .task-title
   font-large()
-  color textColor1
+
+  display none
   width 100%
-  text-align center
   margin-top 20px
   margin-bottom -10px
-  display none
+  color textColor1
+  text-align center
 
 .background
   position absolute
+  z-index -1
   inset 0
   width 100%
   height 100%
-  z-index -1
   object-fit cover
   background mix(black, transparent)
 </style>
@@ -131,28 +173,45 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
   <div class="flex-root">
     <img class="background" v-if="backgroundImageUrl" :src="backgroundImageUrl" alt=" ">
 
-    <TopButtons class="move-buttons" bg clickable arrows @click="changeProgress" :buttons="setProgressButtonsList"></TopButtons>
-    <TopButtons class="top-buttons quest-info-panel" bg :buttons="[
+    <TopButtons class="move-buttons" bg clickable arrows @click="changeProgress" :buttons="setProgressButtonsList" />
+    <TopButtons
+      class="top-buttons quest-info-panel"
+      bg
+      :buttons="[
         {name: taskTitle, description: `Квест: ${questTitle} <br> ${branchTitle ? `Ветка: ${branchTitle}` : 'В этом квесте задания можно проходить в любом порядке'}`}
-    ]"></TopButtons>
-    <TopButtons v-if="isTasksNotSorted && isTaskInUnsortedModeSelected && !isEnd" class="top-buttons" bg arrows clickable :buttons="[
+      ]"
+    />
+    <TopButtons
+      v-if="isTasksNotSorted && isTaskInUnsortedModeSelected && !isEnd"
+      class="top-buttons"
+      bg
+      arrows
+      clickable
+      :buttons="[
         {name: 'К списку заданий'}
-    ]" @click="() => {isTaskInUnsortedModeSelected = false; taskTitle = ''; taskId = undefined; taskDescription = ''}"></TopButtons>
+      ]"
+      @click="() => {isTaskInUnsortedModeSelected = false; taskTitle = ''; taskId = undefined; taskDescription = ''}"
+    />
 
-    <CircleLoading v-if="loading"></CircleLoading>
+    <CircleLoading v-if="loading" />
     <div v-show="isTasksNotSorted && !isTaskInUnsortedModeSelected && !isEnd">
-      <ArrowListElement class="branch-tasks" ref="branchTasks" title="Задания" closed open-on-set-elements
-                        :elements="branchTasks"
-                        no-close
-                        @click-inside="onSelectTask"
-      ></ArrowListElement>
+      <ArrowListElement
+        class="branch-tasks"
+        ref="branchTasks"
+        title="Задания"
+        closed
+        open-on-set-elements
+        :elements="branchTasks"
+        no-close
+        @click-inside="onSelectTask"
+      />
     </div>
     <div v-show="!isTasksNotSorted || isTaskInUnsortedModeSelected || isEnd" class="task-title-description-container">
       <div class="task-title">{{ taskTitle }}</div>
-      <MarkdownRenderer ref="markdown" class="task-description text-middle"></MarkdownRenderer>
+      <MarkdownRenderer ref="markdown" class="task-description text-middle" />
     </div>
 
-    <div class="app-flex-filler"></div>
+    <div class="app-flex-filler" />
 
     <div v-if="isEnd" class="text-big-xx congratulations">
       <div>Вы прошли квест!</div>
@@ -164,39 +223,61 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
         </div>
         <div>
           <div>Оценка:</div>
-          <CircleLoading v-if="statsLoading" class="preview-image"></CircleLoading>
+          <CircleLoading v-if="statsLoading" class="preview-image" />
           <div v-else class="stats-container stars" @click="sendVote">
-            <img src="../res/star.svg" alt="5" :class="{checked: this.ratingVote >= 5}" @click="this.ratingVote = 5">
-            <img src="../res/star.svg" alt="4" :class="{checked: this.ratingVote >= 4}" @click="this.ratingVote = 4">
-            <img src="../res/star.svg" alt="3" :class="{checked: this.ratingVote >= 3}" @click="this.ratingVote = 3">
-            <img src="../res/star.svg" alt="2" :class="{checked: this.ratingVote >= 2}" @click="this.ratingVote = 2">
-            <img src="../res/star.svg" alt="1" :class="{checked: this.ratingVote >= 1}" @click="this.ratingVote = 1">
+            <img src="../res/star.svg" alt="5" :class="{checked: ratingVote >= 5}" @click="ratingVote = 5">
+            <img src="../res/star.svg" alt="4" :class="{checked: ratingVote >= 4}" @click="ratingVote = 4">
+            <img src="../res/star.svg" alt="3" :class="{checked: ratingVote >= 3}" @click="ratingVote = 3">
+            <img src="../res/star.svg" alt="2" :class="{checked: ratingVote >= 2}" @click="ratingVote = 2">
+            <img src="../res/star.svg" alt="1" :class="{checked: ratingVote >= 1}" @click="ratingVote = 1">
           </div>
         </div>
       </div>
 
-      <TopButtons v-if="!$user.isTemporary" @click="restartOrFinish" class="buttons finish-buttons" bg clickable arrows big :buttons="[
+      <TopButtons
+        v-if="!$user.isTemporary"
+        @click="restartOrFinish"
+        class="buttons finish-buttons"
+        bg
+        clickable
+        arrows
+        big
+        :buttons="[
           { name: 'Начать заново', description: 'Прогресс сохранится' },
           { name: 'Завершить квест'},
-      ]"></TopButtons>
-      <TopButtons v-else @click="finishTemporarySession" class="buttons finish-buttons" bg clickable arrows big no-left-arrow :buttons="[
+        ]"
+      />
+      <TopButtons
+        v-else
+        @click="finishTemporarySession"
+        class="buttons finish-buttons"
+        bg
+        clickable
+        arrows
+        big
+        no-left-arrow
+        :buttons="[
           { name: 'Создать полноценный аккаунт'},
-      ]"></TopButtons>
+        ]"
+      />
     </div>
 
-    <Form v-else-if="!isQrAnswer && (!isTasksNotSorted || isTaskInUnsortedModeSelected)" ref="form" class="answer-form"
-          :title="taskQuestion"
-          :fields="[
-            { title: 'ОТВЕТ', info: 'РеГиСтР не важен', jsonName: 'answer' },
-          ]"
-          submit-text="Ответить"
-          @submit="checkAnswer"
-          small-title
-    ></Form>
+    <Form
+      v-else-if="!isQrAnswer && (!isTasksNotSorted || isTaskInUnsortedModeSelected)"
+      ref="form"
+      class="answer-form"
+      :title="taskQuestion"
+      :fields="[
+        { title: 'ОТВЕТ', info: 'РеГиСтР не важен', jsonName: 'answer' },
+      ]"
+      submit-text="Ответить"
+      @submit="checkAnswer"
+      small-title
+    />
 
     <div v-else-if="!isTasksNotSorted || isTaskInUnsortedModeSelected" class="qr-form">
-<!--      <div class="text-middle" v-if="answerLink">Отсканировано: {{answerLink}}</div>-->
-      <QRScanner closed ref="qrScanner" @scan="checkQrAnswer"></QRScanner>
+      <!--      <div class="text-middle" v-if="answerLink">Отсканировано: {{answerLink}}</div>-->
+      <QRScanner closed ref="qrScanner" @scan="checkQrAnswer" />
       <div class="text-small-x info">
         Как только ты отсканируешь правильный QR-код, ты пройдёшь это задание
       </div>
@@ -208,7 +289,7 @@ input-bg = linear-gradient(20deg, rgba(45, 36, 13, 0.4) 0%, rgba(62, 39, 17, 0.6
       </button>
     </div>
 
-    <Footer :links="bottomLink ? [bottomLink] : undefined"></Footer>
+    <Footer :links="bottomLink ? [bottomLink] : undefined" />
   </div>
 </template>
 

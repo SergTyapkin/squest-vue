@@ -1,62 +1,63 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
+
+plate-height = 200px
+plate-max-width = 400px
+plate-width = 100%
 
 // quest-background = linear-gradient(100deg, #775939 0%, rgba(116, 73, 33, 0.9) 40%, rgba(90, 56, 25, 0.7) 65%, transparent 100%) no-repeat
 quest-background = linear-gradient(100deg, #6c421e 0%, rgb(116, 73, 33) 40%, rgba(90, 56, 25, 0.9) 60%, transparent 100%) no-repeat
-plate-height = 200px
-plate-width = 100%
-plate-max-width = 400px
 
 .quest-preview
-  display block
-  transition all 0.2s ease
-  box-shadow 0 0 20px colorShadowDark
-  margin 20px
-  margin-bottom 0
-  width plate-width
-  height plate-height
-  max-width plate-max-width
-  border-radius 7px
   position relative
   overflow hidden
+  display block
+  width plate-width
+  max-width plate-max-width
+  height plate-height
+  margin 20px
+  margin-bottom 0
+  border-radius 7px
+  box-shadow 0 0 20px colorShadowDark
+  transition all 0.2s ease
   .preview-image
     position absolute
     inset 0
-    object-fit cover
     width 100%
     height 100%
+    object-fit cover
   .preview-image.default
-    text-align right
+    z-index -1
     padding-right 20px
-    line-height plate-height
     font-size 100px
+    line-height plate-height
+    color textColor3
+    text-align right
     letter-spacing 10px
     opacity 0.8
-    color textColor3
     background bgColor2
-    z-index -1
 
   .container
-    padding 10px 20px
-    background quest-background
-    background-size 150%
-    background-position-x 80%
-    transition all 0.5s cubic-bezier(0.2, 0.65, 0.11, 0.99);
+    position relative
     width 100%
     height 100%
-    position relative
+    padding 10px 20px
+    background quest-background
+    background-position-x 80%
+    background-size 150%
+    transition all 0.5s cubic-bezier(0.2, 0.65, 0.11, 0.99)
 
     .text-container
-      max-height 75px
+      overflow hidden
       height 100%
       min-height 60px
-      overflow hidden
+      max-height 75px
       .title
         display flex
         align-items center
         justify-content space-between
-        line-height 1
         margin-bottom 5px
+        line-height 1
         .badges-container
           white-space nowrap
           img
@@ -76,8 +77,8 @@ plate-max-width = 400px
       .time
         display flex
         align-items center
-        font-size 15px
         margin-right 20px
+        font-size 15px
         img
           width 30px
           margin-right 5px
@@ -90,9 +91,9 @@ plate-max-width = 400px
 
     .branches
       position absolute
+      right 0
       bottom 0
       left 0
-      right 0
 
 .quest-preview:hover
   box-shadow 10px 10px 20px colorShadow
@@ -100,17 +101,17 @@ plate-max-width = 400px
     background-position-x 0
 
 .main-info
-  transition all 0.2s ease
   z-index -1
+  transition all 0.2s ease
 .container.inactive
   .main-info
     filter blur(5px)
 .container:before
   content ''
   position absolute
+  z-index 1
   inset 0
   transition all 0.2s ease
-  z-index 1
 .container.inactive:before
   background #00000099
 .container
@@ -124,21 +125,22 @@ plate-max-width = 400px
     height 17px
     margin-right 3px
   span
-    transition all 0.3s ease
     color textColor3
+    transition all 0.3s ease
 .author-fields:hover
   span
     color textColor1
 
 
 .quest-preview.placeholder
-  > *
-    opacity 0
+  pointer-events none
   background linear-gradient(-60deg, #26123188 20%, #45274888 50%, #26123188 80%)
   animation placeholder-bg infinite 3s cubic-bezier(0.34, 0.66, 0.67, 0.4)
+  > *
+    opacity 0
+
   @media ({mobile})
     animation none
-  pointer-events none
 
 @keyframes placeholder-bg
   from
@@ -164,49 +166,51 @@ plate-max-width = 400px
     <div class="container" :class="{inactive: branchesOpened}">
       <div class="main-info">
         <div class="text-container">
-          <div class="title"
-               :class="{
-                  'text-big-x': title?.length < 20,
-                  'text-big': title?.length >= 20 && title?.length < 40,
-                  'text-middle': title?.length >= 40
-                }"
+          <div
+            class="title"
+            :class="{
+              'text-big-x': title?.length < 20,
+              'text-big': title?.length >= 20 && title?.length < 40,
+              'text-middle': title?.length >= 40
+            }"
           >
-            <span>{{title}}</span>
+            <span>{{ title }}</span>
             <span class="badges-container">
               <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
               <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
             </span>
           </div>
-          <div class="text-small description" v-if="description">{{description.replace(/([#*_]\ ?|&lt;\w*&gt;)/g, '').slice(0, 80) + (description.length > 80 ? '...' : '')}}</div>
+          <div class="text-small description" v-if="description">{{ description.replace(/([#*_]\ ?|&lt;\w*&gt;)/g, '').slice(0, 80) + (description.length > 80 ? '...' : '') }}</div>
         </div>
 
         <div class="statistics text-big-xx">
           <span class="rating" :class="{good: rating >= 4.5, bad: rating < 3.5}">
-            <img src="../res/star.svg" alt="star">{{rating}}
+            <img src="../res/star.svg" alt="star">{{ rating }}
           </span>
           <span class="time">
-            <img src="../res/time.svg" alt="time">{{time}}
+            <img src="../res/time.svg" alt="time">{{ time }}
           </span>
         </div>
         <router-link :to="{name: 'profile', query: {id: author}}" class="link text-small author-fields">
           <img src="../res/profile.svg" alt="">
-          <span>{{authorname}}</span>
+          <span>{{ authorname }}</span>
         </router-link>
       </div>
 
-      <CircleLoading v-if="loading" size="40px"></CircleLoading>
-      <ArrowListElement v-if="branches.length > 0"
-                        ref="branches"
-                        class="branches"
-                        title="Ветки"
-                        action-text="развернуть"
-                        closed
-                        :elements="branches"
-                        preserve-click-open
-                        @open="openBranches"
-                        @close="closeBranches"
-                        @click-inside="$router.push({name: 'quest', query: {id: id}})"
-      ></ArrowListElement>
+      <CircleLoading v-if="loading" size="40px" />
+      <ArrowListElement
+        v-if="branches.length > 0"
+        ref="branches"
+        class="branches"
+        title="Ветки"
+        action-text="развернуть"
+        closed
+        :elements="branches"
+        preserve-click-open
+        @open="openBranches"
+        @close="closeBranches"
+        @click-inside="$router.push({name: 'quest', query: {id: id}})"
+      />
     </div>
   </router-link>
 </template>

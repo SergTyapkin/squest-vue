@@ -7,12 +7,17 @@
   <div class="root">
     <div class="quests-page">
       <div>
-        <TopButtons clickable arrows low-opacity :buttons="[
-          {name: 'Назад', description: 'В профиль пользователя',
-          to: {name: 'profile', query: {id: id}}},
-        ]"></TopButtons>
+        <TopButtons
+          clickable
+          arrows
+          low-opacity
+          :buttons="[
+            {name: 'Назад', description: 'В профиль пользователя',
+             to: {name: 'profile', query: {id: id}}},
+          ]"
+        />
 
-        <QuestsList :get-quests-foo="$api.getUserQuests" :args="id"></QuestsList>
+        <QuestsList :get-quests-foo="$api.getUserQuests" :args="id" />
       </div>
     </div>
   </div>

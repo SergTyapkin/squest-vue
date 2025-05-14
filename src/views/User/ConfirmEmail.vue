@@ -4,8 +4,7 @@
 
 <template>
   <div>
-    <FormExtended ref="form" :no-submit="true" description="Подтверждаем ваш E-mail...">
-    </FormExtended>
+    <FormExtended ref="form" :no-submit="true" description="Подтверждаем ваш E-mail..." />
   </div>
 </template>
 

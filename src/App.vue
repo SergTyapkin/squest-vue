@@ -16,22 +16,6 @@ top-bar-height = 70px
     height 100px
 </style>
 
-<template>
-  <Navbar></Navbar>
-
-  <div class="wrapper">
-    <CircleLoading v-if="!$store.state.user.isGotten" class="loading"></CircleLoading>
-    <router-view v-else v-slot="{ Component }">
-      <transition :name="transitionName">
-        <component :is="Component"/>
-      </transition>
-    </router-view>
-  </div>
-
-  <Modal ref="modal"></Modal>
-  <Popups ref="popups"></Popups>
-</template>
-
 <style>
 .fade-enter-active,
 .fade-leave-active {
@@ -144,11 +128,12 @@ top-bar-height = 70px
 }
 
 .opacity-enter-active {
-  animation: opacity .3s;
+  animation: opacity 0.3s;
 }
 .opacity-leave-active {
-  animation: opacity .3s reverse forwards;
+  animation: opacity 0.3s reverse forwards;
 }
+
 @keyframes opacity {
   0% {
     opacity: 0;
@@ -158,6 +143,22 @@ top-bar-height = 70px
   }
 }
 </style>
+
+<template>
+  <Navbar />
+
+  <div class="wrapper">
+    <CircleLoading v-if="!$store.state.user.isGotten" class="loading" />
+    <router-view v-else #default="{ Component }">
+      <transition :name="transitionName">
+        <component :is="Component" />
+      </transition>
+    </router-view>
+  </div>
+
+  <Modal ref="modal" />
+  <Popups ref="popups" />
+</template>
 
 <script>
 import {getCurrentInstance} from "vue";
@@ -179,6 +180,17 @@ export default {
     }
   },
 
+  async mounted() {
+    const global = getCurrentInstance().appContext.config.globalProperties;
+
+    global.$modal = this.$refs.modal;
+    global.$popups = this.$refs.popups;
+
+    global.$user = this.$store.state.user;
+    global.$theme = this.$store.state.theme;
+    global.$fullApiUrl = location.origin + API_URL;
+  },
+
   watch: {
     $route(to, from) {
       this.transitionName = 'scale-in';
@@ -192,17 +204,6 @@ export default {
         document.body.classList.remove('flat');
       }
     }
-  },
-
-  async mounted() {
-    const global = getCurrentInstance().appContext.config.globalProperties;
-
-    global.$modal = this.$refs.modal;
-    global.$popups = this.$refs.popups;
-
-    global.$user = this.$store.state.user;
-    global.$theme = this.$store.state.theme;
-    global.$fullApiUrl = location.origin + API_URL;
   },
 };
 </script>

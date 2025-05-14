@@ -7,11 +7,14 @@
   <div class="root">
     <div class="quests-page">
       <div>
-        <TopButtons bg :buttons="[
-          {name: 'Твои квесты', description: 'Здесь собраны квесты, которые ты можешь редактировать'},
-        ]"></TopButtons>
+        <TopButtons
+          bg
+          :buttons="[
+            {name: 'Твои квесты', description: 'Здесь собраны квесты, которые ты можешь редактировать'},
+          ]"
+        />
 
-        <QuestsList :get-quests-foo="$api.getMyQuests" :args="[$user.id]"></QuestsList>
+        <QuestsList :get-quests-foo="$api.getMyQuests" :args="[$user.id]" />
       </div>
 
       <FloatingButton title="Создать квест" :to="{name: 'create-quest'}" class="float-button">

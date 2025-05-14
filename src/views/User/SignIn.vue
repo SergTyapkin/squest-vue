@@ -7,48 +7,53 @@ logo-size = 140px
     margin-bottom 20px
 
 .text-centered
-  text-align center
   margin 10px 0
+  text-align center
 </style>
 
 
 <template>
   <div>
-    <Form v-if="!loginByCode"
-          ref="form"
-          title="Вход" description="Ну давай, вспомни пароль, войди в меня"
-          :fields="[
-            { title: 'ЛОГИН или E-MAIL', autocomplete: 'on', jsonName: 'username' },
-            { title: 'ПАРОЛЬ', autocomplete: 'on', jsonName: 'password', type: 'password', info: 'Забыл пароль? - пей таблетки', infoHref: {name: 'password-restore'}},
-          ]"
-          submit-text="Погнали"
-          @submit="signIn"
+    <Form
+      v-if="!loginByCode"
+      ref="form"
+      title="Вход"
+      description="Ну давай, вспомни пароль, войди в меня"
+      :fields="[
+        { title: 'ЛОГИН или E-MAIL', autocomplete: 'on', jsonName: 'username' },
+        { title: 'ПАРОЛЬ', autocomplete: 'on', jsonName: 'password', type: 'password', info: 'Забыл пароль? - пей таблетки', infoHref: {name: 'password-restore'}},
+      ]"
+      submit-text="Погнали"
+      @submit="signIn"
     >
       Нужен аккаунт? <router-link :to="{name: 'signup'}" class="link">Создать</router-link>
 
       <div class="text-small text-centered">или</div>
-      <div class="button" @click="loginByCode = true">Войти по коду</div>
+      <div class="button rounded" @click="loginByCode = true">Войти по коду</div>
     </Form>
 
-    <Form v-else
-          ref="formEmail"
-          title="Вход по коду" description="Можно не вспоминать пароль, а просто открыть почту"
-          :fields="[
-            { title: 'E-mail', autocomplete: 'on', jsonName: 'email'},
-          ]"
-          submit-text="Выслать код"
-          @submit="signInByEmailCodeSendEmail"
+    <Form
+      v-else
+      ref="formEmail"
+      title="Вход по коду"
+      description="Можно не вспоминать пароль, а просто открыть почту"
+      :fields="[
+        { title: 'E-mail', autocomplete: 'on', jsonName: 'email'},
+      ]"
+      submit-text="Выслать код"
+      @submit="signInByEmailCodeSendEmail"
     >
-      <Form :no-bg="true"
-            ref="formCode"
-            :fields="[
-            { title: 'Одноразовый код', jsonName: 'code'},
-          ]"
-            submit-text="Войти"
-            @submit="signInByEmailCode"
-      ></Form>
+      <Form
+        :no-bg="true"
+        ref="formCode"
+        :fields="[
+          { title: 'Одноразовый код', jsonName: 'code'},
+        ]"
+        submit-text="Войти"
+        @submit="signInByEmailCode"
+      />
       <div class="text-small text-centered">или</div>
-      <div class="button" @click="loginByCode = false">Войти по паролю</div>
+      <div class="button rounded" @click="loginByCode = false">Войти по паролю</div>
     </Form>
   </div>
 </template>

@@ -1,18 +1,18 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 .form-fullwidth
-  margin-top 0
   max-width unset
+  margin-top 0
 
 .link-fields
   position relative
 .link-button
+  position absolute
+  top 0
+  right 10px
   padding 4px 4px 0px 3px
   border-radius 5px
-  position absolute
-  right 10px
-  top 0
   .link-image
     width 20px
     height 20px
@@ -20,17 +20,22 @@
   max-width 500px
   max-height 500px
 .quest-link
-  padding-right 30px
   margin-left 20px
+  padding-right 30px
   word-break break-all
 </style>
 
 <template>
   <div @input="onChange">
-    <TopButtons bg clickable arrows :buttons="[
+    <TopButtons
+      bg
+      clickable
+      arrows
+      :buttons="[
         {name: 'Назад', description: 'К списку квестов',
-        to: $router.options.history.state.back ? $router.options.history.state.back : {name: 'quests'}},
-    ]"></TopButtons>
+         to: $router.options.history.state.back ? $router.options.history.state.back : {name: 'quests'}},
+      ]"
+    />
 
     <Form class="form-fullwidth" ref="form">
       <div class="info-container">
@@ -38,32 +43,34 @@
       </div>
 
       <div class="fields-container">
-        <FloatingInput v-model="title" title="Название"></FloatingInput>
+        <FloatingInput v-model="title" title="Название" />
         <div>
-          <label class="text-big">Описание <span></span></label>
-          <textarea class="text scrollable" rows="5" v-model="description"></textarea>
+          <label class="text-big">Описание <span /></label>
+          <textarea class="text scrollable" rows="5" v-model="description" />
         </div>
 
-<!--        <AddableList title="Ветки"-->
-<!--                     description="При просмотре квестов для игры вы будете видеть даже неопубликованные ветки, чтобы можно было поиграть и проверить ветку до её публикации"-->
-<!--                     add-text="Добавить ветку"-->
-<!--                     action-text="Перейти"-->
-<!--                     v-model="branches"-->
-<!--                     :can-delete="false"-->
-<!--                     placeholder="Название ветки"-->
-<!--        ></AddableList>-->
-        <AddableList title="Соавторы"
-                     description="Хотите делать квест вместе? Просто добавьте никнеймы соавторов ниже и они получат доступ к редактированию квеста"
-                     add-text="Добавить соавтора"
-                     v-model="helpers"
-                     placeholder="Логин соавтора"
-                     v-if="!helper"
-        ></AddableList>
+        <!--        <AddableList title="Ветки"-->
+        <!--                     description="При просмотре квестов для игры вы будете видеть даже неопубликованные ветки, чтобы можно было поиграть и проверить ветку до её публикации"-->
+        <!--                     add-text="Добавить ветку"-->
+        <!--                     action-text="Перейти"-->
+        <!--                     v-model="branches"-->
+        <!--                     :can-delete="false"-->
+        <!--                     placeholder="Название ветки"-->
+        <!--        ></AddableList>-->
+        <AddableList
+          title="Соавторы"
+          description="Хотите делать квест вместе? Просто добавьте никнеймы соавторов ниже и они получат доступ к редактированию квеста"
+          add-text="Добавить соавтора"
+          v-model="helpers"
+          placeholder="Логин соавтора"
+          v-if="!helper"
+        />
 
-        <FloatingInput type="checkbox"
-                       title="Опубликован"
-                       v-model="ispublished"
-                       disabled
+        <FloatingInput
+          type="checkbox"
+          title="Опубликован"
+          v-model="ispublished"
+          disabled
         >
           Если не опубликован - никто кроме тебя и соавторов не сможет просматривать квест в общем списке. <br>
           Но доступ к нему для игры можно будет получить по ссылке, если такая опция включена

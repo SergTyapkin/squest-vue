@@ -1,6 +1,6 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
-@require '../styles/fonts.styl'
+@import '../styles/constants.styl'
+@import '../styles/fonts.styl'
 
 </style>
 
@@ -13,25 +13,26 @@
 
     <div class="fields-container">
       <div class="form-info text-middle">{{ info }}</div>
-      <FloatingInput v-for="field in fields"
-                     :title="field.title"
-                     :autocomplete="field.autocomplete"
-                     :type="field.type"
-                     :error="errors[field.jsonName]"
-                     v-model="values[field.jsonName]"
+      <FloatingInput
+        v-for="field in fields"
+        :title="field.title"
+        :autocomplete="field.autocomplete"
+        :type="field.type"
+        :error="errors[field.jsonName]"
+        v-model="values[field.jsonName]"
       >
-        <router-link v-if="field.infoHref" :to="field.infoHref" class="link" v-html="field.info"></router-link>
-        <div v-else v-html="field.info"></div>
+        <router-link v-if="field.infoHref" :to="field.infoHref" class="link" v-html="field.info" />
+        <div v-else v-html="field.info" />
       </FloatingInput>
     </div>
 
     <div class="submit-container" v-if="!noSubmit">
       <input v-if="!loading" class="button-submit" type="submit" :value="submitText">
     </div>
-    <CircleLoading v-if="loading"></CircleLoading>
+    <CircleLoading v-if="loading" />
 
     <div class="text-small info">
-      <slot></slot>
+      <slot />
     </div>
   </Form>
 </template>

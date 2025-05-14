@@ -1,19 +1,19 @@
 <style lang="stylus" scoped>
-@require '../styles/buttons.styl'
-@require '../styles/constants.styl'
-@require '../styles/fonts.styl'
+@import '../styles/buttons.styl'
+@import '../styles/constants.styl'
+@import '../styles/fonts.styl'
 
 .root-take-quest
   display flex
   align-items center
   justify-content center
-  height 100%
   width 100%
+  height 100%
 </style>
 
 <template>
   <div class="root-take-quest">
-    <CircleLoading class="loading"></CircleLoading>
+    <CircleLoading class="loading" />
   </div>
 </template>
 

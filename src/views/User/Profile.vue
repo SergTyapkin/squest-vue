@@ -1,6 +1,6 @@
 <style lang="stylus" scoped>
-@require '../../styles/constants.styl'
-@require '../../styles/fonts.styl'
+@import '../../styles/constants.styl'
+@import '../../styles/fonts.styl'
 
 hr
   margin 0
@@ -12,14 +12,15 @@ hr
   .info-container
     .top-container
       display flex
-      justify-content space-between
       align-items flex-end
+      justify-content space-between
       width 100%
       text-align center
     .rating
     .position
       flex 1
       font-medium()
+
       font-weight bold
       .info
         font-weight normal
@@ -28,8 +29,8 @@ hr
     //    overflow hidden
     //    max-height 0
     //    transition all 0.3s ease
-    //.rating:hover
-    //.position:hover
+    // .rating:hover
+    // .position:hover
     //  .info
     //    max-height 20px
 
@@ -48,8 +49,8 @@ hr
 
   .confirm-email-input
     margin-bottom 20px
-    color empColor2
     font-weight bold
+    color empColor2
   .password-form-container
     margin-bottom 0
   .password-form-submit-container
@@ -65,56 +66,56 @@ hr
   margin-top 5px
 
 .admin-button
-  margin 30px auto
+  display block
   width 30%
   min-width 300px
-  display block
+  margin 30px auto
 
 
 .avatar
 .avatar-div
+  position relative
+  overflow hidden
   width 80px
   height 80px
   border mix(textColor2, transparent) 1px solid
   border-radius 50%
-  position relative
-  overflow hidden
 
 .avatar-container
   position relative
   .delete-avatar
-    position absolute
-    right -40px
-    top 20px
+    pointer-events none
     cursor pointer
-    transition all 0.2s ease
+    position absolute
+    top 20px
+    right -40px
     width 40px
     opacity 0
-    pointer-events none
+    transition all 0.2s ease
   .delete-avatar:hover
     transform scale(1.1)
 .avatar-container:hover
   .delete-avatar
-    opacity 1
     pointer-events auto
+    opacity 1
 
 .avatar-container
   .avatar-div::before
   .avatar-div::after
+    cursor pointer
     content 'Изменить'
-    font-family Arial
-    padding-left 5px
-    font-size 15px
-    text-align center
+    position absolute
+    z-index 1
+    inset 0
     display flex
     align-items center
-    position absolute
-    inset 0
-    background #000000AA
-    z-index 1
+    padding-left 5px
+    font-family Arial
+    font-size 15px
+    text-align center
     opacity 0
+    background #000000aa
     transition opacity 0.3s ease
-    cursor pointer
   .avatar-div::after
     content 'Отпустите, чтобы загрузить'
 .avatar-container
@@ -129,7 +130,7 @@ hr
 <template>
   <div>
     <div class="profile-page" @input="edited = true">
-      <TopButtons arrows clickable :buttons="buttons"></TopButtons>
+      <TopButtons arrows clickable :buttons="buttons" />
 
       <Form class="profile-plate">
         <div>
@@ -140,12 +141,14 @@ hr
                 <div class="info text-small-x">рейтинг</div>
               </div>
 
-              <CircleLoading v-if="loading"></CircleLoading>
+              <CircleLoading v-if="loading" />
 
               <div v-else-if="yours" class="avatar-container">
-                <DragNDropLoader class="image-loader" @load="updateAvatar"
-                                 :crop-size="cropSize"
-                                 :compress-size="compressSize"
+                <DragNDropLoader
+                  class="image-loader"
+                  @load="updateAvatar"
+                  :crop-size="cropSize"
+                  :compress-size="compressSize"
                 >
                   <div class="avatar-div" @click.stop="updateAvatar(undefined)">
                     <img v-if="user.avatarimageid" class="avatar" :src="api_url + '/image/' + user.avatarimageid" alt="avatar">
@@ -166,7 +169,7 @@ hr
             </div>
             <input v-if="yours" class="username text-big" v-model="username">
             <div v-else class="username text-big">
-              <div>{{username}}</div>
+              <div>{{ username }}</div>
               <div class="text-small another-user-info">{{ user.name }}</div>
             </div>
           </div>
@@ -174,17 +177,19 @@ hr
           <hr>
 
           <div class="quest-statistics text-middle">
-            <ArrowListElement :title="`Пройдено квестов: ${completedBranches.length}`"
-                              closed
-                              :elements="completedBranches"
-                              @click-inside="(branchInfo) => $router.push({name: 'quest', query: {id: branchInfo.id}})"
-            ></ArrowListElement>
-            <ArrowListElement v-if="createdQuests.length"
-                              :title="`Создано квестов: ${createdQuests.length}`"
-                              closed
-                              :elements="createdQuests"
-                              @click-inside="(quest) => $router.push({name: 'quest', query: {id: quest.id}})"
-            ></ArrowListElement>
+            <ArrowListElement
+              :title="`Пройдено квестов: ${completedBranches.length}`"
+              closed
+              :elements="completedBranches"
+              @click-inside="(branchInfo) => $router.push({name: 'quest', query: {id: branchInfo.id}})"
+            />
+            <ArrowListElement
+              v-if="createdQuests.length"
+              :title="`Создано квестов: ${createdQuests.length}`"
+              closed
+              :elements="createdQuests"
+              @click-inside="(quest) => $router.push({name: 'quest', query: {id: quest.id}})"
+            />
           </div>
 
           <hr>
@@ -196,28 +201,33 @@ hr
           </div>
 
           <div v-if="yours">
-            <FormExtended ref="form" no-bg
-                  :fields="[
-                    { title: 'ТВОЁ ИМЯ', jsonName: 'name' },
-                    { title: 'ТВОЙ E-mail', jsonName: 'email', type: 'email', info: user.isConfirmed ? `<span style='color: #448c30'>E-mail подтвержден</span>` : `<b style='color: #ff5b5b'>ТВОЙ EMAIL НЕ ПОДТВЕРЖДЕН. ИЗ-ЗА ЭТОГО НЕДОСТУПНЫ МНОГИЕ ФУНКЦИИ СЕРВИСА. ТЫ НЕ МОЖЕШЬ:</b><div style='color: #c46f6f'><div>Быть в рейтингах</div><div>Создавать квесты</div><div>Создавать команды</div><div>Оценивать квесты</div></div>`},
-                  ]"
-                  :no-submit="true"
-            ></FormExtended>
+            <FormExtended
+              ref="form"
+              no-bg
+              :fields="[
+                { title: 'ТВОЁ ИМЯ', jsonName: 'name' },
+                { title: 'ТВОЙ E-mail', jsonName: 'email', type: 'email', info: user.isConfirmed ? `<span style='color: #448c30'>E-mail подтвержден</span>` : `<b style='color: #ff5b5b'>ТВОЙ EMAIL НЕ ПОДТВЕРЖДЕН. ИЗ-ЗА ЭТОГО НЕДОСТУПНЫ МНОГИЕ ФУНКЦИИ СЕРВИСА. ТЫ НЕ МОЖЕШЬ:</b><div style='color: #c46f6f'><div>Быть в рейтингах</div><div>Создавать квесты</div><div>Создавать команды</div><div>Оценивать квесты</div></div>`},
+              ]"
+              :no-submit="true"
+            />
             <input v-if="!user.isConfirmed && !loadingConfirmEmail" type="submit" value="Подтвердить E-mail" class="confirm-email-input" @click="confirmEmailSendMessage">
-            <CircleLoading v-if="loadingConfirmEmail"></CircleLoading>
+            <CircleLoading v-if="loadingConfirmEmail" />
           </div>
         </div>
 
         <div v-if="yours" ref="passwordFormContainer" class="roll-active closed password-form-container">
-          <FormExtended ref="passwordForm" no-bg no-submit
-                :fields="[
-                    { title: 'Старый пароль', jsonName: 'oldPassword', type: 'password'},
-                    { title: 'Новый пароль', jsonName: 'newPassword', type: 'password'},
-                    { title: 'Новый пароль ещё раз', jsonName: 'newPasswordConfirm', type: 'password'},
-                  ]"
-                submit-text="Сменить пароль"
-                @submit="changePassword"
-          ></FormExtended>
+          <FormExtended
+            ref="passwordForm"
+            no-bg
+            no-submit
+            :fields="[
+              { title: 'Старый пароль', jsonName: 'oldPassword', type: 'password'},
+              { title: 'Новый пароль', jsonName: 'newPassword', type: 'password'},
+              { title: 'Новый пароль ещё раз', jsonName: 'newPasswordConfirm', type: 'password'},
+            ]"
+            submit-text="Сменить пароль"
+            @submit="changePassword"
+          />
         </div>
         <div v-if="yours" class="password-form-submit-container" @click.prevent="clickOnChangePassword">
           <input type="submit" value="Сменить пароль">
@@ -231,7 +241,7 @@ hr
       <FloatingButton v-if="edited" title="Сохранить" green @click="changeData">
         <img src="../../res/save.svg" alt="save">
       </FloatingButton>
-      <SaveByKeys @save="changeData"></SaveByKeys>
+      <SaveByKeys @save="changeData" />
     </div>
   </div>
 </template>

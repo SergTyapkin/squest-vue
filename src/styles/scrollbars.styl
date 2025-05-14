@@ -1,4 +1,4 @@
-@require 'constants.styl'
+@import 'constants.styl'
 
 scroll-bg-color = bgColor2
 scroll-thumb-color = empColor1
@@ -8,14 +8,9 @@ scrollbar-width = 10px
 scrollbar-border = 2px
 
 .scrollable:not(.mobile-not-scrollable)
-  overflow-y auto
-  scrollbar-width scrollbar-width-worded
-  scrollbar-height scrollbar-width-worded
   scrollbar-color scroll-thumb-color scroll-bg-color
-  &:hover
-    scrollbar-color scroll-thumb-color-hover scroll-bg-color
-  &:hover::-webkit-scrollbar-thumb
-    background-color scroll-thumb-color-hover
+  scrollbar-width scrollbar-width-worded
+  overflow-y auto
   &::-webkit-scrollbar
     width scrollbar-width
     height scrollbar-width
@@ -24,23 +19,22 @@ scrollbar-border = 2px
     border-radius (scrollbar-width / 2)
   &::-webkit-scrollbar-thumb
     background-color scroll-thumb-color
-    border-radius (scrollbar-width / 2)
     border scrollbar-border solid scroll-bg-color
+    border-radius (scrollbar-width / 2)
 
   &::-webkit-scrollbar-corner
     background scroll-bg-color
+  &:hover
+    scrollbar-color scroll-thumb-color-hover scroll-bg-color
+  &:hover::-webkit-scrollbar-thumb
+    background-color scroll-thumb-color-hover
 
 
-@media({desktop})
+@media ({desktop})
   .scrollable.mobile-not-scrollable
-    overflow-y auto
-    scrollbar-width scrollbar-width-worded
-    scrollbar-height scrollbar-width-worded
     scrollbar-color scroll-thumb-color scroll-bg-color
-    &:hover
-      scrollbar-color scroll-thumb-color-hover scroll-bg-color
-    &:hover::-webkit-scrollbar-thumb
-      background-color scroll-thumb-color-hover
+    scrollbar-width scrollbar-width-worded
+    overflow-y auto
     &::-webkit-scrollbar
       width scrollbar-width
       height scrollbar-width
@@ -49,9 +43,13 @@ scrollbar-border = 2px
       border-radius (scrollbar-width / 2)
     &::-webkit-scrollbar-thumb
       background-color scroll-thumb-color
-      border-radius (scrollbar-width / 2)
       border scrollbar-border solid scroll-bg-color
+      border-radius (scrollbar-width / 2)
 
     &::-webkit-scrollbar-corner
       background scroll-bg-color
+    &:hover
+      scrollbar-color scroll-thumb-color-hover scroll-bg-color
+    &:hover::-webkit-scrollbar-thumb
+      background-color scroll-thumb-color-hover
 

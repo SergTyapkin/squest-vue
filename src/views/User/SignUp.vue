@@ -1,23 +1,26 @@
 <style lang="stylus" scoped>
 .loading
-  margin-left auto
   margin-right auto
+  margin-left auto
 </style>
 
 <template>
   <div>
-    <Form ref="form"
-          title="Регистрация" description="Ну давай, покажи всю свою оригинальность"
-          :fields="[
-            { title: 'ЛОГИН', autocomplete: 'on', jsonName: 'username' },
-            { title: 'ПАРОЛЬ', autocomplete: 'on', jsonName: 'password', type: 'password', info: 'Забыл пароль? - пей таблетки'},
-            { title: 'ПАРОЛЬ ЕЩЁ РАЗ', jsonName: 'passwordConfirm', type: 'password', info: 'Не ошибись'},
-            { title: 'E-mail', autocomplete: 'on', jsonName: 'email', type: 'email', info: 'Когда-нибудь пароль придётся восстанавливать'},
-            { title: 'ИМЯ', autocomplete: 'on', jsonName: 'name', info: 'Ну надо'},
-          ]"
-          submit-text="Погнали"
-          @submit="signUp"
-    >Уже есть аккаунт? <router-link :to="{name: 'signin'}" class="link">Войти</router-link>
+    <Form
+      ref="form"
+      title="Регистрация"
+      description="Ну давай, покажи всю свою оригинальность"
+      :fields="[
+        { title: 'ЛОГИН', autocomplete: 'on', jsonName: 'username' },
+        { title: 'ПАРОЛЬ', autocomplete: 'on', jsonName: 'password', type: 'password', info: 'Забыл пароль? - пей таблетки'},
+        { title: 'ПАРОЛЬ ЕЩЁ РАЗ', jsonName: 'passwordConfirm', type: 'password', info: 'Не ошибись'},
+        { title: 'E-mail', autocomplete: 'on', jsonName: 'email', type: 'email', info: 'Когда-нибудь пароль придётся восстанавливать'},
+        { title: 'ИМЯ', autocomplete: 'on', jsonName: 'name', info: 'Ну надо'},
+      ]"
+      submit-text="Погнали"
+      @submit="signUp"
+    >
+      Уже есть аккаунт? <router-link :to="{name: 'signin'}" class="link">Войти</router-link>
     </Form>
   </div>
 </template>

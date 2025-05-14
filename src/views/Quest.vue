@@ -1,48 +1,49 @@
 <style lang="stylus" scoped>
-@require '../styles/buttons.styl'
-@require '../styles/constants.styl'
-@require '../styles/fonts.styl'
+@import '../styles/buttons.styl'
+@import '../styles/constants.styl'
+@import '../styles/fonts.styl'
 
 quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 56, 25, 0.8) 40%, transparent 90%) no-repeat
 
 .quest-preview
-  background linear-gradient(20deg, rgba(90, 56, 25, 0.9) 0%, rgba(55, 43, 16, 0.5) 100%) 50% 50% no-repeat
-  border-bottom empColor3 1px solid
-  display block
-  transition all 0.2s ease
-  margin-bottom 0
   position relative
   overflow hidden
+  display block
+  margin-bottom 0
+  background linear-gradient(20deg, rgba(90, 56, 25, 0.9) 0%, rgba(55, 43, 16, 0.5) 100%) 50% 50% no-repeat
+  border-bottom empColor3 1px solid
+  transition all 0.2s ease
   .preview-image
     position absolute
-    inset 0
     z-index -1
-    object-fit cover
+    inset 0
     width 100%
     height 100%
+    object-fit cover
     filter brightness(0.5)
   .preview-image.default
-    text-align right
+    z-index -1
     padding-right 20px
     font-size 100px
+    color textColor3
+    text-align right
     letter-spacing 10px
     opacity 0.8
-    color textColor3
     background bgColor2
-    z-index -1
 
   .container
-    padding 10px 20px 50px 20px
-    background quest-background
-    background-size 150%
-    background-position-x 100%
-    transition all 0.2s ease
+    position relative
     width 100%
     height 100%
-    position relative
+    padding 10px 20px 50px 20px
+    background quest-background
+    background-position-x 100%
+    background-size 150%
+    transition all 0.2s ease
 
     .title
       font-large()
+
       display flex
       align-items center
       justify-content space-between
@@ -59,6 +60,7 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
         display flex
         align-items center
         font-medium()
+
         margin-right 20px
         img
           width 45px
@@ -74,25 +76,26 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
 
     .description
       font-medium-small()
-      background none
+
       padding 0
+      background none
 
 .main-info
-  transition all 0.2s ease
   z-index -1
+  transition all 0.2s ease
   .edit
-    color textColor1
-    margin 20px auto
     max-width 300px
+    margin 20px auto
+    color textColor1
     border-radius 10px
     img
-      margin-left 5px
       width 30px
+      margin-left 5px
   .play
-    margin 30px auto 0 auto
-    max-width 300px
-    border-radius 10px
     width 100%
+    max-width 300px
+    margin 30px auto 0 auto
+    border-radius 10px
 
 .branches
   background #00000011
@@ -101,12 +104,12 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
   .main-info
     filter blur(5px)
 .container:before
+  pointer-events none
   content ''
   position absolute
+  z-index 1
   inset 0
   transition all 0.2s ease
-  z-index 1
-  pointer-events none
 .container.inactive:before
   background #00000099
 .container
@@ -116,20 +119,25 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
 
 <template>
   <div>
-    <TopButtons clickable arrows low-opacity :buttons="[
+    <TopButtons
+      clickable
+      arrows
+      low-opacity
+      :buttons="[
         {name: 'Назад', description: 'К списку квестов',
-        to: $router.options.history.state.back ? $router.options.history.state.back : {name: 'quests'}},
-    ]"></TopButtons>
+         to: $router.options.history.state.back ? $router.options.history.state.back : {name: 'quests'}},
+      ]"
+    />
 
     <div class="quest-preview">
-      <CircleLoading v-if="loading" class="preview-image"></CircleLoading>
+      <CircleLoading v-if="loading" class="preview-image" />
       <img v-if="previewUrl" class="preview-image" :src="previewUrl" alt="preview">
       <div v-else class="preview-image default text-big-xx">SQ</div>
 
       <div class="container">
         <div class="main-info">
           <div class="text-big-x title">
-            {{title}}
+            {{ title }}
             <div class="images-container">
               <img v-if="islinkactive" src="../res/link.svg" alt="with link" class="quest-modifier">
               <img v-if="!ispublished" src="../res/invisible.svg" alt="unpublished" class="quest-modifier">
@@ -140,40 +148,47 @@ quest-background = linear-gradient(100deg, rgba(116, 73, 33, 0.9) 0%, rgba(90, 5
           </router-link>
           <div class="statistics text-big-xx">
             <span class="rating" :class="{good: rating >= 4.5, bad: rating < 3.5}">
-              <img src="../res/star.svg" alt="star">{{rating}}
+              <img src="../res/star.svg" alt="star">{{ rating }}
             </span>
             <span class="time">
-              <img src="../res/time.svg" alt="time">{{time}}
+              <img src="../res/time.svg" alt="time">{{ time }}
             </span>
           </div>
-          <div class="text-small played">Прошли: {{played}}</div>
-          <div class="text-small author">Автор: {{authorName}}</div>
+          <div class="text-small played">Прошли: {{ played }}</div>
+          <div class="text-small author">Автор: {{ authorName }}</div>
 
           <div class="text-small" v-if="description">Описание: </div>
-          <MarkdownRenderer class="description" ref="renderer"></MarkdownRenderer>
+          <MarkdownRenderer class="description" ref="renderer" />
 
           <button v-if="branches.length === 1" class="button play text-big-x" @click="selectBranch(branches[0])">Играть!</button>
         </div>
       </div>
-      <ArrowListElement v-if="branches.length > 1"
-                        class="branches" ref="branches" title="Ветки"
-                        no-close
-                        :elements="branches"
-                        @click-inside="selectBranch"
-      ></ArrowListElement>
+      <ArrowListElement
+        v-if="branches.length > 1"
+        class="branches"
+        ref="branches"
+        title="Ветки"
+        no-close
+        :elements="branches"
+        @click-inside="selectBranch"
+      />
     </div>
 
-    <CircleLoading v-if="branchesLoading"></CircleLoading>
-    <ArrowListElement ref="usersFinished" title="Прошли"
-                      closed
-                      :elements="usersFinished"
-                      @click-inside="(user) => $router.push({name: 'profile', query: {id: user.id}})"
-    ></ArrowListElement>
-    <ArrowListElement ref="usersProgresses" title="Проходят"
-                      closed
-                      :elements="usersProgresses"
-                      @click-inside="(user) => $router.push({name: 'profile', query: {id: user.id}})"
-    ></ArrowListElement>
+    <CircleLoading v-if="branchesLoading" />
+    <ArrowListElement
+      ref="usersFinished"
+      title="Прошли"
+      closed
+      :elements="usersFinished"
+      @click-inside="(user) => $router.push({name: 'profile', query: {id: user.id}})"
+    />
+    <ArrowListElement
+      ref="usersProgresses"
+      title="Проходят"
+      closed
+      :elements="usersProgresses"
+      @click-inside="(user) => $router.push({name: 'profile', query: {id: user.id}})"
+    />
   </div>
 </template>
 

@@ -1,9 +1,9 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 .form-fullwidth
-  margin-top 0
   max-width unset
+  margin-top 0
 
 textarea
   white-space pre-wrap
@@ -11,9 +11,14 @@ textarea
 
 <template>
   <div>
-    <TopButtons bg clickable arrows :buttons="[
+    <TopButtons
+      bg
+      clickable
+      arrows
+      :buttons="[
         {name: 'На главную', description: `Не стесняйся, проходи`, to: {name: 'default'}},
-    ]"></TopButtons>
+      ]"
+    />
 
     <Form class="form-fullwidth" ref="form">
       <div class="info-container">

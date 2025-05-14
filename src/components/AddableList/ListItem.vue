@@ -1,11 +1,11 @@
 <style lang="stylus" scoped>
-@require '../../styles/constants.styl'
+@import '../../styles/constants.styl'
 
 li
-  margin-top 10px
-  margin-bottom 10px
   display flex
   justify-content space-between
+  margin-top 10px
+  margin-bottom 10px
 
   :last-child
     margin-bottom 0
@@ -13,25 +13,25 @@ li
     margin-top 0
 
   > input
+    float left
     flex 1
+    box-sizing border-box
     width 100%
     padding 10px
-    box-sizing border-box
-    float left
     border-left none
   > .radio
-    margin-left 20px
     margin-right 5px
+    margin-left 20px
   > .button
-    opacity 1
-    transition all 0.3s ease
-    overflow hidden
-    height 40px
-    box-sizing border-box
     float right
+    overflow hidden
     display flex
     align-content center
     justify-content center
+    box-sizing border-box
+    height 40px
+    opacity 1
+    transition all 0.3s ease
     .arrow.right
       margin-left 5px
   > :last-child
@@ -40,13 +40,13 @@ li
   > :not(:last-child)
     margin-right 20px
   > .closed
-    opacity 0
-    width 0
-    padding-left 0
-    padding-right 0
-    margin-left 0
-    margin-right 0
     pointer-events none
+    width 0
+    margin-right 0
+    margin-left 0
+    padding-right 0
+    padding-left 0
+    opacity 0
   > .orderid
     display flex
     align-items center
@@ -57,13 +57,13 @@ li
 li:first-child
   > .move-buttons
     > .button:first-child
-      opacity 0.2
       pointer-events none
+      opacity 0.2
 li.last-child
   > .move-buttons
     > .button:last-child
-      opacity 0.2
       pointer-events none
+      opacity 0.2
 
 @media ({mobile})
   li
@@ -83,15 +83,15 @@ li.last-child
 <template>
   <li>
     <span class="text-big-x orderid">{{ idx + 1 }}</span>
-    <div v-if="canDelete" class="button rounded delete-button" @click="$emit('delete', idx)"><Cross></Cross></div>
+    <div v-if="canDelete" class="button rounded delete-button" @click="$emit('delete', idx)"><Cross /></div>
     <div class="move-buttons" v-if="modelValue.confirmed">
-      <div class="button half-height rounded" @click="this.$emit('move', {idx, to: idx-1})">˄</div>
-      <div class="button half-height rounded" @click="this.$emit('move', {idx, to: idx+1})">˅</div>
+      <div class="button half-height rounded" @click="$emit('move', {idx, to: idx-1})">˄</div>
+      <div class="button half-height rounded" @click="$emit('move', {idx, to: idx+1})">˅</div>
     </div>
     <input type="text" :placeholder="placeholder" :value="modelValue.title" autocomplete="off" @input="updateVModel" ref="input">
 
     <router-link :to="actionTo(modelValue.id)" v-if="modelValue.confirmed && actionText && modelValue.id" class="text-middle button rounded goto-button">
-      <span class="mobile-hide">{{ actionText }}</span> <Arrow right></Arrow>
+      <span class="mobile-hide">{{ actionText }}</span> <Arrow right />
     </router-link>
   </li>
 </template>

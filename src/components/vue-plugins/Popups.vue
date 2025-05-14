@@ -1,37 +1,37 @@
 <style lang="stylus">
-  @require '../../styles/constants.styl'
-  @require '../../styles/fonts.styl'
+  @import '../../styles/constants.styl'
+  @import '../../styles/fonts.styl'
+
+  borderRadius = 2px
+  clBgPrimaryAlert = #d9d23f
+  clBgPrimaryError = #e54d42
+
+  clBgPrimarySuccess = #28a745
+  clBgSecondaryAlert = #b89f24
+  clBgSecondaryError = #b82e24
+  clBgSecondarySuccess = #218838
 
   indent = 15px
   innerPadding = 10px
-  titleMargin = 5px
 
   messageWidth = 225px
-
-  clBgPrimarySuccess = #28A745
-  clBgSecondarySuccess = #218838
-  clBgPrimaryAlert = #d9d23f
-  clBgSecondaryAlert = #b89f24
-  clBgPrimaryError = #E54D42
-  clBgSecondaryError = #B82E24
-
-  borderRadius = 2px
+  titleMargin = 5px
 
   .popup-messages
     position fixed
+    z-index 1000
     top indent
     right indent
     width messageWidth
-    z-index 1000
     font-medium-small()
     .popup-message
-      box-sizing content-box
       overflow hidden
+      box-sizing content-box
       margin-bottom indent
       padding innerPadding
-      border-radius borderRadius
       color textColor1
       opacity 1
+      border-radius borderRadius
       .title
         padding-bottom titleMargin
     .popup-message
@@ -44,19 +44,20 @@
       background-color clBgPrimaryAlert
       border-left-color clBgSecondaryAlert
     .popup-message._transitionOpacity
-      transition opacity 1s ease
       opacity 0.3
+      transition opacity 1s ease
     .popup-message._transitionHeight
-      transition all 0.3s ease
       height 0
-      padding 0
       margin 0
+      padding 0
       opacity 0
+      transition all 0.3s ease
 </style>
+
 <template>
-  <div class="popup-messages">
-  </div>
+  <div class="popup-messages" />
 </template>
+
 <script>
   import {getChildrenHeight} from "/src/utils/utils";
 

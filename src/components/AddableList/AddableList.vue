@@ -1,10 +1,10 @@
 <style lang="stylus" scoped>
-@require '../../styles/constants.styl'
+@import '../../styles/constants.styl'
 
 .addable-list
+  overflow-x hidden
   padding 0
   list-style none
-  overflow-x hidden
 
 .button
   display flex
@@ -17,22 +17,23 @@
 
 <template>
   <div>
-    <label class="text-big">{{ title }} <span></span></label>
-    <div class="info text-small" v-html="description"></div>
+    <label class="text-big">{{ title }} <span /></label>
+    <div class="info text-small" v-html="description" />
 
     <ul class="addable-list roll-active closed" ref="list">
-      <ListItem v-for="(item, idx) in modelValue"
-                v-model="modelValue[idx]"
-                :idx="idx"
-                :action-text="this.$props.actionText"
-                @delete="deleteItem"
-                @move="moveItem"
-                :action-to="actionTo"
-                :can-delete="canDelete"
-                :placeholder="placeholder"
-                :class="{'last-child': (item.confirmed) && ((idx + 1 >= modelValue.length) || (!modelValue[idx + 1].confirmed))}"
-                @keydown.tab="() => {if (idx === modelValue.length - 1) addItem();}"
-      ></ListItem>
+      <ListItem
+        v-for="(item, idx) in modelValue"
+        v-model="modelValue[idx]"
+        :idx="idx"
+        :action-text="$props.actionText"
+        @delete="deleteItem"
+        @move="moveItem"
+        :action-to="actionTo"
+        :can-delete="canDelete"
+        :placeholder="placeholder"
+        :class="{'last-child': (item.confirmed) && ((idx + 1 >= modelValue.length) || (!modelValue[idx + 1].confirmed))}"
+        @keydown.tab="() => {if (idx === modelValue.length - 1) addItem();}"
+      />
     </ul>
 
     <div class="button rounded" @click="addItem">

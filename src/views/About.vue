@@ -5,36 +5,36 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 
 .flex-root
   .side-item
-    padding 20px
     margin-bottom 30px
+    padding 20px
 
     ul
       margin 0
       padding-left 25px
 
   .side-item.left
-    background side-item-gradient % 90deg
-    background-size 100% 1px
     left 0
     text-align left
-  .side-item.right
-    background side-item-gradient % -90deg
+    background side-item-gradient % 90deg
     background-size 100% 1px
+  .side-item.right
     right 0
     text-align right
+    background side-item-gradient % -90deg
+    background-size 100% 1px
 
   .side-item.right
     .text-big-xx
       font-size 30px
 
   .register-button
-    width fit-content
-    background linear-gradient(90deg, rgba(71, 56, 20, 0.4) 0%, rgba(84,69,25,0.7) 100%) 50% 50% no-repeat
-    margin-top 20px
-    margin-bottom 20px
     display block
-    margin-left auto
+    width fit-content
+    margin-top 20px
     margin-right auto
+    margin-bottom 20px
+    margin-left auto
+    background linear-gradient(90deg, rgba(71, 56, 20, 0.4) 0%, rgba(84,69,25,0.7) 100%) 50% 50% no-repeat
 
 .about-page
   text-align center
@@ -42,7 +42,6 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
 
 <template>
   <div class="flex-root">
-
     <div class="about-page app-flex-filler">
       <div class="side-item left">
         <div class="text-big-xx">КУДА ТЫ ПОПАЛ?</div>
@@ -58,7 +57,8 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
       </div>
       <div class="side-item right">
         <div class="text-big-xx">КАК ПОЛЬЗОВАТЬСЯ?</div>
-        <div class="text-big">Смотри, всё просто:
+        <div class="text-big">
+          Смотри, всё просто:
           <ul>
             <li class="text-small">регистрируешься</li>
             <li class="text-small">выбираешь квест и ветку</li>
@@ -74,7 +74,7 @@ side-item-gradient = "linear-gradient(%s, rgba(184, 134, 11, 0.3) 30%, rgba(218,
       <router-link :to="{name: 'signup'}" class="register-button text-big-x button highlight rounded">Зарегистрироваться</router-link>
     </div>
 
-    <Footer></Footer>
+    <Footer />
   </div>
 </template>
 

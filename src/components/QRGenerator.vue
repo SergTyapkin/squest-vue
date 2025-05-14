@@ -1,5 +1,5 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 
 slider-length = 300px
@@ -16,8 +16,8 @@ thumb-size = 15px
 .qr-image.invert
   filter invert(1)
 .qr-image.blured
-  filter blur(10px)
   overflow hidden
+  filter blur(10px)
 .qr-image.invert.blured
   filter invert(1) blur(10px)
 
@@ -35,22 +35,23 @@ thumb-size = 15px
 .container-bg
   background #00000044
   box-shadow 0 0 10px colorShadow
+
   @media ({mobile})
     box-shadow none
 
 .switch-container
+  display flex
+  width min-content
   padding 10px 10px
   padding-bottom 0
-  display flex
   border-radius 0 0 10px 10px
-  width min-content
   .switch
     margin 0 10px
 .range-container
-  padding 10px
-  border-radius 0 10px 10px 0
   width 100%
   max-width 400px
+  padding 10px
+  border-radius 0 10px 10px 0
   .title
     display block
   .slider-container
@@ -58,44 +59,45 @@ thumb-size = 15px
     flex-direction column
     .slider
       all unset
-      margin 10px
-      height slider-width
-      max-width slider-length
-      width calc(100% - 10px)
-      background: bgColor2;
-      outline: none;
-      border-radius: thumb-size;
       overflow hidden
-      box-shadow: inset 0 0 5px empColor1;
+      width calc(100% - 10px)
+      max-width slider-length
+      height slider-width
+      margin 10px
+      background bgColor2
+      border-radius thumb-size
+      outline none
+      box-shadow inset 0 0 5px empColor1
+
       @media ({mobile})
         background linear-gradient(170deg, bgColor2, bgColor3)
         box-shadow none
     .slider::-webkit-slider-thumb
-      -webkit-appearance none
+      cursor pointer
       width thumb-size
       height thumb-size
-      border-radius 50%
+      -webkit-appearance none
       background empColor2
-      cursor pointer
       border 4px solid #333
+      border-radius 50%
       box-shadow (- slider-length - 5px) 0 0 (slider-length) mix(empColor1, transparent, 30%)
     .range-labels
-      max-width slider-length
-      width calc(100% - 10px)
       display flex
       flex-direction row
       justify-content space-between
+      width calc(100% - 10px)
+      max-width slider-length
 
-@media (min-width: 560px)
+@media (min-width 560px)
   .range-container
     width 90px
     .slider-container
       display block
-      height slider-length
       flex-direction row
+      height slider-length
       .slider
-        transform rotate(-90deg) translateX(- slider-length + 3px)
         transform-origin left
+        transform rotate(-90deg) translateX(- slider-length + 3px)
         min-width slider-length
       .range-labels
         transform translate(slider-width + 10px, - slider-width - 10px)
@@ -112,7 +114,7 @@ thumb-size = 15px
     </div>
 
     <div class="flex-container">
-      <div ref="qr" v-html="html" class="qr-image" :class="{invert, blured: !text}"></div>
+      <div ref="qr" v-html="html" class="qr-image" :class="{invert, blured: !text}" />
 
       <div class="range-container container-bg">
         <label class="text-big title">Размер</label>
@@ -129,7 +131,7 @@ thumb-size = 15px
 
     <div class="switch-container container-bg">
       <label class="text-big">Белый</label>
-      <FloatingInput type="checkbox" v-model="invert" class="switch"></FloatingInput>
+      <FloatingInput type="checkbox" v-model="invert" class="switch" />
       <label class="text-big">Черный</label>
     </div>
   </div>

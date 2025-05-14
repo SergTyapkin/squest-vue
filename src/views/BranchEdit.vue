@@ -1,17 +1,22 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 .form-fullwidth
-  margin-top 0
   max-width unset
+  margin-top 0
 
 </style>
 
 <template>
   <div @input="onChange">
-    <TopButtons bg clickable arrows :buttons="[
+    <TopButtons
+      bg
+      clickable
+      arrows
+      :buttons="[
         {name: 'Назад', description: `К квесту: <b>${questTitle}</b>`,to: {name: 'edit-quest', query: {id: questId}}},
-    ]"></TopButtons>
+      ]"
+    />
 
     <Form class="form-fullwidth" ref="form">
       <div class="info-container">
@@ -19,33 +24,36 @@
       </div>
 
       <div class="fields-container">
-        <FloatingInput v-model="title" title="Название"></FloatingInput>
+        <FloatingInput v-model="title" title="Название" />
         <div>
-          <label class="text-big">Описание <span></span></label>
-          <textarea class="text scrollable" rows="5" v-model="description"></textarea>
+          <label class="text-big">Описание <span /></label>
+          <textarea class="text scrollable" rows="5" v-model="description" />
         </div>
 
-        <FloatingInput type="checkbox"
-                       title="Можно ли проходить задания не по порядку"
-                       v-model="isTasksNotSorted"
+        <FloatingInput
+          type="checkbox"
+          title="Можно ли проходить задания не по порядку"
+          v-model="isTasksNotSorted"
         >
           Пользователю будет предложен список всех заданий, из которых он сможет выбрать любое и ответить на него
         </FloatingInput>
-        <AddableList title="Задания"
-                     description=""
-                     add-text="Добавить задание"
-                     action-text="Перейти"
-                     v-model="tasks"
-                     :can-delete="false"
-                     placeholder="Название задания"
-                     :action-to="(taskId) => `/quest/branch/task/edit?id=${taskId}`"
-                     @input="onChange"
-        ></AddableList>
+        <AddableList
+          title="Задания"
+          description=""
+          add-text="Добавить задание"
+          action-text="Перейти"
+          v-model="tasks"
+          :can-delete="false"
+          placeholder="Название задания"
+          :action-to="(taskId) => `/quest/branch/task/edit?id=${taskId}`"
+          @input="onChange"
+        />
         <span class="text-small-x">Последнее задание в ветке выводится игроку c заголовком и описанием, но без вопроса задания - это страница с поздравлением</span>
 
-        <FloatingInput type="checkbox"
-                       title="Опубликована"
-                       v-model="isPublished"
+        <FloatingInput
+          type="checkbox"
+          title="Опубликована"
+          v-model="isPublished"
         >
           Если ветка не опубликована - это черновик. Никто кроме тебя и соавторов не сможет просматривать её <br>
           При просмотре квестов для игры вы, как автор, будете видеть даже неопубликованные ветки, чтобы можно было поиграть и проверить ветку до её публикации
@@ -62,10 +70,10 @@
     </Form>
 
     <FloatingButton v-if="edited" title="Сохранить" green @click="saveBranch">
-      <CircleLoading v-if="loading"></CircleLoading>
+      <CircleLoading v-if="loading" />
       <img v-else src="../res/save.svg" alt="save">
     </FloatingButton>
-    <SaveByKeys @save="saveBranch"></SaveByKeys>
+    <SaveByKeys @save="saveBranch" />
   </div>
 </template>
 

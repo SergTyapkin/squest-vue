@@ -1,15 +1,15 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 
 .arrow
+  display inline-block
   width var(--size)
   height var(--size)
   border-top 5px solid empColor5
   border-right 5px solid empColor2
   border-radius 7px 0 7px 0
   transition all 0.2s ease
-  display inline-block
 
 .arrow.right
   right 0
@@ -33,7 +33,7 @@
 </style>
 
 <template>
-  <span :class="`arrow ${direction}`" :style="`--size: ${size}`"></span>
+  <span :class="`arrow ${direction}`" :style="`--size: ${size}`" />
 </template>
 
 <script>

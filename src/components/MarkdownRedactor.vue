@@ -1,32 +1,32 @@
 <style lang="stylus" scoped>
-@require '../styles/constants.styl'
+@import '../styles/constants.styl'
 
 
 extra-small = 3px
-small-font-size = 14px
+markdown-button-bg-color = transparent
+markdown-button-bg-color-hover = empColor1
+markdown-button-divider-color = bgColor1
+markdown-button-padding = 2px 0 0 0
+markdown-button-svg-photo-fill = transparent
 
-svg-buttons-fill-color = textColor1
-svg-stroke-width = 1px
+markdown-button-svg-photo-stroke = 2px
+
+markdown-button-width = 30px
+markdown-panel-bg-color = bgColor2
+markdown-panel-border-radius = extra-small 0 extra-small 0
+markdown-panel-font-size = small-font-size
+markdown-panel-height = 20px
+markdown-panel-margin = 0px
+markdown-panel-shadow-blur = 5px
+markdown-panel-shadow-color = black
 
 // Markdowns
 markdown-panel-shadow-margin = 5px
 markdown-panel-shadow-offset = 3px 3px
-markdown-panel-shadow-blur = 5px
-markdown-panel-shadow-color = black
-markdown-panel-margin = 0px
-markdown-panel-border-radius = extra-small 0 extra-small 0
-markdown-panel-font-size = small-font-size
-markdown-panel-height = 20px
-markdown-panel-bg-color = bgColor2
+small-font-size = 14px
 
-markdown-button-width = 30px
-markdown-button-padding = 2px 0 0 0
-markdown-button-divider-color = bgColor1
-markdown-button-bg-color = transparent
-markdown-button-bg-color-hover = empColor1
-
-markdown-button-svg-photo-stroke = 2px
-markdown-button-svg-photo-fill = transparent
+svg-buttons-fill-color = textColor1
+svg-stroke-width = 1px
 
 
 .markdown
@@ -38,39 +38,34 @@ markdown-button-svg-photo-fill = transparent
   position absolute
   top 0
   left 0
-  display flex
   overflow hidden
-  box-shadow markdown-panel-shadow-offset markdown-panel-shadow-blur markdown-panel-shadow-color
+  display flex
+  height markdown-panel-height
   margin markdown-panel-margin
-  border-radius markdown-panel-border-radius
   font-family Arial
   font-size markdown-panel-font-size
-  height markdown-panel-height
   background markdown-panel-bg-color
+  border-radius markdown-panel-border-radius
+  box-shadow markdown-panel-shadow-offset markdown-panel-shadow-blur markdown-panel-shadow-color
   svg
-    fill svg-buttons-fill-color
     overflow visible
+    fill svg-buttons-fill-color
 
   > div
     cursor pointer
-    text-align center
-    margin auto 0 auto 0
     width markdown-button-width
     height 100%
+    margin auto 0 auto 0
     padding markdown-button-padding
+    text-align center
     background markdown-button-bg-color
-
-    transition background ease 0.2s
-    background-image:
-        radial-gradient(1px 45% at 0% 50%, markdown-button-divider-color, transparent),
-        radial-gradient(1px 45% at 100% 50%, markdown-button-divider-color, transparent);
     ._photo
+      fill markdown-button-svg-photo-fill
       stroke svg-buttons-fill-color
       stroke-width svg-stroke-width
-      fill markdown-button-svg-photo-fill
   > div._italic
-    font-family Cursive
     padding-top 0
+    font-family Cursive
   > div:hover
     background markdown-button-bg-color-hover
 
@@ -86,19 +81,19 @@ markdown-button-svg-photo-fill = transparent
 .image-loader
   position relative
 .image-loader::before
+  pointer-events none
   content 'Отпустите, чтобы загрузить фото'
   position absolute
   inset 0
-  padding-left 20px
-  text-align center
   display flex
   align-items center
-  background colorShadowDark-x
-  color textColor1
+  padding-left 20px
   font-size 25px
+  color textColor1
+  text-align center
   opacity 0
+  background colorShadowDark-x
   transition opacity 0.2s ease
-  pointer-events none
 .image-loader.in-drag::before
   opacity 1
 
@@ -106,10 +101,13 @@ markdown-button-svg-photo-fill = transparent
 
 <template>
   <div class="markdown" @change.stop="" @input="onInput">
-    <DragNDropLoader class="image-loader" @load="attachPhoto"
-                     :crop-size="cropSize"
-                     :compress-size="compressSize">
-      <textarea class="markdowned scrollable" ref="textarea" :rows="rows" v-model="modelValue" @input="updateVModel()"></textarea>
+    <DragNDropLoader
+      class="image-loader"
+      @load="attachPhoto"
+      :crop-size="cropSize"
+      :compress-size="compressSize"
+    >
+      <textarea class="markdowned scrollable" ref="textarea" :rows="rows" v-model="modelValue" @input="updateVModel()" />
       <div class="markdown-panel">
         <div class="_bold" @click="encaseInputText('**', '**')">B</div>
         <div class="_italic" @click="encaseInputText(' _', '_ ')">I</div>
@@ -119,9 +117,9 @@ markdown-button-svg-photo-fill = transparent
         <div class="_header-2" @click="encaseInputLines('## ')">H2</div>
         <div class="_header-3" @click="encaseInputLines('### ')">H3</div>
         <div class="_blockquote" @click="encaseInputLines('> ')">>|</div>
-        <div class="_list" @click="encaseInputLines('- ')"><svg xmlns="http://www.w3.org/2000/svg" width="18px" height="12px"><g transform="scale(0.25) translate(8, 2)"><path d="M57.124,51.893H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3S58.781,51.893,57.124,51.893z"/><path d="M57.124,33.062H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3   C60.124,31.719,58.781,33.062,57.124,33.062z"/><path d="M57.124,14.231H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3S58.781,14.231,57.124,14.231z"/><circle cx="4.029" cy="11.463" r="4.029"/><circle cx="4.029" cy="30.062" r="4.029"/><circle cx="4.029" cy="48.661" r="4.029"/></g></svg></div>
-        <div class="_link" @click="attachLink"><svg xmlns="http://www.w3.org/2000/svg" width="18px" height="15px"><g transform="scale(0.028) translate(70, 40)"><path d="M211.26,389.24l-60.331,60.331c-25.012,25.012-65.517,25.012-90.508,0.005c-24.996-24.996-24.996-65.505-0.005-90.496     l120.683-120.683c24.991-24.992,65.5-24.992,90.491,0c8.331,8.331,21.839,8.331,30.17,0c8.331-8.331,8.331-21.839,0-30.17     c-41.654-41.654-109.177-41.654-150.831,0L30.247,328.909c-41.654,41.654-41.654,109.177,0,150.831     c41.649,41.676,109.177,41.676,150.853,0l60.331-60.331c8.331-8.331,8.331-21.839,0-30.17S219.591,380.909,211.26,389.24z"/><path d="M479.751,30.24c-41.654-41.654-109.199-41.654-150.853,0l-72.384,72.384c-8.331,8.331-8.331,21.839,0,30.17     c8.331,8.331,21.839,8.331,30.17,0l72.384-72.384c24.991-24.992,65.521-24.992,90.513,0c24.991,24.991,24.991,65.5,0,90.491     L316.845,283.638c-24.992,24.992-65.5,24.992-90.491,0c-8.331-8.331-21.839-8.331-30.17,0s-8.331,21.839,0,30.17     c41.654,41.654,109.177,41.654,150.831,0l132.736-132.736C521.405,139.418,521.405,71.894,479.751,30.24z"/></g></svg></div>
-        <div class="_photo" @click="attachPhoto(undefined)"><svg class="_photo" xmlns="http://www.w3.org/2000/svg" width="19px" height="15px"><g transform="scale(0.8) translate(0, -2)"><path d="m14.134 3.65c.853 0 1.46.278 1.988.899.017.019.494.61.66.815.228.281.674.536.945.536h.41c2.419 0 3.863 1.563 3.863 4.05v5.85c0 2.241-2 4.2-4.273 4.2h-11.454c-2.267 0-4.223-1.953-4.223-4.2v-5.85c0-2.496 1.4-4.05 3.814-4.05h.409c.271 0 .717-.255.945-.536.166-.204.643-.796.66-.815.528-.621 1.135-.899 1.988-.899z"/><circle cx="12" cy="12" r="3.85"/></g></svg></div>
+        <div class="_list" @click="encaseInputLines('- ')"><svg xmlns="http://www.w3.org/2000/svg" width="18px" height="12px"><g transform="scale(0.25) translate(8, 2)"><path d="M57.124,51.893H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3S58.781,51.893,57.124,51.893z" /><path d="M57.124,33.062H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3   C60.124,31.719,58.781,33.062,57.124,33.062z" /><path d="M57.124,14.231H16.92c-1.657,0-3-1.343-3-3s1.343-3,3-3h40.203c1.657,0,3,1.343,3,3S58.781,14.231,57.124,14.231z" /><circle cx="4.029" cy="11.463" r="4.029" /><circle cx="4.029" cy="30.062" r="4.029" /><circle cx="4.029" cy="48.661" r="4.029" /></g></svg></div>
+        <div class="_link" @click="attachLink"><svg xmlns="http://www.w3.org/2000/svg" width="18px" height="15px"><g transform="scale(0.028) translate(70, 40)"><path d="M211.26,389.24l-60.331,60.331c-25.012,25.012-65.517,25.012-90.508,0.005c-24.996-24.996-24.996-65.505-0.005-90.496     l120.683-120.683c24.991-24.992,65.5-24.992,90.491,0c8.331,8.331,21.839,8.331,30.17,0c8.331-8.331,8.331-21.839,0-30.17     c-41.654-41.654-109.177-41.654-150.831,0L30.247,328.909c-41.654,41.654-41.654,109.177,0,150.831     c41.649,41.676,109.177,41.676,150.853,0l60.331-60.331c8.331-8.331,8.331-21.839,0-30.17S219.591,380.909,211.26,389.24z" /><path d="M479.751,30.24c-41.654-41.654-109.199-41.654-150.853,0l-72.384,72.384c-8.331,8.331-8.331,21.839,0,30.17     c8.331,8.331,21.839,8.331,30.17,0l72.384-72.384c24.991-24.992,65.521-24.992,90.513,0c24.991,24.991,24.991,65.5,0,90.491     L316.845,283.638c-24.992,24.992-65.5,24.992-90.491,0c-8.331-8.331-21.839-8.331-30.17,0s-8.331,21.839,0,30.17     c41.654,41.654,109.177,41.654,150.831,0l132.736-132.736C521.405,139.418,521.405,71.894,479.751,30.24z" /></g></svg></div>
+        <div class="_photo" @click="attachPhoto(undefined)"><svg class="_photo" xmlns="http://www.w3.org/2000/svg" width="19px" height="15px"><g transform="scale(0.8) translate(0, -2)"><path d="m14.134 3.65c.853 0 1.46.278 1.988.899.017.019.494.61.66.815.228.281.674.536.945.536h.41c2.419 0 3.863 1.563 3.863 4.05v5.85c0 2.241-2 4.2-4.273 4.2h-11.454c-2.267 0-4.223-1.953-4.223-4.2v-5.85c0-2.496 1.4-4.05 3.814-4.05h.409c.271 0 .717-.255.945-.536.166-.204.643-.796.66-.815.528-.621 1.135-.899 1.988-.899z" /><circle cx="12" cy="12" r="3.85" /></g></svg></div>
       </div>
     </DragNDropLoader>
   </div>
